@@ -1,0 +1,8 @@
+{
+  "name": "MathSprout",
+  "description": "Fun, game-based maths learning for Class 1 to Class 5 students with visual math helpers, quests, and interactive labs.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
