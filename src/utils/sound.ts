@@ -69,6 +69,12 @@ class SoundEffects {
       this.playTone(n, 0.22, 'triangle', idx * 0.09, 0.13);
     });
   }
+
+  playRocketBoost() {
+    this.playTone(392, 0.12, 'triangle', 0, 0.1);
+    this.playTone(587.33, 0.16, 'triangle', 0.07, 0.11);
+    this.playTone(880, 0.22, 'sine', 0.14, 0.12);
+  }
 }
 
 export const soundFx = new SoundEffects();

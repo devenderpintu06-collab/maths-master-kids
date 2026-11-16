@@ -37,9 +37,11 @@ import { ParentsGuideSection } from './components/ParentsGuideSection';
 import { BlogSection } from './components/BlogSection';
 import { LegalFooterModals, type FooterDocType } from './components/LegalFooterModals';
 import { MascotLogo, OperationIllustration } from './components/MascotLogo';
+import { ActiveMiniGameView, MathGamesArcadeSection } from './components/MathGamesArcade';
+import type { MiniGameId } from './data/mathGames';
 import { soundFx } from './utils/sound';
 
-type AppTab = 'home' | 'progress' | 'lab';
+type AppTab = 'home' | 'games' | 'progress' | 'lab';
 
 const STORAGE_KEY = 'maths_master_kids_progress_v1';
 
@@ -114,6 +116,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<AppTab>('home');
   const [progress, setProgress] = useState<LocalProgress>(loadProgress);
   const [activeQuiz, setActiveQuiz] = useState<QuizConfig | null>(null);
+  const [activeMiniGame, setActiveMiniGame] = useState<MiniGameId | null>(null);
   const [soundEnabled, setSoundEnabled] = useState<boolean>(loadSoundPreference);
   const [lang, setLang] = useState<AppLanguage>(loadLangPreference);
   const [confirmReset, setConfirmReset] = useState(false);
@@ -179,6 +182,7 @@ export default function App() {
 
   const startOperationQuiz = (op: MathOperation) => {
     soundFx.playClick();
+    setActiveMiniGame(null);
     setActiveQuiz({
       classNumber: selectedClass,
       difficulty: selectedDifficulty,
@@ -190,6 +194,7 @@ export default function App() {
 
   const startDailyPractice = () => {
     soundFx.playClick();
+    setActiveMiniGame(null);
     setActiveQuiz({
       classNumber: selectedClass,
       difficulty: selectedDifficulty,
@@ -199,9 +204,26 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const launchMiniGame = (gameId: MiniGameId) => {
+    soundFx.playClick();
+    setActiveQuiz(null);
+    setActiveMiniGame(gameId);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const recordMiniGameAnswer = (isCorrect: boolean) => {
+    setProgress((prev) => ({
+      ...prev,
+      totalStars: prev.totalStars + (isCorrect ? 1 : 0),
+      totalCorrectAnswers: prev.totalCorrectAnswers + (isCorrect ? 1 : 0),
+      totalAttemptedQuestions: prev.totalAttemptedQuestions + 1,
+    }));
+  };
+
   const navigateToTab = (tab: AppTab) => {
     soundFx.playClick();
     setActiveQuiz(null);
+    setActiveMiniGame(null);
     setActiveTab(tab);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -209,6 +231,7 @@ export default function App() {
   const navigateToDailySection = () => {
     soundFx.playClick();
     setActiveQuiz(null);
+    setActiveMiniGame(null);
     setActiveTab('home');
     setTimeout(() => {
       document.getElementById('daily-practice')?.scrollIntoView({ behavior: 'smooth' });
@@ -218,6 +241,7 @@ export default function App() {
   const navigateToBlogSection = () => {
     soundFx.playClick();
     setActiveQuiz(null);
+    setActiveMiniGame(null);
     setActiveTab('home');
     setTimeout(() => {
       document.getElementById('blog-section')?.scrollIntoView({ behavior: 'smooth' });
@@ -310,17 +334,28 @@ export default function App() {
           </button>
 
           {/* Zone 2: Clean single-line nav links */}
-          <nav className="hidden md:flex items-center gap-4 lg:gap-6 text-sm font-semibold text-slate-600">
+          <nav className="hidden md:flex items-center gap-3 lg:gap-5 text-xs lg:text-sm font-semibold text-slate-600">
             <button
               type="button"
               onClick={() => navigateToTab('home')}
               className={`py-1 border-b-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
-                activeTab === 'home' && !activeQuiz
+                activeTab === 'home' && !activeQuiz && !activeMiniGame
                   ? 'border-blue-600 text-slate-900'
                   : 'border-transparent hover:text-slate-900'
               }`}
             >
               {isHi ? 'होम' : 'Home'}
+            </button>
+            <button
+              type="button"
+              onClick={() => navigateToTab('games')}
+              className={`py-1 border-b-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+                (activeTab === 'games' && !activeQuiz) || activeMiniGame
+                  ? 'border-rose-600 text-rose-700'
+                  : 'border-transparent hover:text-slate-900'
+              }`}
+            >
+              {isHi ? 'मज़ेदार गणित खेल' : 'Fun Math Games'}
             </button>
             <button
               type="button"
@@ -333,7 +368,7 @@ export default function App() {
               type="button"
               onClick={() => navigateToTab('progress')}
               className={`py-1 border-b-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
-                activeTab === 'progress' && !activeQuiz
+                activeTab === 'progress' && !activeQuiz && !activeMiniGame
                   ? 'border-blue-600 text-slate-900'
                   : 'border-transparent hover:text-slate-900'
               }`}
@@ -344,7 +379,7 @@ export default function App() {
               type="button"
               onClick={() => navigateToTab('lab')}
               className={`py-1 border-b-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
-                activeTab === 'lab' && !activeQuiz
+                activeTab === 'lab' && !activeQuiz && !activeMiniGame
                   ? 'border-blue-600 text-slate-900'
                   : 'border-transparent hover:text-slate-900'
               }`}
@@ -436,12 +471,12 @@ export default function App() {
         </div>
 
         {/* Mobile Nav Row */}
-        {!activeQuiz && (
-          <div className="md:hidden border-t border-slate-200/80 px-1.5 py-1.5 flex items-center justify-around text-[11px] sm:text-xs font-semibold text-slate-600 bg-white">
+        {!activeQuiz && !activeMiniGame && (
+          <div className="md:hidden border-t border-slate-200/80 px-1.5 py-1.5 flex items-center justify-around gap-0.5 overflow-x-auto text-[11px] sm:text-xs font-semibold text-slate-600 bg-white">
             <button
               type="button"
               onClick={() => navigateToTab('home')}
-              className={`px-2 py-1.5 rounded-lg whitespace-nowrap cursor-pointer ${
+              className={`px-2 py-1.5 rounded-lg whitespace-nowrap shrink-0 cursor-pointer ${
                 activeTab === 'home' ? 'text-blue-700 bg-blue-50' : ''
               }`}
             >
@@ -449,15 +484,24 @@ export default function App() {
             </button>
             <button
               type="button"
-              onClick={navigateToDailySection}
-              className="px-2 py-1.5 rounded-lg whitespace-nowrap cursor-pointer"
+              onClick={() => navigateToTab('games')}
+              className={`px-2 py-1.5 rounded-lg whitespace-nowrap shrink-0 cursor-pointer ${
+                activeTab === 'games' ? 'text-rose-700 bg-rose-50' : ''
+              }`}
             >
-              {isHi ? 'दैनिक क्विज़' : 'Daily Quiz'}
+              {isHi ? 'गणित खेल' : 'Fun Games'}
+            </button>
+            <button
+              type="button"
+              onClick={navigateToDailySection}
+              className="px-2 py-1.5 rounded-lg whitespace-nowrap shrink-0 cursor-pointer"
+            >
+              {isHi ? 'दैनिक' : 'Daily'}
             </button>
             <button
               type="button"
               onClick={() => navigateToTab('progress')}
-              className={`px-2 py-1.5 rounded-lg whitespace-nowrap cursor-pointer ${
+              className={`px-2 py-1.5 rounded-lg whitespace-nowrap shrink-0 cursor-pointer ${
                 activeTab === 'progress' ? 'text-blue-700 bg-blue-50' : ''
               }`}
             >
@@ -466,16 +510,16 @@ export default function App() {
             <button
               type="button"
               onClick={() => navigateToTab('lab')}
-              className={`px-2 py-1.5 rounded-lg whitespace-nowrap cursor-pointer ${
+              className={`px-2 py-1.5 rounded-lg whitespace-nowrap shrink-0 cursor-pointer ${
                 activeTab === 'lab' ? 'text-blue-700 bg-blue-50' : ''
               }`}
             >
-              {isHi ? 'विज़ुअल लैब' : 'Visual Lab'}
+              {isHi ? 'लैब' : 'Lab'}
             </button>
             <button
               type="button"
               onClick={navigateToBlogSection}
-              className="px-2 py-1.5 rounded-lg whitespace-nowrap cursor-pointer"
+              className="px-2 py-1.5 rounded-lg whitespace-nowrap shrink-0 cursor-pointer"
             >
               {isHi ? 'ब्लॉग' : 'Blog'}
             </button>
@@ -497,6 +541,27 @@ export default function App() {
             }}
             onQuizComplete={handleQuizComplete}
           />
+        ) : activeMiniGame ? (
+          <ActiveMiniGameView
+            gameId={activeMiniGame}
+            classNumber={selectedClass}
+            lang={lang}
+            onRecordAnswer={recordMiniGameAnswer}
+            onExit={() => {
+              soundFx.playClick();
+              setActiveMiniGame(null);
+            }}
+          />
+        ) : activeTab === 'games' ? (
+          <div className="max-w-5xl mx-auto px-4 sm:px-8 py-8 sm:py-10">
+            <MathGamesArcadeSection
+              lang={lang}
+              selectedClass={selectedClass}
+              onSelectClass={setSelectedClass}
+              showClassPicker
+              onLaunchGame={launchMiniGame}
+            />
+          </div>
         ) : activeTab === 'lab' ? (
           <VisualLab lang={lang} />
         ) : activeTab === 'progress' ? (
@@ -1046,6 +1111,13 @@ export default function App() {
               </div>
             </section>
 
+            {/* Math Games Arcade Section (below the 4 basic operation cards) */}
+            <MathGamesArcadeSection
+              lang={lang}
+              selectedClass={selectedClass}
+              onLaunchGame={launchMiniGame}
+            />
+
             {/* Daily Practice Section */}
             <section
               id="daily-practice"
@@ -1200,6 +1272,13 @@ export default function App() {
                   className="hover:text-slate-900 cursor-pointer"
                 >
                   {isHi ? 'होम' : 'Home'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => navigateToTab('games')}
+                  className="hover:text-slate-900 cursor-pointer"
+                >
+                  {isHi ? 'मज़ेदार गणित खेल' : 'Fun Math Games'}
                 </button>
                 <button
                   type="button"
