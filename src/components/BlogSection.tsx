@@ -69,12 +69,14 @@ export function BlogSection({
         </div>
 
         <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
-          {isHi ? '3 विस्तृत गाइड · EN / हिं' : '3 Detailed Guides · EN / हिं'}
+          {isHi
+            ? `${BLOG_ARTICLES.length} विस्तृत गाइड · EN / हिं`
+            : `${BLOG_ARTICLES.length} Detailed Guides · EN / हिं`}
         </span>
       </div>
 
-      {/* 3 Colorful Article Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+      {/* 4 Colorful Article Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {BLOG_ARTICLES.map((article, idx) => (
           <article
             key={article.id}
@@ -221,16 +223,27 @@ export function BlogSection({
               </div>
 
               <div className="space-y-5">
-                {activeArticle.sections.map((sec, i) => (
-                  <div key={i} className="space-y-1.5">
-                    <h3 className="text-base sm:text-lg font-extrabold text-slate-900">
-                      {isHi ? sec.headingHi : sec.headingEn}
-                    </h3>
-                    <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-                      {isHi ? sec.bodyHi : sec.bodyEn}
-                    </p>
-                  </div>
-                ))}
+                {activeArticle.sections.map((sec, i) => {
+                  const bodyText = isHi ? sec.bodyHi : sec.bodyEn;
+                  const paragraphs = bodyText.split('\n\n');
+                  return (
+                    <div key={i} className="space-y-2">
+                      <h3 className="text-base sm:text-lg font-extrabold text-slate-900">
+                        {isHi ? sec.headingHi : sec.headingEn}
+                      </h3>
+                      <div className="space-y-2">
+                        {paragraphs.map((para, pIdx) => (
+                          <p
+                            key={pIdx}
+                            className="text-sm sm:text-base text-slate-600 leading-relaxed"
+                          >
+                            {para}
+                          </p>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
 
               {/* Conclusion & Practice CTA */}

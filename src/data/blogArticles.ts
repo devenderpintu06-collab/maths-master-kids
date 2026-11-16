@@ -228,4 +228,69 @@ export const BLOG_ARTICLES: BlogArticle[] = [
     conclusionHi:
       'आज से ही रोज़ 10 सवालों का Daily Practice क्विज़ बच्चे की दिनचर्या का हिस्सा बनाएँ—आज के शांत 10 मिनट आने वाले वर्षों की तेज़ सोच की नींव रखेंगे।',
   },
+  {
+    id: 'history-of-maths-stone-age-to-space-age',
+    categoryEn: 'Maths Story',
+    categoryHi: 'गणित की कहानी',
+    readTimeEn: '4 min read',
+    readTimeHi: '4 मिनट पढ़ें',
+    accentHex: '#D97706',
+    badgeBgClass: 'bg-amber-50 text-amber-800 border-amber-200',
+    titleEn: 'The Fascinating History of Maths: From Stone Age to Space Age',
+    titleHi: 'गणित (Maths) की रोचक कहानी: जन्म से लेकर आज तक का सफर',
+    summaryEn:
+      'Travel from tally marks on stones in the Stone Age to India’s invention of Zero (0), space rockets, computers, and modern science.',
+    summaryHi:
+      'पाषाण युग की गिनती और मिस्र के पिरामिड से लेकर भारत के शून्य (0), व्यापार, अंतरिक्ष विज्ञान और आज के कंप्यूटर युग तक की पूरी कहानी।',
+    introEn:
+      'Have you ever wondered what our lives would look like if the world had no numbers (1, 2, 3...)? The mathematics we read in school textbooks today has a history spanning thousands of years. It was not created by a single person’s mind, but grew as a miracle out of the everyday needs of human civilization. Let us explore the complete story of maths from its birth to the modern day.',
+    introHi:
+      'क्या आपने कभी सोचा है कि अगर दुनिया में नंबर (1, 2, 3...) न होते तो हमारी ज़िंदगी कैसी होती? आज हम जिस गणित (Mathematics) को स्कूल की किताबों में पढ़ते हैं, उसका इतिहास हजारों साल पुराना है। यह किसी एक इंसान के दिमाग की उपज नहीं, बल्कि पूरी मानव सभ्यता की ज़रूरतों से पैदा हुआ एक चमत्कार है। आइए जानते हैं गणित के जन्म से लेकर आज तक की पूरी कहानी।',
+    sections: [
+      {
+        headingEn: '1. When and How Was Maths Born?',
+        headingHi: '1. गणित का जन्म कब और कैसे हुआ?',
+        bodyEn:
+          'Mathematics began when early humans lived in caves, before paper or written language even existed. Humans first needed counting when they started farming and raising animals. To keep track of livestock and fruits, they used fingers, small pebbles, and tally marks carved onto bones.\n\nAround 5,000 years ago, mathematics took a structured form in the civilizations of Mesopotamia (modern-day Iraq) and ancient Egypt. The Egyptians invented geometry to build towering pyramids and re-measure farmland boundaries after Nile River floods.',
+        bodyHi:
+          'गणित की शुरुआत तब हुई जब आदिमानव (Early Humans) गुफाओं में रहते थे। उस समय न तो कागज़ था और न ही कोई भाषा। इंसान को सबसे पहले गिनती की ज़रूरत तब पड़ी जब उसने खेती और पशुपालन शुरू किया। वह अपने पालतू जानवरों और फलों का हिसाब रखने के लिए उंगलियों, छोटे पत्थरों, और हड्डियों पर लकीरें (Tally Marks) खींचता था।\n\nलगभग 5,000 साल पहले मेसोपोटामिया (आज का इराक) और प्राचीन मिस्र (Egypt) की सभ्यताओं में गणित ने व्यवस्थित रूप लिया। मिस्र के लोगों ने विशाल पिरामिड बनाने और नील नदी की बाढ़ के बाद खेतों की ज़मीन नापने के लिए ज्यामिति (Geometry) का आविष्कार किया।',
+      },
+      {
+        headingEn: "2. India's Greatest Contribution: Zero (0) and the Decimal System",
+        headingHi: '2. भारत का सबसे बड़ा योगदान: शून्य (0) और दशमलव',
+        bodyEn:
+          'The biggest turning point in the history of mathematics happened in ancient India. The digits 1 to 9 and the decimal system used across the entire world today are gifts from India.\n\nGreat Indian mathematicians Aryabhata and Brahmagupta gave the world the concept of Zero (0). The invention of zero sparked a revolution in mathematics, because without it, writing large numbers and performing complex calculations was impossible. Later, through Arab scholars and traders, this knowledge spread to Europe and the rest of the world.',
+        bodyHi:
+          "गणित के इतिहास में सबसे बड़ा मोड़ प्राचीन भारत में आया। आज पूरी दुनिया जिस 1 से 9 तक के अंकों और दशमलव प्रणाली (Decimal System) का इस्तेमाल करती है, वह भारत की ही देन है।\n\nमहान भारतीय गणितज्ञ आर्यभट्ट और ब्रह्मगुप्त ने दुनिया को 'शून्य' (Zero - 0) की अवधारणा दी। शून्य के आविष्कार ने गणित की दुनिया में क्रांति ला दी, क्योंकि इसके बिना बड़ी संख्याएं लिखना और जटिल गणनाएं करना असंभव था। बाद में अरब व्यापारियों के ज़रिए यह ज्ञान यूरोप और पूरी दुनिया में फैला।",
+      },
+      {
+        headingEn: '3. How the Use of Maths Grew in Daily Human Life',
+        headingHi: '3. इंसानी ज़िंदगी में गणित का उपयोग कैसे बढ़ा?',
+        bodyEn:
+          'As humanity progressed, mathematics became a natural part of everyday life:\n\nTrade and Money: Once the barter system ended and coins and currency notes arrived, maths became essential for keeping track of transactions, profit and loss, and interest.\n\nTime and Calendars: To measure days, months, years, and clock hours, people used maths to track the motion of the Sun and Moon.\n\nHomes and City Construction: Building strong houses, bridges, and roads required exact calculations of length, width, and weight.',
+        bodyHi:
+          'जैसे-जैसे इंसान ने तरक्की की, गणित हमारी रोज़मर्रा की ज़िंदगी का हिस्सा बनता गया:\n\nव्यापार और पैसा: जब वस्तुओं के बदले वस्तुएं देने (Barter System) का दौर खत्म हुआ और सिक्के व नोट आए, तो लेन-देन, लाभ-हानि और ब्याज का हिसाब रखने के लिए गणित ज़रूरी हो गया।\n\nसमय और कैलेंडर: दिन, महीने, साल और घड़ी का समय तय करने के लिए सूरज और चांद की चाल को गणित से ही नापा गया।\n\nघर और शहर निर्माण: मज़बूत घर, पुल और सड़कें बनाने के लिए लंबाई, चौड़ाई और वज़न का सटीक हिसाब ज़रूरी था।',
+      },
+      {
+        headingEn: '4. The Role of Maths in Science',
+        headingHi: '4. विज्ञान (Science) में गणित की भूमिका',
+        bodyEn:
+          'The great scientist Galileo once said, "Mathematics is the language in which God has written the universe." Science and mathematics are two sides of the same coin.\n\nSpace Science: The speed and exact angle required to launch a rocket to the Moon or Mars are all calculated using mathematical formulas.\n\nComputers and Mobiles: The smartphone or laptop you are reading this article on right now runs on binary mathematical code (0 and 1). Artificial Intelligence (AI) and the Internet are also built on mathematics.\n\nMedicine: From calculating safe medicine dosages to operating X-ray and MRI machines, maths plays a vital role in healthcare.',
+        bodyHi:
+          'महान वैज्ञानिक गैलीलियो ने कहा था, "गणित वह भाषा है जिसमें ईश्वर ने इस ब्रह्मांड को लिखा है।" विज्ञान और गणित एक ही सिक्के के दो पहलू हैं।\n\nअंतरिक्ष विज्ञान (Space): रॉकेट को चांद या मंगल ग्रह पर किस रफ़्तार और किस कोण (Angle) से भेजना है, यह सब गणित के फॉर्मूलों से तय होता है।\n\nकंप्यूटर और मोबाइल: आज आप जिस मोबाइल या लैपटॉप पर यह लेख पढ़ रहे हैं, वह भी गणित के बाइनरी कोड (0 और 1) पर काम करता है। आर्टिफिशियल इंटेलिजेंस (AI) और इंटरनेट की नींव भी गणित ही है।\n\nचिकित्सा (Medical): दवाइयों की सही मात्रा तय करने से लेकर एक्स-रे और MRI मशीनों तक में गणित का उपयोग होता है।',
+      },
+      {
+        headingEn: '5. Where Would We Be Without Maths?',
+        headingHi: '5. गणित के बिना हम क्या होते?',
+        bodyEn:
+          'If mathematics were removed from the world today, modern civilization would come to a standstill in an instant. We would not be able to tell time on a clock, banks and money would have no records, mobile networks would fail, buildings could not stand safely, and weather forecasts would vanish. Without maths, humanity might still be living in the Stone Age.',
+        bodyHi:
+          'अगर आज दुनिया से गणित को हटा दिया जाए, तो पूरी आधुनिक सभ्यता एक पल में रुक जाएगी। न तो घड़ी में समय पता चलेगा, न बैंक और पैसे का कोई हिसाब रहेगा, न मोबाइल नेटवर्क काम करेंगे, न कोई इमारत खड़ी हो पाएगी और न ही मौसम की भविष्यवाणी हो सकेगी। गणित के बिना इंसान आज भी शायद पाषाण युग (Stone Age) में ही जी रहा होता।',
+      },
+    ],
+    conclusionEn:
+      'Conclusion: This journey of maths, which began with counting pebbles, has reached supercomputers and space travel today. Maths is not merely a subject for solving textbook sums—it is our most powerful tool for thinking clearly and understanding the world.',
+    conclusionHi:
+      'निष्कर्ष: पत्थरों की गिनती से शुरू हुआ गणित का यह सफर आज सुपरकंप्यूटर और अंतरिक्ष यात्रा तक पहुँच चुका है। गणित केवल किताबों के सवाल हल करने का विषय नहीं, बल्कि हमारे सोचने और दुनिया को समझने का सबसे शक्तिशाली ज़रिया है।',
+  },
 ];
