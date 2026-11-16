@@ -167,66 +167,82 @@ export const BLOG_ARTICLES: BlogArticle[] = [
     id: 'ten-minutes-daily-mental-math',
     categoryEn: 'Brain Science',
     categoryHi: 'ब्रेन डेवलपमेंट',
-    readTimeEn: '3 min read',
-    readTimeHi: '3 मिनट पढ़ें',
+    readTimeEn: '4 min read',
+    readTimeHi: '4 मिनट पढ़ें',
     accentHex: '#7C3AED',
     badgeBgClass: 'bg-purple-50 text-purple-700 border-purple-200',
-    titleEn: 'Why 10 Minutes of Daily Mental Math Practice Boosts Brain Power in Children',
+    titleEn: "How Just 10 Minutes of Daily Mental Math Practice Sharpens a Child's Brain",
     titleHi: 'रोज़ सिर्फ 10 मिनट की Mental Math प्रैक्टिस बच्चों का दिमाग कैसे तेज़ करती है?',
     summaryEn:
-      'Learn how short daily mental arithmetic strengthens working memory, focus, logical thinking, and long-term school confidence in Classes 1–5.',
+      'Discover how just 10 minutes of daily mental calculation acts like a brain gym—boosting working memory, focus, speed, confidence, and everyday decision-making.',
     summaryHi:
-      'जानें कि रोज़ सिर्फ 10 मिनट का मानसिक गणित अभ्यास बच्चों की याददाश्त, एकाग्रता और सोचने की क्षमता को कैसे मज़बूत बनाता है।',
+      'जानें कि बिना कैलकुलेटर के रोज़ सिर्फ 10 मिनट की Mental Math प्रैक्टिस कैसे बच्चों के दिमाग की कसरत, याददाश्त, एकाग्रता और आत्मविश्वास को तेज़ बनाती है।',
     introEn:
-      'Just like physical exercise keeps the body healthy, short bursts of mental maths act as a powerful workout for a growing brain. Between ages 6 and 11 (Classes 1 to 5), children’s brains form rapid connections for logic, memory, and attention. Spending just 10 minutes each day solving mental math questions delivers benefits far beyond school marks.',
+      'In today’s world, mobile phones and calculators are used for even the smallest calculations. Yet when it comes to a child’s brain development, Mental Math—the art of solving calculations in the mind without paper, pen, or a calculator—is nothing short of a blessing.\n\nThe best part is that children do not need to study for hours to benefit. Just 10 minutes of regular daily practice can sharpen their brains like a supercomputer. Let us see how:',
     introHi:
-      'जिस तरह रोज़ हल्का व्यायाम शरीर को स्वस्थ रखता है, ठीक उसी तरह रोज़ सिर्फ 10 मिनट का Mental Math अभ्यास बच्चों के बढ़ते दिमाग के लिए बेहतरीन कसरत है। 6 से 11 वर्ष की उम्र (Class 1 से 5) में दिमाग में तर्क और याददाश्त से जुड़े नए कनेक्शन तेज़ी से बनते हैं।',
+      'आज के समय में हर छोटी-बड़ी गणना (Calculation) के लिए मोबाइल या कैलकुलेटर का इस्तेमाल होने लगा है। लेकिन जब बात बच्चों के दिमागी विकास की आती है, तो मेंटल मैथ (Mental Math) यानी बिना कॉपी-पेन या कैलकुलेटर के मन में ही हिसाब लगाने की कला किसी वरदान से कम नहीं है।\n\nअच्छी बात यह है कि इसके लिए बच्चों को घंटों पढ़ाई करने की ज़रूरत नहीं है। रोज़ सिर्फ 10 मिनट की नियमित प्रैक्टिस उनके दिमाग को किसी सुपरकंप्यूटर की तरह तेज़ बना सकती है। आइए जानते हैं कैसे:',
     sections: [
       {
-        headingEn: '1. Strengthens Working Memory Naturally',
-        headingHi: '1. कार्यशील याददाश्त (Working Memory) को मज़बूत करता है',
+        headingEn: '1. Works Like a Brain Gym (दिमाग की बेहतरीन कसरत)',
+        headingHi: '1. दिमाग की बेहतरीन कसरत (Brain Gym)',
         bodyEn:
-          'When a child solves 24 + 18 in their head, they must hold the tens, add the ones, carry over, and combine the result—all mentally. This active juggling trains working memory, which helps children follow multi-step instructions in science, reading, and everyday problem solving.',
+          'Just as physical exercise keeps our bodies fit and strong, Mental Math keeps the brain active and sharp. When a child solves 25 + 18 or 6 × 7 in their head, both the left (logical) and right (creative) sides of the brain work together, creating stronger neural connections.',
         bodyHi:
-          'जब बच्चा मन में 24 + 18 हल करता है, तो उसे कुछ सेकंड के लिए संख्याओं को दिमाग में रोककर जोड़ना और हासिल (Carry) संभालना पड़ता है। इससे Working Memory मज़बूत होती है, जिसका सीधा फायदा विज्ञान, भाषा और अन्य विषयों में भी मिलता है।',
+          'जिस तरह शारीरिक व्यायाम हमारे शरीर को फिट और मज़बूत रखता है, ठीक उसी तरह Mental Math दिमाग को सक्रिय और तेज़ बनाए रखता है। जब बच्चा मन में 25 + 18 या 6 × 7 जैसे सवाल हल करता है, तो दिमाग के तार्किक और रचनात्मक दोनों हिस्से एक साथ काम करते हैं, जिससे दिमाग के न्यूरल कनेक्शन और मज़बूत होते हैं।',
       },
       {
-        headingEn: '2. Improves Focus & Reduces Silly Mistakes',
-        headingHi: '2. एकाग्रता बढ़ती है और लापरवाही की गलतियाँ कम होती हैं',
+        headingEn: '2. Strengthens Working Memory',
+        headingHi: '2. याददाश्त (Working Memory) को मज़बूत बनाता है',
         bodyEn:
-          'A focused 10-question daily quiz lasts only a few minutes, which matches a primary student’s natural attention span. Regular practice trains the mind to spot whether an answer looks reasonable—catching careless errors before they happen on school tests.',
+          'While solving a question mentally, a child must hold the numbers in their mind for a few seconds and move step by step to reach the answer. This directly exercises Working Memory, which improves retention not only in maths but also in science, reading, and general knowledge.',
         bodyHi:
-          '10 सवालों का छोटा Daily Quiz बच्चे की स्वाभाविक ध्यान अवधि के बिल्कुल अनुकूल होता है। नियमित अभ्यास से बच्चा तुरंत अनुमान लगाना सीख जाता है कि कोई जवाब सही लग रहा है या गलत, जिससे परीक्षा में होने वाली छोटी गलतियाँ घटती हैं।',
+          'मन में सवाल हल करते समय बच्चे को कुछ सेकंड के लिए संख्याओं को दिमाग में याद रखना पड़ता है और चरण-दर-चरण आगे बढ़कर सही जवाब निकालना होता है। इससे Working Memory मज़बूत होती है, जिसका सीधा लाभ गणित के साथ-साथ विज्ञान, भाषा और अन्य विषयों को याद रखने में भी मिलता है।',
       },
       {
-        headingEn: '3. Builds Logical Thinking & Number Sense',
-        headingHi: '3. तार्किक सोच और Number Sense विकसित होती है',
+        headingEn: '3. Boosts Focus and Concentration',
+        headingHi: '3. एकाग्रता (Focus & Concentration) में सुधार',
         bodyEn:
-          'Mental maths teaches flexibility rather than rigid steps. Children begin spotting patterns—like adding 9 by adding 10 and subtracting 1, or verifying division through multiplication. That flexible reasoning becomes a lifelong asset in higher classes.',
+          'A single moment of distraction during mental calculation makes you lose track of the numbers. Therefore, spending 10 focused minutes solving mental math questions every day naturally trains children to stay attentive, calm, and less prone to careless mistakes.',
         bodyHi:
-          'Mental Math बच्चों को एक ही तरीके से बँधने के बजाय लचीली सोच सिखाता है। बच्चे पैटर्न पहचानने लगते हैं—जैसे 9 जोड़ने के लिए 10 जोड़कर 1 कम करना। यही तार्किक समझ आगे की कक्षाओं में बड़े सवाल हल करने में मदद करती है।',
+          'मानसिक गणना करते समय अगर ध्यान ज़रा भी भटके, तो संख्याएँ दिमाग से निकल जाती हैं। इसलिए रोज़ सिर्फ 10 मिनट ध्यान लगाकर Mental Math हल करने से बच्चों की एकाग्रता (Focus) अपने आप बढ़ती है और पढ़ाई में होने वाली लापरवाही की गलतियाँ कम होती हैं।',
       },
       {
-        headingEn: '4. Consistency Beats Long Weekend Study Sessions',
-        headingHi: '4. लंबी पढ़ाई से ज़्यादा असरदार है रोज़ की निरंतरता',
+        headingEn: '4. Builds Self-Confidence',
+        headingHi: '4. आत्मविश्वास (Self-Confidence) बढ़ता है',
         bodyEn:
-          'Educational research consistently shows that 10 minutes a day across seven days creates stronger long-term retention than 70 minutes crammed on Sunday evening. Daily streaks reward gentle consistency without pressure, turning maths into a positive morning or after-school ritual children actually look forward to completing.',
+          'When children solve questions faster than their classmates or give quick answers without counting on their fingers, their self-confidence grows naturally. The fear of maths disappears and is replaced by curiosity and excitement to learn more.',
         bodyHi:
-          'शोध बताते हैं कि सप्ताह के अंत में एक साथ 70 मिनट पढ़ने की तुलना में रोज़ 10 मिनट अभ्यास करने से दिमाग जानकारी को लंबे समय तक याद रखता है। Maths Master Kids का Daily Streak बच्चों में इसी नियमित आदत को बढ़ावा देता है।',
+          'जब बच्चे कक्षा में बाकी साथियों से पहले सवाल हल कर लेते हैं या बिना उंगलियों पर गिने तुरंत सही जवाब देते हैं, तो उनके अंदर गजब का आत्मविश्वास पैदा होता है। गणित का डर खत्म हो जाता है और नया सीखने की उत्सुकता बढ़ती है।',
       },
       {
-        headingEn: '5. Creates Self-Motivated Confidence',
-        headingHi: '5. आत्मविश्वास और स्वतंत्र रूप से सीखने की आदत',
+        headingEn: '5. Saves Valuable Time in Exams',
+        headingHi: '5. परीक्षा (Exams) में समय की बचत',
         bodyEn:
-          'Each star earned for a correct answer gives immediate positive encouragement. Over a few weeks, children notice their own accuracy and quiz scores rising in My Progress and step into Class 3, 4, and 5 topics feeling capable, independent, and genuinely proud of their effort.',
+          'Students who practice Mental Math regularly do not waste time writing out tiny steps for simple additions, subtractions, or multiplications on rough paper. Because they calculate basic steps in their head, they get extra time during school tests to focus calmly on tougher questions.',
         bodyHi:
-          'हर सही जवाब पर मिलने वाला Star और My Progress में बढ़ता स्कोर बच्चे को अपनी मेहनत का तुरंत फल दिखाता है। कुछ ही हफ़्तों में बच्चा खुद को सक्षम महसूस करने लगता है और बिना कहे अभ्यास के लिए उत्साहित रहता है।',
+          'जो बच्चे रोज़ Mental Math का अभ्यास करते हैं, उन्हें परीक्षा में छोटे-छोटे जोड़, घटाव या गुणा करने के लिए बार-बार रफ़ पेज भरने की ज़रूरत नहीं पड़ती। बुनियादी गणनाएँ मन में जल्दी हल होने से कठिन सवालों के लिए पर्याप्त समय बच जाता है।',
+      },
+      {
+        headingEn: '6. Smarter Decision-Making in Everyday Life',
+        headingHi: '6. रोज़मर्रा के जीवन में स्मार्ट फैसले',
+        bodyEn:
+          'Whether checking change after buying snacks at a shop, counting points in a game, or estimating time left to reach school, Mental Math teaches children to think quickly and logically in real life—making them smart, aware, and independent.',
+        bodyHi:
+          'दुकान से सामान खरीदने के बाद बचे हुए पैसे गिनना हो, खेल में स्कोर जोड़ना हो या स्कूल पहुँचने के समय का अंदाज़ा लगाना हो—Mental Math बच्चों को असल ज़िंदगी में तेज़ी से और समझदारी से निर्णय लेने की क्षमता देता है।',
+      },
+      {
+        headingEn: 'How to Start 10-Minute Practice at Home?',
+        headingHi: 'घर पर 10 मिनट की प्रैक्टिस कैसे शुरू करें?',
+        bodyEn:
+          'Turn It Into a Playful Game: Instead of making it feel like strict homework, ask fun oral puzzles during dinner, evening walks, or travel time—such as "If you have 15 chocolates and give 6 to a friend, how many are left?"\n\nUse Guided Digital Quizzes: Encourage your child to play the 10-Question Daily Practice or operation quizzes on Maths Master Kids for just 10 minutes a day. Visual hints, instant stars, and voice feedback keep practice joyful and stress-free.',
+        bodyHi:
+          'खेल के रूप में करें: इसे भारी होमवर्क बनाने के बजाय खाने की मेज़ पर, शाम की सैर या सफर के दौरान मज़ेदार पहेलियों की तरह पूछें—जैसे "अगर आपके पास 15 चॉकलेट हैं और 6 दोस्त को दे दीं, तो कितनी बचीं?"\n\nडिजिटल क्विज़ का सहारा लें: बच्चे को रोज़ सिर्फ 10 मिनट Maths Master Kids पर Daily Practice या 10-Question Quiz खेलने के लिए प्रेरित करें। तुरंत मिलने वाले Stars, Picture Hints और मज़ेदार इंटरफ़ेस से प्रैक्टिस बिना किसी तनाव के खेल जैसी बन जाती है।',
       },
     ],
     conclusionEn:
-      'Make a 10-question Daily Practice quiz part of your child’s daily routine—whether right after breakfast or before evening playtime. Just 10 calm, focused minutes today builds sharper thinking, faster recall, and joyful learning for years to come.',
+      'Conclusion: Just 10 minutes of daily Mental Math practice is a small habit that creates a big difference. It not only helps children score higher in Mathematics, but also builds a sharp, focused, and confident mind for life.',
     conclusionHi:
-      'आज से ही रोज़ 10 सवालों का Daily Practice क्विज़ बच्चे की दिनचर्या का हिस्सा बनाएँ—आज के शांत 10 मिनट आने वाले वर्षों की तेज़ सोच की नींव रखेंगे।',
+      'निष्कर्ष: रोज़ सिर्फ 10 मिनट की Mental Math प्रैक्टिस एक छोटी-सी आदत है जो बहुत बड़ा बदलाव लाती है। यह न केवल बच्चों को गणित में अच्छे अंक दिलाती है, बल्कि जीवन भर के लिए उनके दिमाग को तेज़, एकाग्र और आत्मविश्वासी बनाती है।',
   },
   {
     id: 'history-of-maths-stone-age-to-space-age',

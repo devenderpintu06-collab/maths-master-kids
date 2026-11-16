@@ -217,9 +217,15 @@ export function BlogSection({
                 >
                   {isHi ? activeArticle.titleHi : activeArticle.titleEn}
                 </h2>
-                <p className="text-sm sm:text-base text-slate-700 font-medium bg-slate-50 border border-slate-200 rounded-2xl p-4">
-                  {isHi ? activeArticle.introHi : activeArticle.introEn}
-                </p>
+                <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
+                  {(isHi ? activeArticle.introHi : activeArticle.introEn)
+                    .split('\n\n')
+                    .map((para, idx) => (
+                      <p key={idx} className="text-sm sm:text-base text-slate-700 font-medium leading-relaxed">
+                        {para}
+                      </p>
+                    ))}
+                </div>
               </div>
 
               <div className="space-y-5">
