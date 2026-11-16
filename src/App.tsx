@@ -30,6 +30,8 @@ import {
 } from './data/mathsMaster';
 import { QuizMode } from './components/QuizMode';
 import { VisualLab } from './components/VisualLab';
+import { ParentsGuideSection } from './components/ParentsGuideSection';
+import { LegalFooterModals, type FooterDocType } from './components/LegalFooterModals';
 import { soundFx } from './utils/sound';
 
 type AppTab = 'home' | 'progress' | 'lab';
@@ -110,6 +112,12 @@ export default function App() {
   const [soundEnabled, setSoundEnabled] = useState<boolean>(loadSoundPreference);
   const [lang, setLang] = useState<AppLanguage>(loadLangPreference);
   const [confirmReset, setConfirmReset] = useState(false);
+  const [activeFooterDoc, setActiveFooterDoc] = useState<FooterDocType | null>(null);
+
+  const openFooterDoc = (doc: FooterDocType) => {
+    soundFx.playClick();
+    setActiveFooterDoc(doc);
+  };
 
   const t = UI_TEXT[lang];
   const selectedClass = progress.selectedClass;
@@ -929,38 +937,129 @@ export default function App() {
                 </div>
               </div>
             </section>
+
+            {/* Parent's Guide & Mental Math Tips for Classes 1 to 5 */}
+            <ParentsGuideSection lang={lang} />
           </div>
         )}
       </main>
 
       <footer className="border-t border-slate-200 bg-white mt-12">
-        <div className="max-w-5xl mx-auto px-4 sm:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <span>Maths Master Kids · Classes 1 to 5 · Offline-Ready · No Ads · No Data Collection</span>
-          <div className="flex items-center gap-6">
-            <button
-              type="button"
-              onClick={() => navigateToTab('home')}
-              className="hover:text-slate-900 cursor-pointer"
-            >
-              Home
-            </button>
-            <button
-              type="button"
-              onClick={() => navigateToTab('progress')}
-              className="hover:text-slate-900 cursor-pointer"
-            >
-              My Progress
-            </button>
-            <button
-              type="button"
-              onClick={() => navigateToTab('lab')}
-              className="hover:text-slate-900 cursor-pointer"
-            >
-              Visual Lab
-            </button>
+        <div className="max-w-5xl mx-auto px-4 sm:px-8 py-8 space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+            <div className="md:col-span-5 space-y-2">
+              <p className="font-display text-lg font-extrabold text-slate-900">
+                Maths Master Kids
+              </p>
+              <p className="text-xs text-slate-600 leading-relaxed max-w-sm">
+                Fun, interactive mental maths practice for Class 1 to Class 5 students. Built for safe offline-friendly learning with zero login or personal data collection.
+              </p>
+              <p className="text-xs text-slate-500">
+                Support:{' '}
+                <a
+                  href="mailto:support@mathsmasterkids.in"
+                  className="font-semibold text-blue-600 hover:underline"
+                >
+                  support@mathsmasterkids.in
+                </a>
+              </p>
+            </div>
+
+            <div className="md:col-span-3 space-y-2.5">
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                Explore
+              </p>
+              <div className="flex flex-col items-start gap-2 text-xs font-medium text-slate-600">
+                <button
+                  type="button"
+                  onClick={() => navigateToTab('home')}
+                  className="hover:text-slate-900 cursor-pointer"
+                >
+                  Home
+                </button>
+                <button
+                  type="button"
+                  onClick={navigateToDailySection}
+                  className="hover:text-slate-900 cursor-pointer"
+                >
+                  Daily Practice
+                </button>
+                <button
+                  type="button"
+                  onClick={() => navigateToTab('progress')}
+                  className="hover:text-slate-900 cursor-pointer"
+                >
+                  My Progress
+                </button>
+                <button
+                  type="button"
+                  onClick={() => navigateToTab('lab')}
+                  className="hover:text-slate-900 cursor-pointer"
+                >
+                  Visual Lab
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    soundFx.playClick();
+                    setActiveQuiz(null);
+                    setActiveTab('home');
+                    setTimeout(() => {
+                      document.getElementById('parents-guide')?.scrollIntoView({ behavior: 'smooth' });
+                    }, 40);
+                  }}
+                  className="hover:text-slate-900 cursor-pointer"
+                >
+                  Parent&apos;s Guide &amp; Tips
+                </button>
+              </div>
+            </div>
+
+            <div className="md:col-span-4 space-y-2.5">
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                Information &amp; Policies
+              </p>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs font-medium text-slate-600">
+                <button
+                  type="button"
+                  onClick={() => openFooterDoc('about')}
+                  className="text-left hover:text-blue-600 cursor-pointer"
+                >
+                  About Us
+                </button>
+                <button
+                  type="button"
+                  onClick={() => openFooterDoc('privacy')}
+                  className="text-left hover:text-blue-600 cursor-pointer"
+                >
+                  Privacy Policy
+                </button>
+                <button
+                  type="button"
+                  onClick={() => openFooterDoc('terms')}
+                  className="text-left hover:text-blue-600 cursor-pointer"
+                >
+                  Terms &amp; Conditions
+                </button>
+                <button
+                  type="button"
+                  onClick={() => openFooterDoc('contact')}
+                  className="text-left hover:text-blue-600 cursor-pointer"
+                >
+                  Contact Us
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-5 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500">
+            <span>© {new Date().getFullYear()} Maths Master Kids · Classes 1 to 5</span>
+            <span>COPPA-Aware · Local Device Progress · Educational Use</span>
           </div>
         </div>
       </footer>
+
+      <LegalFooterModals activeDoc={activeFooterDoc} onSelectDoc={setActiveFooterDoc} />
     </div>
   );
 }
