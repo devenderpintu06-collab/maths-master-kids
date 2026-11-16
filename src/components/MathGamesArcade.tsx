@@ -7,6 +7,8 @@ import { BalloonPopGame } from './games/BalloonPopGame';
 import { DetectiveGame } from './games/DetectiveGame';
 import { CompareGame } from './games/CompareGame';
 import { RocketLaunchGame } from './games/RocketLaunchGame';
+import { TableHeroGame } from './games/TableHeroGame';
+import { ClockMasterGame } from './games/ClockMasterGame';
 import { soundFx } from '../utils/sound';
 
 function MiniGameIllustration({ gameId }: { gameId: MiniGameId }) {
@@ -36,6 +38,30 @@ function MiniGameIllustration({ gameId }: { gameId: MiniGameId }) {
         <path d="M17 15 L8 24 L17 33" stroke="white" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
         <path d="M31 15 L40 24 L31 33" stroke="white" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
         <circle cx="24" cy="24" r="3" fill="white" />
+      </svg>
+    );
+  }
+  if (gameId === 'tableHero') {
+    return (
+      <svg viewBox="0 0 48 48" fill="none" className="w-11 h-11" aria-hidden="true">
+        <rect x="8" y="10" width="32" height="28" rx="6" fill="white" fillOpacity="0.22" stroke="white" strokeWidth="2.5" />
+        <path d="M17 19 L27 29 M27 19 L17 29" stroke="white" strokeWidth="4" strokeLinecap="round" />
+        <path d="M31 20 H36 M31 27 H36" stroke="white" strokeWidth="3" strokeLinecap="round" />
+        <circle cx="37" cy="11" r="4" fill="#FDE047" />
+      </svg>
+    );
+  }
+  if (gameId === 'clockMaster') {
+    return (
+      <svg viewBox="0 0 48 48" fill="none" className="w-11 h-11" aria-hidden="true">
+        <circle cx="24" cy="24" r="16" fill="white" fillOpacity="0.22" stroke="white" strokeWidth="3.2" />
+        <circle cx="24" cy="12" r="1.4" fill="white" />
+        <circle cx="36" cy="24" r="1.4" fill="white" />
+        <circle cx="24" cy="36" r="1.4" fill="white" />
+        <circle cx="12" cy="24" r="1.4" fill="white" />
+        <path d="M24 24 L24 14" stroke="white" strokeWidth="3.2" strokeLinecap="round" />
+        <path d="M24 24 L32 28" stroke="#FDE047" strokeWidth="3.5" strokeLinecap="round" />
+        <circle cx="24" cy="24" r="2.5" fill="white" />
       </svg>
     );
   }
@@ -87,8 +113,8 @@ export function MathGamesArcadeSection({
           </h2>
           <p className="text-sm text-slate-600 max-w-2xl">
             {isHi
-              ? `कक्षा ${selectedClass} के अनुसार कठिनाई के साथ 4 इंटरैक्टिव मिनी-गेम्स खेलें और हर सही उत्तर पर सितारे जीतें!`
-              : `Play 4 interactive mini-games automatically tuned for Class ${selectedClass} and earn stars for your score!`}
+              ? `कक्षा ${selectedClass} के अनुसार कठिनाई के साथ 6 इंटरैक्टिव मिनी-गेम्स खेलें और हर सही उत्तर पर सितारे जीतें!`
+              : `Play 6 interactive mini-games automatically tuned for Class ${selectedClass} and earn stars for your score!`}
           </p>
         </div>
 
@@ -126,8 +152,8 @@ export function MathGamesArcadeSection({
         </div>
       )}
 
-      {/* 4 Colorful 3D Bouncy Mini-Game Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      {/* 6 Colorful 3D Bouncy Mini-Game Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {MINI_GAMES.map((game) => (
           <button
             key={game.id}
@@ -313,6 +339,30 @@ export function ActiveMiniGameView({
     return (
       <CompareGame
         key={`compare-${classNumber}-${runKey}`}
+        classNumber={classNumber}
+        lang={lang}
+        onRecordAnswer={onRecordAnswer}
+        onFinishGame={setSummary}
+        onExit={onExit}
+      />
+    );
+  }
+  if (gameId === 'tableHero') {
+    return (
+      <TableHeroGame
+        key={`tableHero-${classNumber}-${runKey}`}
+        classNumber={classNumber}
+        lang={lang}
+        onRecordAnswer={onRecordAnswer}
+        onFinishGame={setSummary}
+        onExit={onExit}
+      />
+    );
+  }
+  if (gameId === 'clockMaster') {
+    return (
+      <ClockMasterGame
+        key={`clockMaster-${classNumber}-${runKey}`}
         classNumber={classNumber}
         lang={lang}
         onRecordAnswer={onRecordAnswer}
