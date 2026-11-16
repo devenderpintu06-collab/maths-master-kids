@@ -31,6 +31,7 @@ import {
 import { QuizMode } from './components/QuizMode';
 import { VisualLab } from './components/VisualLab';
 import { ParentsGuideSection } from './components/ParentsGuideSection';
+import { BlogSection } from './components/BlogSection';
 import { LegalFooterModals, type FooterDocType } from './components/LegalFooterModals';
 import { soundFx } from './utils/sound';
 
@@ -113,6 +114,7 @@ export default function App() {
   const [lang, setLang] = useState<AppLanguage>(loadLangPreference);
   const [confirmReset, setConfirmReset] = useState(false);
   const [activeFooterDoc, setActiveFooterDoc] = useState<FooterDocType | null>(null);
+  const [activeBlogArticleId, setActiveBlogArticleId] = useState<string | null>(null);
 
   const openFooterDoc = (doc: FooterDocType) => {
     soundFx.playClick();
@@ -209,6 +211,15 @@ export default function App() {
     }, 40);
   };
 
+  const navigateToBlogSection = () => {
+    soundFx.playClick();
+    setActiveQuiz(null);
+    setActiveTab('home');
+    setTimeout(() => {
+      document.getElementById('blog-section')?.scrollIntoView({ behavior: 'smooth' });
+    }, 40);
+  };
+
   const handleQuizComplete = (
     summary: QuizSummary,
     perOpCounts: Record<MathOperation, { attempted: number; correct: number }>
@@ -292,7 +303,7 @@ export default function App() {
           </button>
 
           {/* Zone 2: Clean single-line nav links */}
-          <nav className="hidden md:flex items-center gap-7 text-sm font-medium text-slate-600">
+          <nav className="hidden md:flex items-center gap-4 lg:gap-6 text-sm font-medium text-slate-600">
             <button
               type="button"
               onClick={() => navigateToTab('home')}
@@ -332,6 +343,13 @@ export default function App() {
               }`}
             >
               Visual Lab
+            </button>
+            <button
+              type="button"
+              onClick={navigateToBlogSection}
+              className="py-1 border-b-2 border-transparent hover:text-slate-900 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+            >
+              Blog
             </button>
           </nav>
 
@@ -410,11 +428,11 @@ export default function App() {
 
         {/* Mobile Nav Row */}
         {!activeQuiz && (
-          <div className="md:hidden border-t border-slate-200/80 px-2 py-2 flex items-center justify-around text-xs font-semibold text-slate-600">
+          <div className="md:hidden border-t border-slate-200/80 px-1.5 py-2 flex items-center justify-around text-[11px] sm:text-xs font-semibold text-slate-600">
             <button
               type="button"
               onClick={() => navigateToTab('home')}
-              className={`px-2.5 py-1.5 rounded-md whitespace-nowrap cursor-pointer ${
+              className={`px-2 py-1.5 rounded-md whitespace-nowrap cursor-pointer ${
                 activeTab === 'home' ? 'text-blue-700 bg-blue-50' : ''
               }`}
             >
@@ -423,27 +441,34 @@ export default function App() {
             <button
               type="button"
               onClick={navigateToDailySection}
-              className="px-2.5 py-1.5 rounded-md whitespace-nowrap cursor-pointer"
+              className="px-2 py-1.5 rounded-md whitespace-nowrap cursor-pointer"
             >
               Daily Quiz
             </button>
             <button
               type="button"
               onClick={() => navigateToTab('progress')}
-              className={`px-2.5 py-1.5 rounded-md whitespace-nowrap cursor-pointer ${
+              className={`px-2 py-1.5 rounded-md whitespace-nowrap cursor-pointer ${
                 activeTab === 'progress' ? 'text-blue-700 bg-blue-50' : ''
               }`}
             >
-              My Progress
+              Progress
             </button>
             <button
               type="button"
               onClick={() => navigateToTab('lab')}
-              className={`px-2.5 py-1.5 rounded-md whitespace-nowrap cursor-pointer ${
+              className={`px-2 py-1.5 rounded-md whitespace-nowrap cursor-pointer ${
                 activeTab === 'lab' ? 'text-blue-700 bg-blue-50' : ''
               }`}
             >
               Visual Lab
+            </button>
+            <button
+              type="button"
+              onClick={navigateToBlogSection}
+              className="px-2 py-1.5 rounded-md whitespace-nowrap cursor-pointer"
+            >
+              Blog
             </button>
           </div>
         )}
@@ -940,6 +965,15 @@ export default function App() {
 
             {/* Parent's Guide & Mental Math Tips for Classes 1 to 5 */}
             <ParentsGuideSection lang={lang} />
+
+            {/* Blog & Maths Tips Section (above Footer) */}
+            <BlogSection
+              lang={lang}
+              activeArticleId={activeBlogArticleId}
+              onSelectArticle={setActiveBlogArticleId}
+              onChangeLang={setLang}
+              onStartDailyQuiz={startDailyPractice}
+            />
           </div>
         )}
       </main>
@@ -1011,6 +1045,13 @@ export default function App() {
                   className="hover:text-slate-900 cursor-pointer"
                 >
                   Parent&apos;s Guide &amp; Tips
+                </button>
+                <button
+                  type="button"
+                  onClick={navigateToBlogSection}
+                  className="hover:text-slate-900 cursor-pointer"
+                >
+                  Blog &amp; Maths Tips
                 </button>
               </div>
             </div>
