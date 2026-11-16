@@ -9,6 +9,8 @@ export interface OperationMeta {
   titleHi: string;
   symbol: string;
   bgHex: string;
+  gradientClass: string;
+  borderBottomColor: string;
   taglineEn: string;
   taglineHi: string;
 }
@@ -17,47 +19,61 @@ export const OPERATIONS: OperationMeta[] = [
   {
     id: 'ADDITION',
     titleEn: 'Addition',
-    titleHi: 'Jod (Addition)',
+    titleHi: 'जोड़',
     symbol: '+',
     bgHex: '#059669',
+    gradientClass: 'bg-gradient-to-br from-emerald-400 via-emerald-500 to-teal-600',
+    borderBottomColor: '#047857',
     taglineEn: 'Put numbers together',
-    taglineHi: 'Numbers ko milao',
+    taglineHi: 'संख्याओं को आपस में मिलाएँ',
   },
   {
     id: 'SUBTRACTION',
     titleEn: 'Subtraction',
-    titleHi: 'Ghatav (Subtraction)',
+    titleHi: 'घटाव',
     symbol: '−',
     bgHex: '#2563EB',
+    gradientClass: 'bg-gradient-to-br from-sky-400 via-blue-500 to-blue-700',
+    borderBottomColor: '#1D4ED8',
     taglineEn: 'Take away and find difference',
-    taglineHi: 'Numbers kam karo',
+    taglineHi: 'संख्याएँ कम करें और अंतर जानें',
   },
   {
     id: 'MULTIPLICATION',
     titleEn: 'Multiplication',
-    titleHi: 'Guna (Multiply)',
+    titleHi: 'गुणा',
     symbol: '×',
     bgHex: '#D97706',
+    gradientClass: 'bg-gradient-to-br from-amber-400 via-orange-500 to-orange-600',
+    borderBottomColor: '#C2410C',
     taglineEn: 'Equal groups and times tables',
-    taglineHi: 'Pahade aur groups',
+    taglineHi: 'पहाड़े और बराबर समूह',
   },
   {
     id: 'DIVISION',
     titleEn: 'Division',
-    titleHi: 'Bhag (Division)',
+    titleHi: 'भाग',
     symbol: '÷',
     bgHex: '#7C3AED',
+    gradientClass: 'bg-gradient-to-br from-violet-400 via-purple-500 to-indigo-700',
+    borderBottomColor: '#5B21B6',
     taglineEn: 'Share numbers equally',
-    taglineHi: 'Barabar baanto',
+    taglineHi: 'संख्याओं को बराबर बाँटें',
   },
 ];
 
-export const CLASS_LEVELS: { number: ClassNumber; label: string; agesEn: string; agesHi: string }[] = [
-  { number: 1, label: 'Class 1', agesEn: 'Ages 6–7', agesHi: '6–7 saal' },
-  { number: 2, label: 'Class 2', agesEn: 'Ages 7–8', agesHi: '7–8 saal' },
-  { number: 3, label: 'Class 3', agesEn: 'Ages 8–9', agesHi: '8–9 saal' },
-  { number: 4, label: 'Class 4', agesEn: 'Ages 9–10', agesHi: '9–10 saal' },
-  { number: 5, label: 'Class 5', agesEn: 'Ages 10–11', agesHi: '10–11 saal' },
+export const CLASS_LEVELS: {
+  number: ClassNumber;
+  label: string;
+  labelHi: string;
+  agesEn: string;
+  agesHi: string;
+}[] = [
+  { number: 1, label: 'Class 1', labelHi: 'कक्षा 1', agesEn: 'Ages 6–7', agesHi: '6–7 वर्ष' },
+  { number: 2, label: 'Class 2', labelHi: 'कक्षा 2', agesEn: 'Ages 7–8', agesHi: '7–8 वर्ष' },
+  { number: 3, label: 'Class 3', labelHi: 'कक्षा 3', agesEn: 'Ages 8–9', agesHi: '8–9 वर्ष' },
+  { number: 4, label: 'Class 4', labelHi: 'कक्षा 4', agesEn: 'Ages 9–10', agesHi: '9–10 वर्ष' },
+  { number: 5, label: 'Class 5', labelHi: 'कक्षा 5', agesEn: 'Ages 10–11', agesHi: '10–11 वर्ष' },
 ];
 
 export const DIFFICULTIES: {
@@ -67,22 +83,87 @@ export const DIFFICULTIES: {
   subEn: string;
   subHi: string;
 }[] = [
-  { id: 'EASY', labelEn: 'Easy', labelHi: 'Easy', subEn: 'No Carry', subHi: 'Bina Hasil ke' },
-  { id: 'MEDIUM', labelEn: 'Medium', labelHi: 'Medium', subEn: 'With Carry', subHi: 'Hasil wala' },
-  { id: 'HARD', labelEn: 'Hard', labelHi: 'Hard', subEn: 'Big Numbers', subHi: 'Bade Number' },
+  { id: 'EASY', labelEn: 'Easy', labelHi: 'आसान', subEn: 'No Carry', subHi: 'बिना हासिल' },
+  { id: 'MEDIUM', labelEn: 'Medium', labelHi: 'मध्यम', subEn: 'With Carry', subHi: 'हासिल सहित' },
+  { id: 'HARD', labelEn: 'Hard', labelHi: 'कठिन', subEn: 'Big Numbers', subHi: 'बड़ी संख्याएँ' },
 ];
+
+export interface LearnerRank {
+  titleEn: string;
+  titleHi: string;
+  nextThreshold: number | null;
+  colorClass: string;
+  bgClass: string;
+  borderClass: string;
+}
+
+export function getLearnerRank(totalStars: number): LearnerRank {
+  if (totalStars >= 100) {
+    return {
+      titleEn: 'Math Champion',
+      titleHi: 'गणित चैंपियन',
+      nextThreshold: null,
+      colorClass: 'text-amber-700',
+      bgClass: 'bg-amber-50',
+      borderClass: 'border-amber-200',
+    };
+  }
+  if (totalStars >= 60) {
+    return {
+      titleEn: 'Math Wizard',
+      titleHi: 'गणित जादूगर',
+      nextThreshold: 100,
+      colorClass: 'text-purple-700',
+      bgClass: 'bg-purple-50',
+      borderClass: 'border-purple-200',
+    };
+  }
+  if (totalStars >= 30) {
+    return {
+      titleEn: 'Math Achiever',
+      titleHi: 'गणित साधक',
+      nextThreshold: 60,
+      colorClass: 'text-blue-700',
+      bgClass: 'bg-blue-50',
+      borderClass: 'border-blue-200',
+    };
+  }
+  if (totalStars >= 10) {
+    return {
+      titleEn: 'Math Explorer',
+      titleHi: 'गणित अन्वेषक',
+      nextThreshold: 30,
+      colorClass: 'text-emerald-700',
+      bgClass: 'bg-emerald-50',
+      borderClass: 'border-emerald-200',
+    };
+  }
+  return {
+    titleEn: 'Math Starter',
+    titleHi: 'गणित आरंभिक',
+    nextThreshold: 10,
+    colorClass: 'text-sky-700',
+    bgClass: 'bg-sky-50',
+    borderClass: 'border-sky-200',
+  };
+}
 
 export const UI_TEXT = {
   en: {
+    brandName: 'Maths Master Kids',
     subtitle: 'Learn Maths with Fun!',
-    heroDesc: 'Pick your class (1 to 5), choose a difficulty, and tap any of the four maths games below to start a 10-question quiz.',
+    heroDesc:
+      'Pick your class (1 to 5), choose a difficulty, and play interactive 10-question quizzes to earn stars and build daily streaks.',
+    heroCta: 'Start Daily Quiz',
+    heroExploreLab: 'Try Visual Lab',
     selectClass: '1. Select Your Class',
     selectDiff: '2. Choose Difficulty',
     chooseGame: '3. Choose a Maths Game',
     perQuizNote: '10 Questions per Quiz',
     dailyBadge: 'Daily Practice',
     dailyTitle: 'Mixed 10-Question Daily Challenge',
-    dailyDesc: 'Test your skills across Addition, Subtraction, Multiplication, and Division in one fun daily quiz.',
+    dailyDesc:
+      'Test your skills across Addition, Subtraction, Multiplication, and Division in one fun daily quiz.',
     startDaily: 'Start Daily Practice',
     replayDaily: 'Practice Daily Mix Again',
     chooseAnswer: 'Choose the correct answer',
@@ -98,28 +179,33 @@ export const UI_TEXT = {
     backHome: 'Back to Home',
   },
   hi: {
-    subtitle: 'Maths Seekho Maze Se!',
-    heroDesc: 'Apni class (1 se 5) aur level chuno, game khelo aur har sahi jawab par star jeeto!',
-    selectClass: '1. Apni Class Chuno',
-    selectDiff: '2. Level Chuno',
-    chooseGame: '3. Game Chuno',
-    perQuizNote: 'Har Quiz me 10 Sawal',
-    dailyBadge: 'Daily Practice',
-    dailyTitle: 'Mixed Daily Challenge (10 Sawal)',
-    dailyDesc: 'Jod, Ghatav, Guna aur Bhag sab ek sath practice karo aur apna daily streak badhao.',
-    startDaily: 'Daily Challenge Shuru Karo',
-    replayDaily: 'Daily Mix Dobara Khelo',
-    chooseAnswer: 'Sahi jawab chuno',
-    needHint: 'Hint Chahiye? Picture Dekho',
-    hideHint: 'Hint Chhupao',
-    listen: 'Sunno',
-    correctMsg: 'Shabash! +1 Star Mila — Bilkul Sahi!',
-    wrongMsgPrefix: 'Koi baat nahi! Sahi jawab hai',
-    understandLabel: 'Samjho:',
-    nextQuestion: 'Agla Sawal',
-    seeFinalScore: 'Final Score Dekho',
-    practiceAgain: 'Dobara Khelo',
-    backHome: 'Home Par Jao',
+    brandName: 'मैथ्स मास्टर किड्स',
+    subtitle: 'मज़े से गणित सीखें!',
+    heroDesc:
+      'कक्षा 1 से 5 तक अपना स्तर चुनें, खेल-खेल में 10 सवालों के क्विज़ हल करें, सितारे जीतें और अपनी दैनिक स्ट्रीक बढ़ाएँ।',
+    heroCta: 'दैनिक क्विज़ शुरू करें',
+    heroExploreLab: 'विज़ुअल लैब देखें',
+    selectClass: '1. अपनी कक्षा चुनें',
+    selectDiff: '2. कठिनाई स्तर चुनें',
+    chooseGame: '3. गणित का खेल चुनें',
+    perQuizNote: 'प्रत्येक क्विज़ में 10 प्रश्न',
+    dailyBadge: 'दैनिक अभ्यास',
+    dailyTitle: 'मिश्रित दैनिक चुनौती (10 प्रश्न)',
+    dailyDesc:
+      'एक ही मज़ेदार दैनिक क्विज़ में जोड़, घटाव, गुणा और भाग का अभ्यास करें और अपनी दैनिक स्ट्रीक बनाए रखें।',
+    startDaily: 'दैनिक अभ्यास शुरू करें',
+    replayDaily: 'दैनिक क्विज़ फिर से खेलें',
+    chooseAnswer: 'सही उत्तर चुनें',
+    needHint: 'मदद चाहिए? चित्र संकेत देखें',
+    hideHint: 'संकेत छिपाएँ',
+    listen: 'सुनें',
+    correctMsg: 'शाबाश! +1 सितारा मिला — बिल्कुल सही!',
+    wrongMsgPrefix: 'कोई बात नहीं! सही उत्तर है',
+    understandLabel: 'समझें:',
+    nextQuestion: 'अगला प्रश्न',
+    seeFinalScore: 'अंतिम स्कोर देखें',
+    practiceAgain: 'फिर से अभ्यास करें',
+    backHome: 'होम पर जाएँ',
   },
 } as const;
 
@@ -316,9 +402,9 @@ function generateSingleQuestion(
     }
     answer = a + b;
     hintEn = `Start at ${a} and count forward by ${b}.`;
-    hintHi = `${a} se shuru karke ${b} aage gino. Pehle Ones jodo, phir Tens.`;
+    hintHi = `${a} से शुरू करके ${b} आगे गिनें। पहले इकाई जोड़ें, फिर दहाई।`;
     stepsEn = `${a} + ${b} = ${answer}. Add the ones first, then the tens.`;
-    stepsHi = `${a} + ${b} = ${answer}. Pehle Ones jodo, phir Tens jodo.`;
+    stepsHi = `${a} + ${b} = ${answer}। पहले इकाई जोड़ें, फिर दहाई जोड़ें।`;
   } else if (operation === 'SUBTRACTION') {
     if (classNumber === 1) {
       if (difficulty === 'EASY') {
@@ -374,9 +460,9 @@ function generateSingleQuestion(
       a = b + answer;
     }
     hintEn = `Take away ${b} from ${a}, or think: what plus ${b} equals ${a}?`;
-    hintHi = `${a} me se ${b} kam karo, ya socho ${b} me kitna jodein ki ${a} aaye.`;
+    hintHi = `${a} में से ${b} घटाएँ, या सोचें ${b} में कितना जोड़ने पर ${a} आएगा।`;
     stepsEn = `${a} - ${b} = ${answer}. Removing ${b} from ${a} leaves ${answer}.`;
-    stepsHi = `${a} - ${b} = ${answer}. ${a} me se ${b} hatane par ${answer} bachta hai.`;
+    stepsHi = `${a} - ${b} = ${answer}। ${a} में से ${b} कम करने पर ${answer} बचता है।`;
   } else if (operation === 'MULTIPLICATION') {
     const ranges: Record<ClassNumber, Record<DifficultyLevel, [number, number, number, number]>> = {
       1: { EASY: [1, 4, 1, 3], MEDIUM: [2, 5, 2, 5], HARD: [3, 6, 3, 6] },
@@ -390,9 +476,9 @@ function generateSingleQuestion(
     b = randInt(minB, maxB);
     answer = a * b;
     hintEn = `Add ${a} together ${b} times.`;
-    hintHi = `${a} ko ${b} baar jodo (${a} ka pahada ${b} tak bolo).`;
+    hintHi = `${a} को ${b} बार जोड़ें (${a} का पहाड़ा ${b} तक बोलें)।`;
     stepsEn = `${a} × ${b} = ${answer}. ${b} groups of ${a} makes ${answer}.`;
-    stepsHi = `${a} × ${b} = ${answer}. ${a} ke ${b} group milake ${answer} hote hain.`;
+    stepsHi = `${a} × ${b} = ${answer}। ${a} के ${b} समूह मिलाकर ${answer} होते हैं।`;
   } else {
     const ranges: Record<ClassNumber, Record<DifficultyLevel, [number, number, number, number]>> = {
       1: { EASY: [2, 3, 1, 4], MEDIUM: [2, 4, 3, 5], HARD: [3, 5, 3, 6] },
@@ -406,9 +492,9 @@ function generateSingleQuestion(
     answer = randInt(minQ, maxQ);
     a = b * answer;
     hintEn = `Think: ${b} times what number equals ${a}?`;
-    hintHi = `${b} ka pahada padho: ${b} × ? = ${a}.`;
+    hintHi = `${b} का पहाड़ा पढ़ें: ${b} × ? = ${a}।`;
     stepsEn = `${a} ÷ ${b} = ${answer}, because ${b} × ${answer} = ${a}.`;
-    stepsHi = `${a} ÷ ${b} = ${answer}, kyunki ${b} × ${answer} = ${a} hota hai.`;
+    stepsHi = `${a} ÷ ${b} = ${answer}, क्योंकि ${b} × ${answer} = ${a} होता है।`;
   }
 
   const symbol = OPERATIONS.find((op) => op.id === operation)?.symbol ?? '+';

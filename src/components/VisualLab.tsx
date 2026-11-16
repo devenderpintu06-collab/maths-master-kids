@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { ArrowLeftRight, RotateCcw } from 'lucide-react';
+import type { AppLanguage } from '../data/mathsMaster';
 import { soundFx } from '../utils/sound';
 
 type LabMode = 'number-line' | 'array-area' | 'fraction-compare';
 
-export function VisualLab() {
+export function VisualLab({ lang = 'en' }: { lang?: AppLanguage }) {
+  const isHi = lang === 'hi';
   const [mode, setMode] = useState<LabMode>('number-line');
 
   // Lab 1: Number Line Hopper
@@ -25,16 +27,18 @@ export function VisualLab() {
     <div className="max-w-6xl mx-auto px-4 sm:px-8 py-10 space-y-8">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-200 pb-6">
         <div className="space-y-1.5">
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900">
-            Visual Math Lab
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
+            {isHi ? 'विज़ुअल गणित लैब' : 'Visual Math Lab'}
           </h1>
           <p className="text-slate-600 text-base">
-            Slide, build, and explore how numbers, multiplication arrays, and fractions work.
+            {isHi
+              ? 'स्लाइड करें, बनाएँ और देखें कि संख्याएँ, गुणा ग्रिड और भिन्न कैसे काम करते हैं।'
+              : 'Slide, build, and explore how numbers, multiplication arrays, and fractions work.'}
           </p>
         </div>
 
         {/* Segmented Lab Switcher */}
-        <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-xl self-start">
+        <div className="flex items-center gap-1 p-1 bg-slate-100 border border-slate-200 rounded-xl self-start">
           <button
             type="button"
             onClick={() => {
@@ -45,7 +49,7 @@ export function VisualLab() {
               mode === 'number-line' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            Number Line
+            {isHi ? 'संख्या रेखा' : 'Number Line'}
           </button>
           <button
             type="button"
@@ -57,7 +61,7 @@ export function VisualLab() {
               mode === 'array-area' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            Array & Area
+            {isHi ? 'गुणा ग्रिड' : 'Array & Area'}
           </button>
           <button
             type="button"
@@ -69,7 +73,7 @@ export function VisualLab() {
               mode === 'fraction-compare' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            Fractions
+            {isHi ? 'भिन्न' : 'Fractions'}
           </button>
         </div>
       </div>

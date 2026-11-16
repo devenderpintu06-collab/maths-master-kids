@@ -45,7 +45,7 @@ function VisualPictureHint({ question, lang }: { question: MathsQuestion; lang: 
     <div className="bg-amber-50/80 border border-amber-200 rounded-2xl p-4 sm:p-5 text-left space-y-3">
       <div className="flex items-center gap-2 text-xs font-bold text-amber-900">
         <Lightbulb className="w-4 h-4 text-amber-600 shrink-0" />
-        <span>{lang === 'hi' ? 'Visual Hint (Chitra Dekho)' : 'Visual Hint'}</span>
+        <span>{lang === 'hi' ? 'चित्र संकेत (Visual Hint)' : 'Visual Hint'}</span>
       </div>
 
       {operation === 'ADDITION' && operandA <= 20 && operandB <= 20 && (
@@ -99,7 +99,7 @@ function VisualPictureHint({ question, lang }: { question: MathsQuestion; lang: 
         <div className="flex flex-wrap gap-2 bg-white border border-amber-200/80 rounded-xl p-3">
           {Array.from({ length: operandB }).map((_, g) => (
             <div key={g} className="px-2 py-1 rounded-lg bg-purple-50 border border-purple-200 text-xs font-math font-bold text-purple-800">
-              {lang === 'hi' ? `Group ${g + 1}` : `Box ${g + 1}`}: ?
+              {lang === 'hi' ? `समूह ${g + 1}` : `Box ${g + 1}`}: ?
             </div>
           ))}
         </div>
@@ -118,7 +118,7 @@ function VisualPictureHint({ question, lang }: { question: MathsQuestion; lang: 
         (operation === 'SUBTRACTION' && operandA > 24)) && (
         <p className="text-xs text-amber-800">
           {lang === 'hi'
-            ? 'Tip: Pehle Ones (ikai) ke digits solve karo, phir Tens (dahai).'
+            ? 'सुझाव: पहले इकाई (Ones) के अंक हल करें, फिर दहाई (Tens)।'
             : 'Tip: Solve the Ones column first, then the Tens and Hundreds.'}
         </p>
       )}
@@ -172,20 +172,22 @@ export function QuizMode({
       const opWord =
         currentQuestion.operation === 'ADDITION'
           ? lang === 'hi'
-            ? 'plus'
+            ? 'जोड़'
             : 'plus'
           : currentQuestion.operation === 'SUBTRACTION'
-            ? 'minus'
+            ? lang === 'hi'
+              ? 'घटा'
+              : 'minus'
             : currentQuestion.operation === 'MULTIPLICATION'
               ? lang === 'hi'
-                ? 'guna'
+                ? 'गुणा'
                 : 'times'
               : lang === 'hi'
-                ? 'bhag'
+                ? 'भाग'
                 : 'divided by';
       const spoken =
         lang === 'hi'
-          ? `${currentQuestion.operandA} ${opWord} ${currentQuestion.operandB} kitna hota hai?`
+          ? `${currentQuestion.operandA} ${opWord} ${currentQuestion.operandB} कितना होता है?`
           : `What is ${currentQuestion.operandA} ${opWord} ${currentQuestion.operandB}?`;
       const utterance = new SpeechSynthesisUtterance(spoken);
       utterance.lang = lang === 'hi' ? 'hi-IN' : 'en-IN';
@@ -295,10 +297,10 @@ export function QuizMode({
     const praise =
       lang === 'hi'
         ? finishedSummary.percentage >= 80
-          ? 'Shabash! Tum Maths Star ho!'
+          ? 'शाबाश! आप गणित के सितारे हैं!'
           : finishedSummary.percentage >= 50
-            ? 'Bahut Badhiya! Thoda aur practice karo!'
-            : 'Haar mat maano, phir try karo!'
+            ? 'बहुत बढ़िया! थोड़ा और अभ्यास करें!'
+            : 'हार मत मानो, फिर से प्रयास करें!'
         : finishedSummary.percentage >= 90
           ? 'Maths Superstar!'
           : finishedSummary.percentage >= 70
@@ -307,13 +309,23 @@ export function QuizMode({
               ? 'Good Effort!'
               : 'Keep Practicing!';
 
+    const diffText =
+      lang === 'hi'
+        ? finishedSummary.config.difficulty === 'EASY'
+          ? 'आसान'
+          : finishedSummary.config.difficulty === 'MEDIUM'
+            ? 'मध्यम'
+            : 'कठिन'
+        : finishedSummary.config.difficulty.charAt(0) +
+          finishedSummary.config.difficulty.slice(1).toLowerCase();
+
     return (
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-10">
         <motion.div
           initial={{ opacity: 0, scale: 0.94 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ type: 'spring', stiffness: 260, damping: 22 }}
-          className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-10 text-center space-y-7"
+          className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-10 text-center space-y-7 shadow-card-soft"
         >
           <div className="relative mx-auto w-36 h-36 flex items-center justify-center">
             {finishedSummary.percentage >= 60 &&
@@ -346,33 +358,40 @@ export function QuizMode({
 
           <div className="space-y-1">
             <p className="text-xs font-semibold text-slate-500">
-              {quizTitle} · Class {finishedSummary.config.classNumber} ·{' '}
-              {finishedSummary.config.difficulty.toLowerCase()}
+              {quizTitle} · {lang === 'hi' ? `कक्षा ${finishedSummary.config.classNumber}` : `Class ${finishedSummary.config.classNumber}`} · {diffText}
             </p>
             <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900">{praise}</h1>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-5 border-y border-slate-100">
             <div>
-              <span className="block text-xs font-medium text-slate-500">Final Score</span>
+              <span className="block text-xs font-medium text-slate-500">
+                {lang === 'hi' ? 'अंतिम स्कोर' : 'Final Score'}
+              </span>
               <span className="font-math text-2xl font-extrabold text-blue-600">
                 {finishedSummary.correctAnswers}/{finishedSummary.totalQuestions}
               </span>
             </div>
             <div>
-              <span className="block text-xs font-medium text-slate-500">Percentage</span>
+              <span className="block text-xs font-medium text-slate-500">
+                {lang === 'hi' ? 'प्रतिशत' : 'Percentage'}
+              </span>
               <span className="font-math text-2xl font-extrabold text-slate-900">
                 {finishedSummary.percentage}%
               </span>
             </div>
             <div>
-              <span className="block text-xs font-medium text-slate-500">Correct</span>
+              <span className="block text-xs font-medium text-slate-500">
+                {lang === 'hi' ? 'सही उत्तर' : 'Correct'}
+              </span>
               <span className="font-math text-2xl font-extrabold text-emerald-600">
                 {finishedSummary.correctAnswers}
               </span>
             </div>
             <div>
-              <span className="block text-xs font-medium text-slate-500">Incorrect</span>
+              <span className="block text-xs font-medium text-slate-500">
+                {lang === 'hi' ? 'गलत उत्तर' : 'Incorrect'}
+              </span>
               <span className="font-math text-2xl font-extrabold text-rose-600">
                 {finishedSummary.incorrectAnswers}
               </span>
@@ -382,7 +401,9 @@ export function QuizMode({
           <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 inline-flex items-center justify-center gap-3 mx-auto">
             <Star className="w-7 h-7 text-amber-500 fill-amber-400" />
             <span className="font-display text-xl font-bold text-amber-900">
-              +{finishedSummary.starsEarned} {finishedSummary.starsEarned === 1 ? 'Star' : 'Stars'} Earned!
+              {lang === 'hi'
+                ? `+${finishedSummary.starsEarned} सितारे मिले!`
+                : `+${finishedSummary.starsEarned} ${finishedSummary.starsEarned === 1 ? 'Star' : 'Stars'} Earned!`}
             </span>
           </div>
 
@@ -390,7 +411,7 @@ export function QuizMode({
             <button
               type="button"
               onClick={handlePracticeAgain}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl bg-blue-600 text-white text-base font-bold hover:bg-blue-700 transition-colors cursor-pointer whitespace-nowrap"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl bg-blue-600 border-b-4 border-blue-800 text-white text-base font-bold hover:bg-blue-700 active:translate-y-0.5 transition-all cursor-pointer whitespace-nowrap"
             >
               <RotateCcw className="w-5 h-5" />
               {t.practiceAgain}
@@ -436,7 +457,7 @@ export function QuizMode({
       )}
 
       {/* Top Quiz HUD */}
-      <div className="bg-white border border-slate-200 rounded-2xl px-4 py-3 flex flex-wrap items-center justify-between gap-4">
+      <div className="bg-white border border-slate-200/80 rounded-2xl px-4 py-3 flex flex-wrap items-center justify-between gap-4 shadow-card-soft">
         <div className="flex items-center gap-3">
           <button
             type="button"
@@ -444,12 +465,20 @@ export function QuizMode({
             className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 cursor-pointer whitespace-nowrap"
           >
             <ArrowLeft className="w-4 h-4" />
-            Home
+            {lang === 'hi' ? 'होम' : 'Home'}
           </button>
           <div>
             <h1 className="text-base sm:text-lg font-extrabold text-slate-900">{quizTitle}</h1>
             <p className="text-xs text-slate-500">
-              Class {config.classNumber} · {config.difficulty.charAt(0) + config.difficulty.slice(1).toLowerCase()} · Q {currentIndex + 1}/{questions.length}
+              {lang === 'hi' ? `कक्षा ${config.classNumber}` : `Class ${config.classNumber}`} ·{' '}
+              {lang === 'hi'
+                ? config.difficulty === 'EASY'
+                  ? 'आसान'
+                  : config.difficulty === 'MEDIUM'
+                    ? 'मध्यम'
+                    : 'कठिन'
+                : config.difficulty.charAt(0) + config.difficulty.slice(1).toLowerCase()}{' '}
+              · {lang === 'hi' ? `प्रश्न ${currentIndex + 1}/${questions.length}` : `Q ${currentIndex + 1}/${questions.length}`}
             </p>
           </div>
         </div>
@@ -472,15 +501,15 @@ export function QuizMode({
       </div>
 
       {/* 10-Question Progress Bar */}
-      <div className="w-full h-3 bg-slate-200 rounded-full overflow-hidden">
+      <div className="w-full h-3.5 bg-slate-200 rounded-full overflow-hidden">
         <div
-          className="h-full bg-blue-600 rounded-full transition-all duration-300"
+          className="h-full bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full transition-all duration-300"
           style={{ width: `${progressPct}%` }}
         />
       </div>
 
       {/* Main Question Card */}
-      <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-10 space-y-6">
+      <div className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-10 space-y-6 shadow-card-soft">
         <div className="text-center space-y-3">
           <p className="text-sm font-semibold text-slate-500">{t.chooseAnswer}</p>
           <div className="font-math text-4xl sm:text-6xl font-extrabold text-slate-900 tracking-tight py-2">

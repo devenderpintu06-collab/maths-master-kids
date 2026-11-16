@@ -80,7 +80,7 @@ export function BlogSection({
         {BLOG_ARTICLES.map((article, idx) => (
           <article
             key={article.id}
-            className="bg-white border border-slate-200 rounded-3xl p-6 flex flex-col justify-between gap-5 hover:border-blue-300 transition-colors"
+            className="bg-white border border-slate-200/80 rounded-3xl p-6 flex flex-col justify-between gap-5 shadow-card-soft hover:border-blue-300 hover:-translate-y-0.5 transition-all"
           >
             <div className="space-y-3">
               <div className="flex items-center justify-between gap-2">
@@ -113,7 +113,7 @@ export function BlogSection({
             <button
               type="button"
               onClick={() => handleOpenArticle(article.id)}
-              className="w-full inline-flex items-center justify-between gap-2 px-4 py-3 rounded-2xl text-sm font-bold text-white transition-opacity hover:opacity-95 cursor-pointer"
+              className="w-full inline-flex items-center justify-between gap-2 px-4 py-3 rounded-2xl text-sm font-bold text-white transition-opacity hover:opacity-95 cursor-pointer shadow-sm"
               style={{ backgroundColor: article.accentHex }}
             >
               <span>

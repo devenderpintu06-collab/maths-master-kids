@@ -2,14 +2,14 @@
 
 @layer base {
   :root {
-    --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
-    --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --font-display: 'Bricolage Grotesque', 'Noto Sans Devanagari', system-ui, sans-serif;
+    --font-sans: 'Plus Jakarta Sans', 'Noto Sans Devanagari', system-ui, sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, monospace;
   }
 
   body {
     font-family: var(--font-sans);
-    background-color: #FAF9F6;
+    background-color: #F6F8FC;
     color: #0F172A;
     -webkit-font-smoothing: antialiased;
   }
@@ -33,12 +33,48 @@
   }
 }
 
+@keyframes float-symbol {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(4deg);
+  }
+}
+
+@keyframes float-symbol-alt {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(7px) rotate(-4deg);
+  }
+}
+
 .animate-gentle-bounce {
   animation: gentle-bounce 1.8s ease-in-out infinite;
 }
 
+.animate-float-symbol {
+  animation: float-symbol 5.5s ease-in-out infinite;
+}
+
+.animate-float-symbol-alt {
+  animation: float-symbol-alt 6.5s ease-in-out infinite;
+}
+
+.shadow-card-soft {
+  box-shadow: 0 8px 28px -6px rgba(15, 23, 42, 0.06), 0 2px 8px -2px rgba(15, 23, 42, 0.04);
+}
+
+.shadow-hero-soft {
+  box-shadow: 0 18px 42px -12px rgba(37, 99, 235, 0.12), 0 4px 16px -4px rgba(15, 23, 42, 0.05);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .animate-gentle-bounce {
+  .animate-gentle-bounce,
+  .animate-float-symbol,
+  .animate-float-symbol-alt {
     animation: none;
   }
   * {
