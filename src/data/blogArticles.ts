@@ -309,4 +309,69 @@ export const BLOG_ARTICLES: BlogArticle[] = [
     conclusionHi:
       'निष्कर्ष: पत्थरों की गिनती से शुरू हुआ गणित का यह सफर आज सुपरकंप्यूटर और अंतरिक्ष यात्रा तक पहुँच चुका है। गणित केवल किताबों के सवाल हल करने का विषय नहीं, बल्कि हमारे सोचने और दुनिया को समझने का सबसे शक्तिशाली ज़रिया है।',
   },
+  {
+    id: 'vedic-maths-5-magical-tricks',
+    categoryEn: 'Vedic Maths',
+    categoryHi: 'वैदिक गणित',
+    readTimeEn: '4 min read',
+    readTimeHi: '4 मिनट पढ़ें',
+    accentHex: '#E11D48',
+    badgeBgClass: 'bg-rose-50 text-rose-700 border-rose-200',
+    titleEn: '5 Magical Vedic Maths Tricks for Kids: Calculate Faster Than a Calculator!',
+    titleHi: 'वैदिक गणित (Vedic Maths) की 5 जादुई ट्रिक्स: कैलकुलेटर से भी तेज़ हिसाब लगाएं!',
+    summaryEn:
+      'Learn 5 simple Vedic Maths shortcuts—2-second ×11 multiplication, squaring numbers ending in 5, zero-borrow subtraction from 1000, ×5 halving, and the 9-times finger trick.',
+    summaryHi:
+      'प्राचीन भारतीय वैदिक गणित की 5 सबसे आसान और मज़ेदार ट्रिक्स सीखें जिनकी मदद से Class 1 से 5 के बच्चे बिना कैलकुलेटर सेकंडों में सही जवाब निकाल सकते हैं।',
+    introEn:
+      "Children often feel nervous when they see big addition, subtraction, or multiplication sums and spend a lot of time solving them. But did you know that ancient India's Vedic Maths hides simple and magical shortcuts that help Class 1 to 5 kids find exact answers in their heads within seconds without a calculator?\n\nLet us learn 5 of the easiest and most fun Vedic Maths tricks that children can try to become real maths wizards:",
+    introHi:
+      'अक्सर बच्चे बड़े-बड़े जोड़, घटाव और गुणा देखकर घबरा जाते हैं और उन्हें हल करने में काफी समय लगा देते हैं। लेकिन क्या आप जानते हैं कि प्राचीन भारत के वैदिक गणित (Vedic Maths) में कुछ ऐसी जादुई और आसान ट्रिक्स छिपी हैं, जिनकी मदद से Class 1 से 5 तक के बच्चे बिना कैलकुलेटर के, मन ही मन सेकंडों में सही जवाब निकाल सकते हैं?\n\nआइए सीखते हैं वैदिक गणित की 5 सबसे आसान और मज़ेदार ट्रिक्स, जिन्हें आज़माकर बच्चे गणित के जादूगर बन सकते हैं:',
+    sections: [
+      {
+        headingEn: '1. The 2-Second Trick to Multiply by 11',
+        headingHi: '1. किसी भी संख्या को 11 से गुणा (Multiply) करने की 2-सेकंड ट्रिक',
+        bodyEn:
+          'If you need to multiply any two-digit number by 11, there is no need to recite a long table.\n\nExample: Suppose we need to solve 35 × 11.\n\nTrick: Write 3 and 5 slightly apart (3 _ 5), then add them together (3 + 5 = 8) and put the sum in the middle.\n\nAnswer: 385!\n\nAnother Example: For 42 × 11, place 4 + 2 = 6 between 4 and 2—and you instantly get the answer 462!',
+        bodyHi:
+          'अगर आपको किसी दो अंकों की संख्या को 11 से गुणा करना है, तो लंबा पहाड़ा पढ़ने की कोई ज़रूरत नहीं है।\n\nउदाहरण: मान लीजिए हमें 35 × 11 करना है।\n\nट्रिक: 3 और 5 को थोड़ा अलग-अलग लिखें (3 _ 5) और बीच में इन दोनों को जोड़कर (3 + 5 = 8) लिख दें।\n\nजवाब: 385!\n\nएक और उदाहरण: 42 × 11 में 4 और 2 के बीच 4 + 2 = 6 रखें—जवाब आ गया 462!',
+      },
+      {
+        headingEn: '2. Finding the Square of Numbers Ending in 5',
+        headingHi: '2. 5 से खत्म होने वाली संख्याओं का वर्ग (Square) निकालना',
+        bodyEn:
+          'Numbers ending in 5 (such as 15, 25, 35, 45) are super easy to multiply by themselves.\n\nExample: Suppose we want to calculate 25 × 25.\n\nTrick:\n\n• Always write 25 at the end.\n\n• Multiply the first digit (here 2) by the next counting number (3): 2 × 3 = 6, and place 6 in front of 25.\n\nAnswer: 625!\n\nSimilarly, for 35 × 35: calculate 3 × 4 = 12 and put 25 after it—the answer becomes 1225!',
+        bodyHi:
+          'जिन संख्याओं के आखिर में 5 आता है (जैसे 15, 25, 35, 45), उनका खुद से गुणा करना बेहद आसान है।\n\nउदाहरण: मान लीजिए हमें 25 × 25 करना है।\n\nट्रिक:\n\n• आखिर में हमेशा 25 लिख दें।\n\n• पहले अंक (यहाँ 2 है) को उसके अगले नंबर (3) से गुणा करें (2 × 3 = 6) और 25 के आगे लिख दें।\n\nजवाब: 625!\n\nइसी तरह 35 × 35 के लिए: 3 × 4 = 12 और आगे 25 लगा दें—जवाब हो गया 1225!',
+      },
+      {
+        headingEn: '3. The Magic of Subtracting from 100 or 1000',
+        headingHi: '3. 100 या 1000 में से घटाने (Subtraction) का जादू',
+        bodyEn:
+          'Kids often make borrowing mistakes in sums like 1000 - 467. The Vedic Maths sutra "All from 9 and the last from 10" solves it in a snap.\n\nExample: 1000 - 467\n\nTrick: Moving from left to right, subtract every digit from 9 and subtract only the last digit from 10:\n\n9 - 4 = 5\n\n9 - 6 = 3\n\n10 - 7 = 3\n\nAnswer: 533! Without any messy borrowing at all!',
+        bodyHi:
+          'अक्सर बच्चे 1000 - 467 जैसे सवालों में हासिल (Borrow) लेने में गलती कर देते हैं। वैदिक गणित का सूत्र "सबको 9 से और आखिरी को 10 से घटाओ" इसे चुटकियों में हल कर देता है।\n\nउदाहरण: 1000 - 467\n\nट्रिक: बाईं तरफ से हर अंक को 9 में से घटाएं और आखिरी अंक को 10 में से घटाएं:\n\n9 - 4 = 5\n\n9 - 6 = 3\n\n10 - 7 = 3\n\nजवाब: 533! बिना किसी हासिल के झंझट के!',
+      },
+      {
+        headingEn: '4. Easy Shortcut to Multiply Any Even Number by 5',
+        headingHi: '4. किसी भी संख्या को 5 से गुणा करने की आसान तरकीब',
+        bodyEn:
+          'Instead of multiplying big numbers by 5 step by step, simply take Half of that number and add a 0 at the end.\n\nExample: 24 × 5\n\nTrick: Half of 24 is 12; now put a 0 after it.\n\nAnswer: 120!\n\nLikewise for 48 × 5: half of 48 is 24, attach a 0 at the end—answer 240!',
+        bodyHi:
+          'बड़े नंबरों को 5 से गुणा करने के बजाय उस संख्या को आधा (Half) कर दें और आखिर में एक 0 लगा दें।\n\nउदाहरण: 24 × 5\n\nट्रिक: 24 का आधा होता है 12, अब इसके पीछे एक 0 लगा दें।\n\nजवाब: 120!\n\nइसी तरह 48 × 5 के लिए: 48 का आधा 24, पीछे 0 लगाया—जवाब 240!',
+      },
+      {
+        headingEn: '5. Remember the Table of 9 on Your Fingers',
+        headingHi: '5. 9 का पहाड़ा (Table of 9) उंगलियों पर याद रखें',
+        bodyEn:
+          'If younger children have trouble memorizing the 9 times table, they can learn it playfully using all 10 fingers held right in front of them.\n\nTrick: Suppose you want to solve 9 × 3. Fold down your 3rd finger starting from the left.\n\nNow how many fingers remain to the left of the folded finger? 2. And how many remain to the right? 7.\n\nRead both digits together—the answer is 27!',
+        bodyHi:
+          'अगर छोटे बच्चों को 9 का पहाड़ा याद नहीं होता, तो वे अपने दोनों हाथों की 10 उंगलियां सामने रखकर इसे खेल-खेल में सीख सकते हैं।\n\nट्रिक: मान लीजिए आपको 9 × 3 करना है। बाईं तरफ से अपनी तीसरी उंगली मोड़ लें।\n\nअब मुड़ी हुई उंगली के बाईं तरफ कितनी उंगलियां बचीं? 2। और दाईं तरफ कितनी बचीं? 7।\n\nदोनों को मिलाकर पढ़ें—जवाब है 27!',
+      },
+    ],
+    conclusionEn:
+      'Practice these 5 magical Vedic Maths tricks with friends or parents every day—soon you will calculate faster than a calculator!',
+    conclusionHi:
+      'रोज़ाना इन 5 जादुई वैदिक गणित ट्रिक्स का अपने माता-पिता और दोस्तों के साथ अभ्यास करें—देखते ही देखते आप कैलकुलेटर से भी तेज़ हिसाब लगाने लगेंगे!',
+  },
 ];
