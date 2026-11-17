@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { flushSync } from 'react-dom';
 import {
   Award,
   Calendar,
@@ -38,10 +39,15 @@ import { BlogSection } from './components/BlogSection';
 import { LegalFooterModals, type FooterDocType } from './components/LegalFooterModals';
 import { MascotLogo, OperationIllustration } from './components/MascotLogo';
 import { ActiveMiniGameView, MathGamesArcadeSection } from './components/MathGamesArcade';
+import {
+  PrintableA4Sheet,
+  PrintableWorksheetsSection,
+} from './components/PrintableWorksheetsSection';
+import { ALL_WORKSHEETS, type MathWorksheet } from './data/worksheets';
 import type { MiniGameId } from './data/mathGames';
 import { soundFx } from './utils/sound';
 
-type AppTab = 'home' | 'games' | 'progress' | 'lab';
+type AppTab = 'home' | 'games' | 'worksheets' | 'progress' | 'lab';
 
 const STORAGE_KEY = 'maths_master_kids_progress_v1';
 
@@ -122,10 +128,20 @@ export default function App() {
   const [confirmReset, setConfirmReset] = useState(false);
   const [activeFooterDoc, setActiveFooterDoc] = useState<FooterDocType | null>(null);
   const [activeBlogArticleId, setActiveBlogArticleId] = useState<string | null>(null);
+  const [printTargetWorksheet, setPrintTargetWorksheet] = useState<MathWorksheet>(
+    () => ALL_WORKSHEETS[0]
+  );
 
   const openFooterDoc = (doc: FooterDocType) => {
     soundFx.playClick();
     setActiveFooterDoc(doc);
+  };
+
+  const handlePrintWorksheet = (worksheet: MathWorksheet) => {
+    flushSync(() => {
+      setPrintTargetWorksheet(worksheet);
+    });
+    window.print();
   };
 
   const t = UI_TEXT[lang];
@@ -319,22 +335,23 @@ export default function App() {
   const isHi = lang === 'hi';
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F6F8FC] text-slate-900">
+    <>
+    <div className="min-h-screen flex flex-col bg-[#F6F8FC] text-slate-900 print:hidden">
       {/* Top Bar Contract: 3 Zones */}
       <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-[0_2px_12px_-4px_rgba(15,23,42,0.06)]">
-        <div className="max-w-6xl mx-auto px-3 sm:px-8 h-16 flex items-center justify-between gap-2 sm:gap-6">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 h-16 flex items-center justify-between gap-2 sm:gap-4">
           {/* Zone 1: Custom SVG Mascot Logo + Brand Title */}
           <button
             type="button"
             onClick={() => navigateToTab('home')}
-            className="inline-flex items-center gap-2 sm:gap-2.5 font-display text-[15px] sm:text-xl font-extrabold tracking-tight text-slate-900 whitespace-nowrap shrink-0 cursor-pointer group"
+            className="inline-flex items-center gap-2 font-display text-[15px] sm:text-lg font-extrabold tracking-tight text-slate-900 whitespace-nowrap shrink-0 cursor-pointer group"
           >
             <MascotLogo className="w-8 h-8 sm:w-9 sm:h-9 shrink-0 transition-transform duration-200 group-hover:scale-105" />
             <span>Maths Master Kids</span>
           </button>
 
           {/* Zone 2: Clean single-line nav links */}
-          <nav className="hidden md:flex items-center gap-3 lg:gap-5 text-xs lg:text-sm font-semibold text-slate-600">
+          <nav className="hidden lg:flex items-center gap-3 xl:gap-4 text-xs xl:text-[13px] font-semibold text-slate-600">
             <button
               type="button"
               onClick={() => navigateToTab('home')}
@@ -356,6 +373,17 @@ export default function App() {
               }`}
             >
               {isHi ? 'मज़ेदार गणित खेल' : 'Fun Math Games'}
+            </button>
+            <button
+              type="button"
+              onClick={() => navigateToTab('worksheets')}
+              className={`py-1 border-b-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+                activeTab === 'worksheets' && !activeQuiz && !activeMiniGame
+                  ? 'border-blue-600 text-blue-700'
+                  : 'border-transparent hover:text-slate-900'
+              }`}
+            >
+              {isHi ? 'प्रिंटेबल वर्कशीट (PDF)' : 'Printable Worksheets (PDF)'}
             </button>
             <button
               type="button"
@@ -455,7 +483,7 @@ export default function App() {
               ) : (
                 <VolumeX className="w-4 h-4 text-slate-500 shrink-0" aria-hidden="true" />
               )}
-              <span className="hidden lg:inline">
+              <span className="hidden xl:inline">
                 {soundEnabled ? (isHi ? 'ध्वनि चालू' : 'Sound On') : isHi ? 'बंद' : 'Muted'}
               </span>
             </button>
@@ -463,16 +491,16 @@ export default function App() {
             <button
               type="button"
               onClick={startDailyPractice}
-              className="hidden sm:inline-flex min-h-[40px] px-4 py-2 text-xs sm:text-sm font-bold text-white bg-blue-600 border-b-[3px] border-blue-800 rounded-xl hover:bg-blue-700 active:translate-y-[1px] transition-all whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+              className="hidden sm:inline-flex min-h-[40px] px-3.5 py-2 text-xs font-bold text-white bg-blue-600 border-b-[3px] border-blue-800 rounded-xl hover:bg-blue-700 active:translate-y-[1px] transition-all whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
             >
               {t.heroCta}
             </button>
           </div>
         </div>
 
-        {/* Mobile Nav Row */}
+        {/* Mobile / Tablet Nav Row */}
         {!activeQuiz && !activeMiniGame && (
-          <div className="md:hidden border-t border-slate-200/80 px-1.5 py-1.5 flex items-center justify-around gap-0.5 overflow-x-auto text-[11px] sm:text-xs font-semibold text-slate-600 bg-white">
+          <div className="lg:hidden border-t border-slate-200/80 px-2 py-1.5 flex items-center justify-start sm:justify-around gap-1 overflow-x-auto text-[11px] sm:text-xs font-semibold text-slate-600 bg-white">
             <button
               type="button"
               onClick={() => navigateToTab('home')}
@@ -490,6 +518,15 @@ export default function App() {
               }`}
             >
               {isHi ? 'गणित खेल' : 'Fun Games'}
+            </button>
+            <button
+              type="button"
+              onClick={() => navigateToTab('worksheets')}
+              className={`px-2 py-1.5 rounded-lg whitespace-nowrap shrink-0 cursor-pointer ${
+                activeTab === 'worksheets' ? 'text-blue-700 bg-blue-50' : ''
+              }`}
+            >
+              {isHi ? 'वर्कशीट (PDF)' : 'Worksheets (PDF)'}
             </button>
             <button
               type="button"
@@ -562,6 +599,13 @@ export default function App() {
               onLaunchGame={launchMiniGame}
             />
           </div>
+        ) : activeTab === 'worksheets' ? (
+          <PrintableWorksheetsSection
+            lang={lang}
+            selectedClass={selectedClass}
+            onSelectClass={setSelectedClass}
+            onPrintWorksheet={handlePrintWorksheet}
+          />
         ) : activeTab === 'lab' ? (
           <VisualLab lang={lang} />
         ) : activeTab === 'progress' ? (
@@ -1282,6 +1326,13 @@ export default function App() {
                 </button>
                 <button
                   type="button"
+                  onClick={() => navigateToTab('worksheets')}
+                  className="hover:text-slate-900 cursor-pointer"
+                >
+                  {isHi ? 'प्रिंटेबल वर्कशीट (PDF)' : 'Printable Worksheets (PDF)'}
+                </button>
+                <button
+                  type="button"
                   onClick={navigateToDailySection}
                   className="hover:text-slate-900 cursor-pointer"
                 >
@@ -1371,5 +1422,10 @@ export default function App() {
 
       <LegalFooterModals activeDoc={activeFooterDoc} onSelectDoc={setActiveFooterDoc} />
     </div>
+
+    <div className="hidden print:block bg-white text-slate-900">
+      <PrintableA4Sheet worksheet={printTargetWorksheet} lang={lang} />
+    </div>
+    </>
   );
 }
