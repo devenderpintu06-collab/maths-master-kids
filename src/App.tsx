@@ -10,6 +10,7 @@ import {
   ChevronDown,
   FileText,
   Flame,
+  Grid2x2,
   Play,
   RotateCcw,
   Smartphone,
@@ -51,11 +52,20 @@ import {
   PrintableA4Sheet,
   PrintableWorksheetsSection,
 } from './components/PrintableWorksheetsSection';
+import {
+  MultiplicationTablesSection,
+  PrintableTablesA4Sheet,
+} from './components/MultiplicationTablesSection';
 import { ALL_WORKSHEETS, type MathWorksheet } from './data/worksheets';
+import type { TableChartSelection } from './utils/tablesPdf';
 import type { MiniGameId } from './data/mathGames';
 import { soundFx } from './utils/sound';
 
-type AppTab = 'home' | 'games' | 'worksheets' | 'progress' | 'lab';
+type AppTab = 'home' | 'games' | 'tables' | 'worksheets' | 'progress' | 'lab';
+
+type PrintTarget =
+  | { kind: 'worksheet'; worksheet: MathWorksheet }
+  | { kind: 'tables'; selection: TableChartSelection };
 
 const STORAGE_KEY = 'maths_master_kids_progress_v1';
 
@@ -138,9 +148,11 @@ export default function App() {
   const [activeBlogArticleId, setActiveBlogArticleId] = useState<string | null>(null);
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
   const moreMenuRef = useRef<HTMLDivElement | null>(null);
-  const [printTargetWorksheet, setPrintTargetWorksheet] = useState<MathWorksheet>(
-    () => ALL_WORKSHEETS[0]
-  );
+  const [initialTableSelection, setInitialTableSelection] = useState<TableChartSelection>(2);
+  const [printTarget, setPrintTarget] = useState<PrintTarget>(() => ({
+    kind: 'worksheet',
+    worksheet: ALL_WORKSHEETS[0],
+  }));
 
   useEffect(() => {
     if (!moreMenuOpen) return;
@@ -167,9 +179,26 @@ export default function App() {
 
   const handlePrintWorksheet = (worksheet: MathWorksheet) => {
     flushSync(() => {
-      setPrintTargetWorksheet(worksheet);
+      setPrintTarget({ kind: 'worksheet', worksheet });
     });
     window.print();
+  };
+
+  const handlePrintTables = (selection: TableChartSelection) => {
+    flushSync(() => {
+      setPrintTarget({ kind: 'tables', selection });
+    });
+    window.print();
+  };
+
+  const openTablesTab = (selection: TableChartSelection = 2) => {
+    soundFx.playClick();
+    setMoreMenuOpen(false);
+    setActiveQuiz(null);
+    setActiveMiniGame(null);
+    setInitialTableSelection(selection);
+    setActiveTab('tables');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const t = UI_TEXT[lang];
@@ -434,8 +463,8 @@ export default function App() {
             <span>Maths Master Kids</span>
           </button>
 
-          {/* Zone 2: Cleanly Grouped 5-Item Navigation */}
-          <nav className="hidden lg:flex items-center gap-5 text-sm font-bold text-slate-600">
+          {/* Zone 2: Cleanly Grouped Navigation */}
+          <nav className="hidden lg:flex items-center gap-4 xl:gap-5 text-sm font-bold text-slate-600">
             <button
               type="button"
               onClick={() => navigateToTab('home')}
@@ -457,6 +486,17 @@ export default function App() {
               }`}
             >
               {isHi ? 'गणित खेल' : 'Games'}
+            </button>
+            <button
+              type="button"
+              onClick={() => navigateToTab('tables')}
+              className={`py-1.5 border-b-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+                activeTab === 'tables' && !activeQuiz && !activeMiniGame
+                  ? 'border-violet-600 text-violet-700'
+                  : 'border-transparent hover:text-slate-900'
+              }`}
+            >
+              {isHi ? 'पहाड़े 2–20' : 'Tables 2–20'}
             </button>
             <button
               type="button"
@@ -645,6 +685,15 @@ export default function App() {
             </button>
             <button
               type="button"
+              onClick={() => navigateToTab('tables')}
+              className={`px-2.5 py-1.5 rounded-lg whitespace-nowrap shrink-0 cursor-pointer ${
+                activeTab === 'tables' ? 'text-violet-700 bg-violet-50' : ''
+              }`}
+            >
+              {isHi ? 'पहाड़े 2–20' : 'Tables 2–20'}
+            </button>
+            <button
+              type="button"
               onClick={() => navigateToTab('worksheets')}
               className={`px-2.5 py-1.5 rounded-lg whitespace-nowrap shrink-0 cursor-pointer ${
                 activeTab === 'worksheets' ? 'text-sky-700 bg-sky-50' : ''
@@ -716,6 +765,12 @@ export default function App() {
               onLaunchGame={launchMiniGame}
             />
           </div>
+        ) : activeTab === 'tables' ? (
+          <MultiplicationTablesSection
+            lang={lang}
+            initialTable={initialTableSelection}
+            onPrintTables={handlePrintTables}
+          />
         ) : activeTab === 'worksheets' ? (
           <PrintableWorksheetsSection
             lang={lang}
@@ -1343,6 +1398,64 @@ export default function App() {
               onLaunchGame={launchMiniGame}
             />
 
+            {/* 5b. Multiplication Tables 2 to 20 Interactive Quick-Access Showcase */}
+            <section className="bg-gradient-to-br from-violet-50/90 via-white to-indigo-50/85 border border-violet-200/85 rounded-[2rem] p-6 sm:p-8 shadow-card-soft space-y-5">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
+                <div className="flex items-start gap-4 max-w-2xl">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-indigo-700 border-b-4 border-indigo-900 text-white flex items-center justify-center shrink-0 shadow-md">
+                    <Grid2x2 className="w-7 h-7" aria-hidden="true" />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-xs font-extrabold text-violet-700">
+                      {isHi
+                        ? 'बोलकर सुनें · उत्तर छिपाकर अभ्यास · A4 PDF चार्ट'
+                        : 'Read Aloud Voice · Hide Answers Practice · Printable A4 PDF'}
+                    </p>
+                    <h2 className="text-2xl font-bold text-slate-900">
+                      {isHi ? 'पहाड़े 2 से 20 (Tables 2 to 20)' : 'Multiplication Tables 2 to 20'}
+                    </h2>
+                    <p className="text-sm text-slate-600 leading-relaxed">
+                      {isHi
+                        ? '2 से 20 तक किसी भी संख्या का पूरा पहाड़ा (× 1 से × 10) बड़े कार्ड में सीखें, आवाज़ में सुनें और याददाश्त टेस्ट करें।'
+                        : 'Explore interactive tables from 2 to 20 (× 1 to × 10), listen aloud with voice reading, test your memory by hiding answers, or print an A4 reference poster.'}
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => openTablesTab(2)}
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-b from-violet-500 to-indigo-600 border-b-[5px] border-indigo-900 text-white text-sm sm:text-base font-extrabold shadow-md hover:brightness-105 active:translate-y-[2px] transition-all cursor-pointer shrink-0 whitespace-nowrap"
+                >
+                  <span>{isHi ? 'पहाड़े 2 से 20 खोलें' : 'Explore Tables 2 to 20'}</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2 pt-1">
+                <span className="text-xs font-extrabold text-slate-500 mr-1">
+                  {isHi ? 'सीधे खोलें:' : 'Quick jump:'}
+                </span>
+                {[2, 3, 4, 5, 6, 7, 8, 9, 12, 15, 20].map((num) => (
+                  <button
+                    key={`home-tbl-${num}`}
+                    type="button"
+                    onClick={() => openTablesTab(num)}
+                    className="px-3 py-1.5 rounded-xl bg-white border border-violet-200 border-b-[3px] border-b-violet-300 font-math text-xs sm:text-sm font-extrabold text-violet-900 hover:bg-violet-600 hover:text-white hover:border-violet-700 transition-colors cursor-pointer"
+                  >
+                    {num}×
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => openTablesTab('ALL')}
+                  className="px-3.5 py-1.5 rounded-xl bg-slate-900 text-white text-xs sm:text-sm font-bold hover:bg-slate-800 transition-colors cursor-pointer whitespace-nowrap"
+                >
+                  {isHi ? 'सभी पहाड़े चार्ट' : 'All Tables Chart'}
+                </button>
+              </div>
+            </section>
+
             {/* 6. Printable A4 PDF Worksheets Showcase Banner */}
             <section className="bg-gradient-to-br from-cyan-50/85 via-white to-sky-50/80 border border-sky-200/85 rounded-[2rem] p-6 sm:p-8 shadow-card-soft flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div className="flex items-start gap-4 max-w-2xl">
@@ -1545,6 +1658,13 @@ export default function App() {
                 </button>
                 <button
                   type="button"
+                  onClick={() => openTablesTab(2)}
+                  className="hover:text-slate-900 cursor-pointer"
+                >
+                  {isHi ? 'पहाड़े 2 से 20' : 'Tables 2 to 20'}
+                </button>
+                <button
+                  type="button"
                   onClick={() => navigateToTab('worksheets')}
                   className="hover:text-slate-900 cursor-pointer"
                 >
@@ -1643,7 +1763,11 @@ export default function App() {
     </div>
 
     <div className="hidden print:block bg-white text-slate-900">
-      <PrintableA4Sheet worksheet={printTargetWorksheet} lang={lang} />
+      {printTarget.kind === 'tables' ? (
+        <PrintableTablesA4Sheet selection={printTarget.selection} lang={lang} />
+      ) : (
+        <PrintableA4Sheet worksheet={printTarget.worksheet} lang={lang} />
+      )}
     </div>
     </>
   );
