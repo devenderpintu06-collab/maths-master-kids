@@ -97,17 +97,17 @@ export function MathGamesArcadeSection({
     <section
       id="math-games-arcade"
       aria-labelledby="arcade-section-heading"
-      className="space-y-5"
+      className="bg-gradient-to-br from-fuchsia-50/75 via-white to-indigo-50/80 border border-purple-200/75 rounded-[2rem] p-6 sm:p-8 shadow-card-soft space-y-6"
     >
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
         <div className="space-y-1">
-          <div className="inline-flex items-center gap-1.5 text-xs font-extrabold text-rose-600">
+          <div className="inline-flex items-center gap-1.5 text-xs font-extrabold text-fuchsia-700">
             <Gamepad2 className="w-4 h-4" />
             <span>{isHi ? 'मज़ेदार गणित खेल' : 'Fun Math Games'}</span>
           </div>
           <h2
             id="arcade-section-heading"
-            className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900"
+            className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900"
           >
             {isHi ? 'मैथ गेम्स आर्केड' : 'Math Games Arcade'}
           </h2>
@@ -118,13 +118,13 @@ export function MathGamesArcadeSection({
           </p>
         </div>
 
-        <span className="text-xs sm:text-sm font-semibold text-slate-500 whitespace-nowrap">
-          {isHi ? `कक्षा ${selectedClass} स्तर · 1 सितारा / सही उत्तर` : `Class ${selectedClass} Tuned · +1 Star / Win`}
+        <span className="text-xs sm:text-sm font-semibold text-purple-700/80 whitespace-nowrap">
+          {isHi ? `कक्षा ${selectedClass} स्तर · +1 सितारा / सही उत्तर` : `Class ${selectedClass} Tuned · +1 Star / Win`}
         </span>
       </div>
 
       {showClassPicker && onSelectClass && (
-        <div className="bg-white border border-slate-200/80 rounded-3xl p-4 sm:p-5 shadow-card-soft space-y-2.5">
+        <div className="bg-white/95 border border-purple-200/70 rounded-3xl p-4 sm:p-5 shadow-sm space-y-2.5">
           <p className="text-xs font-extrabold text-slate-700">
             {isHi ? 'खेल के लिए अपनी कक्षा चुनें:' : 'Choose Class Level for Games:'}
           </p>
@@ -138,8 +138,8 @@ export function MathGamesArcadeSection({
                   onClick={() => onSelectClass(cls.number)}
                   className={`py-2.5 px-2 rounded-2xl border text-center transition-all cursor-pointer ${
                     active
-                      ? 'bg-blue-600 border-blue-600 border-b-4 border-b-blue-800 text-white shadow-sm'
-                      : 'bg-slate-50 border-slate-200 border-b-[3px] border-b-slate-300 text-slate-800 hover:border-blue-300'
+                      ? 'bg-indigo-600 border-indigo-600 border-b-[5px] border-b-indigo-900 text-white shadow-sm'
+                      : 'bg-slate-50 border-slate-200 border-b-4 border-b-slate-300 text-slate-800 hover:border-indigo-300'
                   }`}
                 >
                   <span className="block text-xs sm:text-sm font-extrabold whitespace-nowrap">
@@ -163,27 +163,35 @@ export function MathGamesArcadeSection({
               onLaunchGame(game.id);
             }}
             style={{ borderBottomColor: game.borderBottomColor }}
-            className={`group relative overflow-hidden rounded-3xl p-6 text-left text-white border-b-[6px] ${game.gradientClass} shadow-[0_12px_24px_-8px_rgba(15,23,42,0.22)] transition-all duration-200 hover:-translate-y-1.5 hover:shadow-[0_18px_32px_-8px_rgba(15,23,42,0.28)] active:translate-y-[3px] cursor-pointer flex flex-col justify-between min-h-[220px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900`}
+            className={`group relative overflow-hidden rounded-3xl p-6 text-left text-white border-b-[6px] ${game.gradientClass} shadow-[0_14px_26px_-8px_rgba(15,23,42,0.26)] transition-all duration-200 hover:-translate-y-1.5 hover:shadow-[0_20px_34px_-8px_rgba(15,23,42,0.32)] active:translate-y-[3px] cursor-pointer flex flex-col justify-between min-h-[225px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900`}
           >
-            <div className="flex items-start justify-between gap-2">
-              <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-xs border border-white/25 flex items-center justify-center transition-transform duration-200 group-hover:scale-110 group-hover:rotate-3">
+            {/* Subtle decorative ring inside card */}
+            <div
+              className="pointer-events-none absolute -right-8 -bottom-8 w-28 h-28 rounded-full bg-white/10"
+              aria-hidden="true"
+            />
+
+            <div className="relative z-10 flex items-start justify-between gap-2">
+              <div className="w-16 h-16 rounded-2xl bg-white/22 backdrop-blur-xs border border-white/30 flex items-center justify-center transition-transform duration-200 group-hover:scale-110 group-hover:rotate-3 shadow-inner">
                 <MiniGameIllustration gameId={game.id} />
               </div>
-              <span className="text-[11px] font-bold text-white/95 bg-white/15 px-2.5 py-1 rounded-lg whitespace-nowrap">
+              <span className="text-[11px] font-bold text-white/95 bg-black/15 px-2.5 py-1 rounded-xl whitespace-nowrap">
                 {isHi ? game.badgeHi : game.badgeEn}
               </span>
             </div>
 
-            <div className="space-y-1.5 pt-4">
-              <h3 className="text-xl font-extrabold tracking-tight leading-snug">
+            <div className="relative z-10 space-y-1.5 pt-4">
+              <h3 className="text-xl font-bold tracking-tight leading-snug">
                 {isHi ? game.titleHi : game.titleEn}
               </h3>
               <p className="text-xs sm:text-sm font-medium text-white/95 leading-snug">
                 {isHi ? game.taglineHi : game.taglineEn}
               </p>
-              <span className="inline-flex items-center gap-1.5 pt-1 text-xs font-extrabold text-white">
-                <Play className="w-3.5 h-3.5 fill-current" />
-                {isHi ? 'अभी खेलें' : 'Play Now'}
+              <span className="inline-flex items-center gap-1.5 pt-2 text-xs font-extrabold text-white">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white/20 group-hover:bg-white/30 transition-colors">
+                  <Play className="w-3.5 h-3.5 fill-current" />
+                  {isHi ? 'अभी खेलें' : 'Play Now'}
+                </span>
               </span>
             </div>
           </button>

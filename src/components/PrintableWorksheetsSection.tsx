@@ -162,40 +162,60 @@ export function PrintableWorksheetsSection({
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-8 py-8 sm:py-10 space-y-8">
-      {/* Section Header */}
-      <div className="bg-gradient-to-br from-sky-50 via-white to-emerald-50/70 border border-blue-200/70 rounded-3xl p-6 sm:p-8 shadow-hero-soft space-y-3">
-        <div className="inline-flex items-center gap-2 text-xs font-extrabold text-blue-700">
-          <FileText className="w-4 h-4" />
-          <span>
+      {/* Section Header with Custom A4 Worksheet SVG Illustration */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-[#1E1B4B] via-[#1E40AF] to-[#0284C7] rounded-[2rem] p-6 sm:p-8 shadow-hero-soft text-white grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+        <div className="md:col-span-9 space-y-3">
+          <div className="inline-flex items-center gap-2 text-xs font-extrabold text-amber-300">
+            <FileText className="w-4 h-4" />
+            <span>
+              {isHi
+                ? 'कक्षा 1 से 5 · 40 निःशुल्क स्कूल-रेडी PDF वर्कशीट'
+                : 'Classes 1 to 5 · 40 Free School-Ready PDF Worksheets'}
+            </span>
+          </div>
+
+          <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-white">
+            {isHi ? 'प्रिंटेबल गणित वर्कशीट (PDF)' : 'Printable Maths Worksheets (PDF)'}
+          </h1>
+
+          <p className="text-sm sm:text-base text-sky-100 max-w-2xl leading-relaxed">
             {isHi
-              ? 'कक्षा 1 से 5 · 40 निःशुल्क स्कूल-रेडी PDF वर्कशीट'
-              : 'Classes 1 to 5 · 40 Free School-Ready PDF Worksheets'}
-          </span>
+              ? 'हर कक्षा (1 से 5) के लिए जोड़ (+), घटाव (−), गुणा (×) और भाग (÷) की 2-2 अलग वर्कशीट (कुल 40 वर्कशीट)। प्रत्येक शीट में बिना उत्तर के 15 प्रश्न हैं और एक क्लिक में साफ A4 PDF डाउनलोड या प्रिंट होती है।'
+              : 'Choose your class (1 to 5) and subject (+, −, ×, ÷) to download clean single-page A4 worksheets. Each sheet includes 15 grade-appropriate problems with blank answer lines and zero answer keys so kids can solve them directly on paper.'}
+          </p>
+
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold text-sky-200 pt-1">
+            <span>{isHi ? '5 कक्षाएँ' : '5 Classes'}</span>
+            <span aria-hidden="true">·</span>
+            <span>{isHi ? '4 विषय (+ − × ÷)' : '4 Subjects (+ − × ÷)'}</span>
+            <span aria-hidden="true">·</span>
+            <span>{isHi ? 'कुल 40 वर्कशीट' : '40 Total Worksheets'}</span>
+            <span aria-hidden="true">·</span>
+            <span>{isHi ? 'प्रति शीट 15 प्रश्न · 1-पेज A4' : '15 Questions / Sheet · 1-Page A4'}</span>
+          </div>
         </div>
 
-        <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
-          {isHi ? 'प्रिंटेबल गणित वर्कशीट (PDF)' : 'Printable Maths Worksheets (PDF)'}
-        </h1>
-
-        <p className="text-sm sm:text-base text-slate-600 max-w-3xl leading-relaxed">
-          {isHi
-            ? 'हर कक्षा (1 से 5) के लिए जोड़ (+), घटाव (−), गुणा (×) और भाग (÷) की 2-2 अलग वर्कशीट (कुल 40 वर्कशीट)। प्रत्येक शीट में बिना उत्तर के 15 प्रश्न हैं और एक क्लिक में साफ A4 PDF डाउनलोड या प्रिंट होती है।'
-            : 'Choose your class (1 to 5) and subject (+, −, ×, ÷) to download clean single-page A4 worksheets. Each sheet includes 15 grade-appropriate problems with blank answer lines and zero answer keys so kids can solve them directly on paper.'}
-        </p>
-
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold text-slate-500 pt-1">
-          <span>{isHi ? '5 कक्षाएँ' : '5 Classes'}</span>
-          <span aria-hidden="true">·</span>
-          <span>{isHi ? '4 विषय (+ − × ÷)' : '4 Subjects (+ − × ÷)'}</span>
-          <span aria-hidden="true">·</span>
-          <span>{isHi ? 'कुल 40 वर्कशीट' : '40 Total Worksheets'}</span>
-          <span aria-hidden="true">·</span>
-          <span>{isHi ? 'प्रति शीट 15 प्रश्न · 1-पेज A4' : '15 Questions / Sheet · 1-Page A4'}</span>
+        {/* Custom Vector A4 Sheet Stack Illustration */}
+        <div className="hidden md:flex md:col-span-3 justify-end" aria-hidden="true">
+          <svg viewBox="0 0 140 140" fill="none" className="w-32 h-32 drop-shadow-xl">
+            <rect x="30" y="14" width="84" height="108" rx="12" fill="#BAE6FD" transform="rotate(6 72 68)" />
+            <rect x="24" y="16" width="84" height="108" rx="12" fill="#FFFFFF" stroke="#E0F2FE" strokeWidth="2.5" />
+            <rect x="36" y="30" width="60" height="8" rx="4" fill="#1E40AF" />
+            <rect x="36" y="46" width="44" height="5" rx="2.5" fill="#94A3B8" />
+            <rect x="36" y="60" width="26" height="14" rx="4" fill="#EFF6FF" stroke="#BFDBFE" />
+            <rect x="68" y="60" width="26" height="14" rx="4" fill="#EFF6FF" stroke="#BFDBFE" />
+            <rect x="36" y="80" width="26" height="14" rx="4" fill="#EFF6FF" stroke="#BFDBFE" />
+            <rect x="68" y="80" width="26" height="14" rx="4" fill="#EFF6FF" stroke="#BFDBFE" />
+            <circle cx="104" cy="108" r="20" fill="#F59E0B" stroke="#FEF08A" strokeWidth="3" />
+            <text x="104" y="113" textAnchor="middle" fill="#FFFFFF" fontSize="12" fontWeight="800" fontFamily="Plus Jakarta Sans, sans-serif">
+              PDF
+            </text>
+          </svg>
         </div>
       </div>
 
       {/* Class 1-5 & Subject Controls */}
-      <div className="bg-white border border-slate-200/80 rounded-3xl p-5 sm:p-6 shadow-card-soft space-y-5">
+      <div className="bg-gradient-to-br from-sky-50/85 via-white to-indigo-50/70 border border-sky-200/80 rounded-[2rem] p-5 sm:p-6 shadow-card-soft space-y-5">
         <div className="space-y-2.5">
           <p className="text-sm font-extrabold text-slate-800">
             {isHi ? '1. कक्षा चुनें (कक्षा 1 से 5):' : '1. Select Class (Class 1 to Class 5):'}

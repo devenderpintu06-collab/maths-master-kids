@@ -12,6 +12,58 @@ interface BlogSectionProps {
   onStartDailyQuiz: () => void;
 }
 
+function BlogCardIllustration({ articleId, accentHex }: { articleId: string; accentHex: string }) {
+  if (articleId === 'remove-fear-of-maths') {
+    return (
+      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10 shrink-0" aria-hidden="true">
+        <rect x="4" y="4" width="40" height="40" rx="14" fill={accentHex} fillOpacity="0.14" />
+        <path
+          d="M24 35 C24 35 13 27.5 13 20 C13 16 16 13.5 19.5 13.5 C21.8 13.5 23.3 14.8 24 16.2 C24.7 14.8 26.2 13.5 28.5 13.5 C32 13.5 35 16 35 20 C35 27.5 24 35 24 35 Z"
+          fill={accentHex}
+        />
+        <path d="M21 22 L23.2 24.2 L27.5 19.8" stroke="white" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    );
+  }
+  if (articleId === 'master-tables-and-mental-math') {
+    return (
+      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10 shrink-0" aria-hidden="true">
+        <rect x="4" y="4" width="40" height="40" rx="14" fill={accentHex} fillOpacity="0.14" />
+        <rect x="12" y="12" width="10" height="10" rx="3" fill={accentHex} />
+        <rect x="26" y="12" width="10" height="10" rx="3" fill={accentHex} fillOpacity="0.55" />
+        <rect x="12" y="26" width="10" height="10" rx="3" fill={accentHex} fillOpacity="0.55" />
+        <rect x="26" y="26" width="10" height="10" rx="3" fill={accentHex} />
+      </svg>
+    );
+  }
+  if (articleId === 'ten-minutes-daily-mental-math') {
+    return (
+      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10 shrink-0" aria-hidden="true">
+        <rect x="4" y="4" width="40" height="40" rx="14" fill={accentHex} fillOpacity="0.14" />
+        <circle cx="24" cy="25" r="11" stroke={accentHex} strokeWidth="3.2" fill="white" />
+        <path d="M24 25 V19 M24 25 L29 27.5" stroke={accentHex} strokeWidth="3" strokeLinecap="round" />
+        <path d="M20 11 H28" stroke={accentHex} strokeWidth="3" strokeLinecap="round" />
+      </svg>
+    );
+  }
+  if (articleId === 'history-of-maths-stone-age-to-space-age') {
+    return (
+      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10 shrink-0" aria-hidden="true">
+        <rect x="4" y="4" width="40" height="40" rx="14" fill={accentHex} fillOpacity="0.14" />
+        <path d="M24 11 C19 17 18 24 18 30 H30 C30 24 29 17 24 11 Z" fill={accentHex} />
+        <circle cx="24" cy="22" r="2.8" fill="white" />
+        <path d="M21 30 L24 37 L27 30 Z" fill="#F59E0B" />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10 shrink-0" aria-hidden="true">
+      <rect x="4" y="4" width="40" height="40" rx="14" fill={accentHex} fillOpacity="0.14" />
+      <path d="M25 11 L15 26 H23 L22 37 L33 21 H25 L25 11 Z" fill={accentHex} stroke={accentHex} strokeWidth="1.5" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 export function BlogSection({
   lang,
   activeArticleId,
@@ -46,18 +98,18 @@ export function BlogSection({
     <section
       id="blog-section"
       aria-labelledby="blog-section-heading"
-      className="space-y-5"
+      className="bg-gradient-to-br from-amber-50/75 via-white to-orange-50/65 border border-amber-200/80 rounded-[2rem] p-6 sm:p-8 shadow-card-soft space-y-6"
     >
       {/* Section Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
         <div className="space-y-1">
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700">
+          <div className="inline-flex items-center gap-1.5 text-xs font-extrabold text-amber-700">
             <BookOpen className="w-4 h-4" />
             <span>{isHi ? 'Blog & Maths Tips (माता-पिता और बच्चों के लिए)' : 'Blog & Maths Tips'}</span>
           </div>
           <h2
             id="blog-section-heading"
-            className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900"
+            className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900"
           >
             {isHi ? 'गणित सीखने के आसान लेख और गाइड' : 'Helpful Maths Articles & Learning Guides'}
           </h2>
@@ -68,40 +120,37 @@ export function BlogSection({
           </p>
         </div>
 
-        <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
+        <span className="text-xs font-semibold text-amber-800/80 whitespace-nowrap">
           {isHi
             ? `${BLOG_ARTICLES.length} विस्तृत गाइड · EN / हिं`
             : `${BLOG_ARTICLES.length} Detailed Guides · EN / हिं`}
         </span>
       </div>
 
-      {/* 4 Colorful Article Cards */}
+      {/* Article Cards with Custom SVG Illustrations & 3D Tactile Buttons */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {BLOG_ARTICLES.map((article, idx) => (
           <article
             key={article.id}
-            className="bg-white border border-slate-200/80 rounded-3xl p-6 flex flex-col justify-between gap-5 shadow-card-soft hover:border-blue-300 hover:-translate-y-0.5 transition-all"
+            className="bg-white border border-slate-200/85 border-b-4 border-b-slate-300/80 rounded-3xl p-6 flex flex-col justify-between gap-5 shadow-sm hover:border-amber-300 hover:-translate-y-1 transition-all"
           >
             <div className="space-y-3">
-              <div className="flex items-center justify-between gap-2">
-                <span
-                  className={`inline-flex items-center px-2.5 py-1 rounded-lg border text-[11px] font-bold ${article.badgeBgClass}`}
-                >
-                  {isHi ? article.categoryHi : article.categoryEn}
-                </span>
-                <span className="inline-flex items-center gap-1 text-xs text-slate-500">
-                  <Clock className="w-3.5 h-3.5" aria-hidden="true" />
-                  {isHi ? article.readTimeHi : article.readTimeEn}
-                </span>
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <BlogCardIllustration articleId={article.id} accentHex={article.accentHex} />
+                  <div className="space-y-0.5">
+                    <span className="block text-xs font-extrabold" style={{ color: article.accentHex }}>
+                      {isHi ? article.categoryHi : article.categoryEn}
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-xs text-slate-500">
+                      <Clock className="w-3.5 h-3.5" aria-hidden="true" />
+                      {isHi ? article.readTimeHi : article.readTimeEn}
+                    </span>
+                  </div>
+                </div>
               </div>
 
-              <div
-                className="w-10 h-1.5 rounded-full"
-                style={{ backgroundColor: article.accentHex }}
-                aria-hidden="true"
-              />
-
-              <h3 className="text-lg font-extrabold text-slate-900 leading-snug">
+              <h3 className="text-lg sm:text-xl font-bold text-slate-900 leading-snug">
                 {isHi ? article.titleHi : article.titleEn}
               </h3>
 
@@ -113,7 +162,7 @@ export function BlogSection({
             <button
               type="button"
               onClick={() => handleOpenArticle(article.id)}
-              className="w-full inline-flex items-center justify-between gap-2 px-4 py-3 rounded-2xl text-sm font-bold text-white transition-opacity hover:opacity-95 cursor-pointer shadow-sm"
+              className="w-full inline-flex items-center justify-between gap-2 px-5 py-3 rounded-2xl text-sm font-extrabold text-white border-b-4 border-black/25 transition-all hover:brightness-105 active:translate-y-[2px] cursor-pointer shadow-sm"
               style={{ backgroundColor: article.accentHex }}
             >
               <span>

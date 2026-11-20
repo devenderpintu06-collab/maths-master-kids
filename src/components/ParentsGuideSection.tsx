@@ -59,17 +59,17 @@ export function ParentsGuideSection({ lang }: ParentsGuideSectionProps) {
     <section
       id="parents-guide"
       aria-labelledby="parents-guide-heading"
-      className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 space-y-6 shadow-card-soft"
+      className="bg-gradient-to-br from-sky-50/75 via-white to-emerald-50/60 border border-sky-200/80 rounded-[2rem] p-6 sm:p-8 space-y-6 shadow-card-soft"
     >
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-100 pb-5">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-sky-100 pb-5">
         <div className="space-y-1.5 max-w-2xl">
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700">
+          <div className="inline-flex items-center gap-1.5 text-xs font-extrabold text-blue-700">
             <BookOpen className="w-4 h-4" />
             <span>{isHi ? 'माता-पिता के लिए मार्गदर्शिका' : "Parent's Guide & Maths Tips"}</span>
           </div>
           <h2
             id="parents-guide-heading"
-            className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 text-balance"
+            className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 text-balance"
           >
             {isHi
               ? 'कक्षा 1 से 5 तक बच्चों का मानसिक गणित कैसे मज़बूत करें'
