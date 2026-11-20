@@ -16,6 +16,11 @@ export interface MathWorksheet {
   focusEn: string;
   focusHi: string;
   questions: WorksheetQuestion[];
+  isDaily?: boolean;
+  dateKey?: string;
+  displayDateEn?: string;
+  displayDateHi?: string;
+  variantNumber?: number;
 }
 
 function createRng(seed: number) {
@@ -479,3 +484,153 @@ function generateAllFortyWorksheets(): MathWorksheet[] {
 }
 
 export const ALL_WORKSHEETS: MathWorksheet[] = generateAllFortyWorksheets();
+
+const MONTHS_EN = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
+const MONTHS_HI = [
+  'जनवरी',
+  'फ़रवरी',
+  'मार्च',
+  'अप्रैल',
+  'मई',
+  'जून',
+  'जुलाई',
+  'अगस्त',
+  'सितंबर',
+  'अक्टूबर',
+  'नवंबर',
+  'दिसंबर',
+];
+
+export interface DailyDateInfo {
+  dateKey: string;
+  displayDateEn: string;
+  displayDateHi: string;
+  numericSeed: number;
+}
+
+export function getDailyDateInfo(referenceDate: Date = new Date()): DailyDateInfo {
+  const year = referenceDate.getFullYear();
+  const monthIdx = referenceDate.getMonth();
+  const month = monthIdx + 1;
+  const day = referenceDate.getDate();
+
+  const dateKey = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+  const displayDateEn = `${MONTHS_EN[monthIdx]} ${day}, ${year}`;
+  const displayDateHi = `${day} ${MONTHS_HI[monthIdx]} ${year}`;
+  const numericSeed = year * 10000 + month * 100 + day;
+
+  return { dateKey, displayDateEn, displayDateHi, numericSeed };
+}
+
+/**
+ * Auto-generates a brand-new set of 15 unique, grade-appropriate math problems (no answers)
+ * seeded by today's date + Class (1-5) + Operation (+, −, ×, ÷) + optional extra sheet variant.
+ */
+export function generateDailyWorksheet(
+  classNumber: ClassNumber,
+  operation: MathOperation,
+  variantNumber = 0,
+  referenceDate: Date = new Date()
+): MathWorksheet {
+  const dateInfo = getDailyDateInfo(referenceDate);
+  const meta = OP_META[operation];
+  const opIndex = (['ADDITION', 'SUBTRACTION', 'MULTIPLICATION', 'DIVISION'] as MathOperation[]).indexOf(
+    operation
+  );
+
+  // Mix date, class, operation, and variant cleanly into a 32-bit unsigned seed
+  const seed =
+    Math.imul(dateInfo.numericSeed, 2654435761) ^
+    Math.imul(classNumber + 17, 1597334677) ^
+    Math.imul(opIndex + 31, 3812015801) ^
+    Math.imul(variantNumber + 1, 2246822519);
+
+  const rng = createRng(seed >>> 0);
+  const symbol = meta.symbol;
+  const used = new Set<string>();
+  const collected: string[] = [];
+  let guard = 0;
+
+  while (collected.length < 15 && guard < 2000) {
+    guard++;
+    // Blend foundational (ws1) and challenge (ws2) ranges for rich daily variety
+    const tier: 1 | 2 = collected.length < 7 ? 1 : 2;
+    const [a, b] = generateEquationPair(rng, classNumber, operation, tier);
+    const expr = `${a} ${symbol} ${b}`;
+    if (!used.has(expr)) {
+      used.add(expr);
+      collected.push(expr);
+    }
+  }
+
+  if (collected.length < 15) {
+    const fallbackCandidates: string[] = [];
+    if (operation === 'MULTIPLICATION') {
+      for (let a = 1; a <= 10; a++) {
+        for (let b = 1; b <= 10; b++) fallbackCandidates.push(`${a} ${symbol} ${b}`);
+      }
+    } else if (operation === 'DIVISION') {
+      for (let d = 1; d <= 10; d++) {
+        for (let q = 1; q <= 10; q++) fallbackCandidates.push(`${d * q} ${symbol} ${d}`);
+      }
+    } else if (operation === 'ADDITION') {
+      for (let a = 1; a <= 20; a++) {
+        for (let b = 1; b <= 20; b++) fallbackCandidates.push(`${a} ${symbol} ${b}`);
+      }
+    } else {
+      for (let a = 2; a <= 25; a++) {
+        for (let b = 1; b < a; b++) fallbackCandidates.push(`${a} ${symbol} ${b}`);
+      }
+    }
+    for (const candidate of seededShuffle(fallbackCandidates, rng)) {
+      if (collected.length >= 15) break;
+      if (!used.has(candidate)) {
+        used.add(candidate);
+        collected.push(candidate);
+      }
+    }
+  }
+
+  const questions: WorksheetQuestion[] = seededShuffle(collected.slice(0, 15), rng).map(
+    (text, idx) => ({
+      number: idx + 1,
+      text,
+    })
+  );
+
+  const extraTagEn = variantNumber > 0 ? ` (Extra Sheet #${variantNumber})` : '';
+  const extraTagHi = variantNumber > 0 ? ` (अतिरिक्त शीट #${variantNumber})` : '';
+
+  return {
+    id: `daily-${dateInfo.dateKey}-c${classNumber}-${meta.shortCode}-v${variantNumber}`,
+    classNumber,
+    operation,
+    symbol,
+    worksheetNumber: 1,
+    titleEn: `Daily Maths Worksheet — Date: ${dateInfo.displayDateEn}${extraTagEn}`,
+    titleHi: `दैनिक गणित वर्कशीट — दिनांक: ${dateInfo.displayDateHi}${extraTagHi}`,
+    focusEn: `Class ${classNumber} · ${meta.en} (${symbol}) · Daily 15-Question Practice`,
+    focusHi: `कक्षा ${classNumber} · ${meta.hi} (${symbol}) · दैनिक 15-प्रश्न अभ्यास`,
+    questions,
+    isDaily: true,
+    dateKey: dateInfo.dateKey,
+    displayDateEn: dateInfo.displayDateEn,
+    displayDateHi: dateInfo.displayDateHi,
+    variantNumber,
+  };
+}
+

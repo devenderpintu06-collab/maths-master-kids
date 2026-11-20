@@ -78,19 +78,49 @@ export async function downloadWorksheetPdf(
     ? OP_LABELS[worksheet.operation].hi
     : OP_LABELS[worksheet.operation].en;
 
-  ctx.fillStyle = '#0F172A';
-  ctx.font = `700 28px ${sansFont}`;
-  ctx.fillText(
-    isHi
-      ? `कक्षा ${worksheet.classNumber} · ${opLabel} (${worksheet.symbol}) · वर्कशीट ${worksheet.worksheetNumber}`
-      : `Class ${worksheet.classNumber} · ${opLabel} (${worksheet.symbol}) · Worksheet ${worksheet.worksheetNumber}`,
-    W / 2,
-    176
-  );
+  if (worksheet.isDaily) {
+    ctx.fillStyle = '#0F172A';
+    ctx.font = `700 28px ${sansFont}`;
+    const extraEn =
+      worksheet.variantNumber && worksheet.variantNumber > 0
+        ? ` · Extra Sheet #${worksheet.variantNumber}`
+        : '';
+    const extraHi =
+      worksheet.variantNumber && worksheet.variantNumber > 0
+        ? ` · अतिरिक्त शीट #${worksheet.variantNumber}`
+        : '';
+    ctx.fillText(
+      isHi
+        ? `दैनिक गणित वर्कशीट — दिनांक: ${worksheet.displayDateHi ?? ''}${extraHi}`
+        : `Daily Maths Worksheet — Date: ${worksheet.displayDateEn ?? ''}${extraEn}`,
+      W / 2,
+      176
+    );
 
-  ctx.fillStyle = '#475569';
-  ctx.font = `500 21px ${sansFont}`;
-  ctx.fillText(isHi ? worksheet.focusHi : worksheet.focusEn, W / 2, 212);
+    ctx.fillStyle = '#475569';
+    ctx.font = `600 22px ${sansFont}`;
+    ctx.fillText(
+      isHi
+        ? `कक्षा ${worksheet.classNumber} · ${opLabel} (${worksheet.symbol}) · 15 अभ्यास प्रश्न`
+        : `Class ${worksheet.classNumber} · ${opLabel} (${worksheet.symbol}) · 15 Practice Problems`,
+      W / 2,
+      212
+    );
+  } else {
+    ctx.fillStyle = '#0F172A';
+    ctx.font = `700 28px ${sansFont}`;
+    ctx.fillText(
+      isHi
+        ? `कक्षा ${worksheet.classNumber} · ${opLabel} (${worksheet.symbol}) · वर्कशीट ${worksheet.worksheetNumber}`
+        : `Class ${worksheet.classNumber} · ${opLabel} (${worksheet.symbol}) · Worksheet ${worksheet.worksheetNumber}`,
+      W / 2,
+      176
+    );
+
+    ctx.fillStyle = '#475569';
+    ctx.font = `500 21px ${sansFont}`;
+    ctx.fillText(isHi ? worksheet.focusHi : worksheet.focusEn, W / 2, 212);
+  }
 
   // Header divider
   ctx.strokeStyle = '#94A3B8';
@@ -111,7 +141,17 @@ export async function downloadWorksheetPdf(
   ctx.textAlign = 'left';
   ctx.fillStyle = '#0F172A';
   ctx.font = `700 22px ${sansFont}`;
-  if (isHi) {
+  if (worksheet.isDaily) {
+    if (isHi) {
+      ctx.fillText('विद्यार्थी का नाम: __________________________', 116, 308);
+      ctx.fillText('कक्षा: ____________', 810, 308);
+      ctx.fillText('अंक: ______ / 15', 1190, 308);
+    } else {
+      ctx.fillText('Student Name: __________________________', 116, 308);
+      ctx.fillText('Class: ____________', 810, 308);
+      ctx.fillText('Score: ______ / 15', 1190, 308);
+    }
+  } else if (isHi) {
     ctx.fillText('विद्यार्थी का नाम: ___________________', 116, 308);
     ctx.fillText('कक्षा: _______', 660, 308);
     ctx.fillText('दिनांक: ___________', 895, 308);
@@ -222,6 +262,12 @@ export async function downloadWorksheetPdf(
   pdf.addImage(imgData, 'PNG', 0, 0, 210, 297, undefined, 'FAST');
 
   const safeOp = OP_LABELS[worksheet.operation].en;
-  const filename = `MathsMasterKids_Class${worksheet.classNumber}_${safeOp}_Worksheet${worksheet.worksheetNumber}.pdf`;
+  const filename = worksheet.isDaily
+    ? `MathsMasterKids_Daily_${worksheet.dateKey ?? 'Today'}_Class${worksheet.classNumber}_${safeOp}${
+        worksheet.variantNumber && worksheet.variantNumber > 0
+          ? `_Extra${worksheet.variantNumber}`
+          : ''
+      }.pdf`
+    : `MathsMasterKids_Class${worksheet.classNumber}_${safeOp}_Worksheet${worksheet.worksheetNumber}.pdf`;
   pdf.save(filename);
 }

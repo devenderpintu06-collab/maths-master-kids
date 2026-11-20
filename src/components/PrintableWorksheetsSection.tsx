@@ -1,10 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
+  Calendar,
   CheckCircle2,
   Download,
   Eye,
   FileText,
   Printer,
+  RefreshCw,
+  RotateCcw,
+  Sparkles,
   X,
 } from 'lucide-react';
 import {
@@ -14,7 +18,11 @@ import {
   type ClassNumber,
   type MathOperation,
 } from '../data/mathsMaster';
-import { ALL_WORKSHEETS, type MathWorksheet } from '../data/worksheets';
+import {
+  ALL_WORKSHEETS,
+  generateDailyWorksheet,
+  type MathWorksheet,
+} from '../data/worksheets';
 import { downloadWorksheetPdf } from '../utils/worksheetPdf';
 import { soundFx } from '../utils/sound';
 
@@ -41,24 +49,63 @@ export function PrintableA4Sheet({ worksheet, lang }: PrintableA4SheetProps) {
         <h2 className="font-display text-xl sm:text-2xl font-extrabold text-blue-900 tracking-tight">
           Maths Master Kids (mathsmasterkids.in)
         </h2>
-        <p className="text-sm sm:text-base font-bold text-slate-800 mt-0.5">
-          {isHi
-            ? `कक्षा ${worksheet.classNumber} · ${opLabel} (${worksheet.symbol}) · वर्कशीट ${worksheet.worksheetNumber}`
-            : `Class ${worksheet.classNumber} · ${opLabel} (${worksheet.symbol}) · Worksheet ${worksheet.worksheetNumber}`}
-        </p>
-        <p className="text-xs text-slate-500 mt-0.5">
-          {isHi ? worksheet.focusHi : worksheet.focusEn}
-        </p>
+        {worksheet.isDaily ? (
+          <>
+            <p className="text-sm sm:text-base font-extrabold text-slate-900 mt-0.5">
+              {isHi
+                ? `दैनिक गणित वर्कशीट — दिनांक: ${worksheet.displayDateHi ?? ''}${
+                    worksheet.variantNumber && worksheet.variantNumber > 0
+                      ? ` · अतिरिक्त शीट #${worksheet.variantNumber}`
+                      : ''
+                  }`
+                : `Daily Maths Worksheet — Date: ${worksheet.displayDateEn ?? ''}${
+                    worksheet.variantNumber && worksheet.variantNumber > 0
+                      ? ` · Extra Sheet #${worksheet.variantNumber}`
+                      : ''
+                  }`}
+            </p>
+            <p className="text-xs font-semibold text-slate-600 mt-0.5">
+              {isHi
+                ? `कक्षा ${worksheet.classNumber} · ${opLabel} (${worksheet.symbol}) · 15 अभ्यास प्रश्न`
+                : `Class ${worksheet.classNumber} · ${opLabel} (${worksheet.symbol}) · 15 Practice Problems`}
+            </p>
+          </>
+        ) : (
+          <>
+            <p className="text-sm sm:text-base font-bold text-slate-800 mt-0.5">
+              {isHi
+                ? `कक्षा ${worksheet.classNumber} · ${opLabel} (${worksheet.symbol}) · वर्कशीट ${worksheet.worksheetNumber}`
+                : `Class ${worksheet.classNumber} · ${opLabel} (${worksheet.symbol}) · Worksheet ${worksheet.worksheetNumber}`}
+            </p>
+            <p className="text-xs text-slate-500 mt-0.5">
+              {isHi ? worksheet.focusHi : worksheet.focusEn}
+            </p>
+          </>
+        )}
       </div>
 
       {/* Student Details Strip */}
       <div className="bg-slate-50 border border-slate-300 rounded-lg px-3.5 py-2.5 mb-3 text-xs sm:text-[13px] font-bold text-slate-800 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 print:flex-nowrap print:text-[11.5px]">
-        <span>
-          {isHi ? 'विद्यार्थी का नाम: ___________________' : 'Student Name: ___________________'}
-        </span>
-        <span>{isHi ? 'कक्षा: _______' : 'Class: _______'}</span>
-        <span>{isHi ? 'दिनांक: ___________' : 'Date: ___________'}</span>
-        <span>{isHi ? 'अंक: ____ / 15' : 'Score: ____ / 15'}</span>
+        {worksheet.isDaily ? (
+          <>
+            <span>
+              {isHi
+                ? 'विद्यार्थी का नाम: _________________________'
+                : 'Student Name: _________________________'}
+            </span>
+            <span>{isHi ? 'कक्षा: __________' : 'Class: __________'}</span>
+            <span>{isHi ? 'अंक: ______ / 15' : 'Score: ______ / 15'}</span>
+          </>
+        ) : (
+          <>
+            <span>
+              {isHi ? 'विद्यार्थी का नाम: ___________________' : 'Student Name: ___________________'}
+            </span>
+            <span>{isHi ? 'कक्षा: _______' : 'Class: _______'}</span>
+            <span>{isHi ? 'दिनांक: ___________' : 'Date: ___________'}</span>
+            <span>{isHi ? 'अंक: ____ / 15' : 'Score: ____ / 15'}</span>
+          </>
+        )}
       </div>
 
       <p className="text-xs font-semibold text-slate-600 mb-3 print:text-[11px]">
@@ -131,9 +178,26 @@ export function PrintableWorksheetsSection({
 }: PrintableWorksheetsSectionProps) {
   const isHi = lang === 'hi';
   const [selectedSubject, setSelectedSubject] = useState<MathOperation | 'ALL'>('ALL');
+  const [dailyOp, setDailyOp] = useState<MathOperation>('ADDITION');
+  const [dailyVariant, setDailyVariant] = useState<number>(0);
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
   const [downloadedId, setDownloadedId] = useState<string | null>(null);
   const [previewWorksheet, setPreviewWorksheet] = useState<MathWorksheet | null>(null);
+
+  useEffect(() => {
+    setDailyVariant(0);
+  }, [selectedClass, dailyOp]);
+
+  const dailyWorksheet = useMemo(
+    () => generateDailyWorksheet(selectedClass, dailyOp, dailyVariant),
+    [selectedClass, dailyOp, dailyVariant]
+  );
+
+  const dailyLeftCol = dailyWorksheet.questions.slice(0, 8);
+  const dailyRightCol = dailyWorksheet.questions.slice(8, 15);
+  const isDailyDownloading = downloadingId === dailyWorksheet.id;
+  const isDailyDownloaded = downloadedId === dailyWorksheet.id;
+  const dailyOpMeta = OPERATIONS.find((o) => o.id === dailyOp) ?? OPERATIONS[0];
 
   const classWorksheets = ALL_WORKSHEETS.filter((ws) => ws.classNumber === selectedClass);
   const visibleOperations =
@@ -185,11 +249,13 @@ export function PrintableWorksheetsSection({
           </p>
 
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold text-sky-200 pt-1">
+            <span>{isHi ? 'रोज़ नई दैनिक वर्कशीट' : 'Auto Daily Worksheet'}</span>
+            <span aria-hidden="true">·</span>
             <span>{isHi ? '5 कक्षाएँ' : '5 Classes'}</span>
             <span aria-hidden="true">·</span>
             <span>{isHi ? '4 विषय (+ − × ÷)' : '4 Subjects (+ − × ÷)'}</span>
             <span aria-hidden="true">·</span>
-            <span>{isHi ? 'कुल 40 वर्कशीट' : '40 Total Worksheets'}</span>
+            <span>{isHi ? '40 स्टैटिक वर्कशीट' : '40 Static Worksheets'}</span>
             <span aria-hidden="true">·</span>
             <span>{isHi ? 'प्रति शीट 15 प्रश्न · 1-पेज A4' : '15 Questions / Sheet · 1-Page A4'}</span>
           </div>
@@ -212,6 +278,258 @@ export function PrintableWorksheetsSection({
             </text>
           </svg>
         </div>
+      </div>
+
+      {/* ===================================================================== */}
+      {/* TODAY'S DAILY WORKSHEET (AUTO-SEEDED BY TODAY'S DATE)                 */}
+      {/* ===================================================================== */}
+      <section
+        aria-labelledby="daily-worksheet-heading"
+        className="bg-gradient-to-br from-emerald-50/90 via-white to-sky-50/85 border-2 border-emerald-200/90 rounded-[2rem] p-5 sm:p-7 shadow-card-soft space-y-5"
+      >
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div className="space-y-1.5">
+            <div className="inline-flex flex-wrap items-center gap-2 text-xs font-extrabold text-emerald-700">
+              <Calendar className="w-4 h-4 shrink-0" />
+              <span>
+                {isHi
+                  ? 'आज की दैनिक वर्कशीट · हर दिन स्वतः नए प्रश्न'
+                  : "Today's Daily Worksheet · Auto-Generated Every Day"}
+              </span>
+              {dailyVariant > 0 && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300">
+                  <Sparkles className="w-3 h-3" />
+                  {isHi ? `अतिरिक्त शीट #${dailyVariant}` : `Extra Sheet #${dailyVariant}`}
+                </span>
+              )}
+            </div>
+
+            <h2
+              id="daily-worksheet-heading"
+              className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight"
+            >
+              {isHi
+                ? `दैनिक गणित वर्कशीट — दिनांक: ${dailyWorksheet.displayDateHi ?? ''}`
+                : `Daily Maths Worksheet — Date: ${dailyWorksheet.displayDateEn ?? ''}`}
+            </h2>
+
+            <p className="text-xs sm:text-sm text-slate-600 max-w-2xl leading-relaxed">
+              {isHi
+                ? 'आज की तारीख के आधार पर हर कक्षा (1 से 5) और हर विषय (+, −, ×, ÷) के लिए रोज़ 15 नए अभ्यास प्रश्न (बिना उत्तर) अपने आप तैयार होते हैं। अतिरिक्त अभ्यास के लिए नीचे नई शीट भी बना सकते हैं।'
+                : 'Automatically generates a fresh set of 15 grade-level practice problems (zero answers) every day using today’s date for Classes 1 to 5 and all 4 operations. Need an extra sheet right now? Click Generate New Practice Sheet.'}
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2">
+            {dailyVariant > 0 && (
+              <button
+                type="button"
+                onClick={() => {
+                  soundFx.playClick();
+                  setDailyVariant(0);
+                }}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-amber-300 bg-amber-50 hover:bg-amber-100 text-xs font-bold text-amber-900 cursor-pointer whitespace-nowrap"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                {isHi ? 'आज की मूल शीट' : "Today's Default Sheet"}
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => {
+                soundFx.playClick();
+                setPreviewWorksheet(dailyWorksheet);
+              }}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-emerald-200 bg-white hover:bg-emerald-50 text-xs font-bold text-emerald-900 cursor-pointer whitespace-nowrap shadow-xs"
+            >
+              <Eye className="w-3.5 h-3.5" />
+              {isHi ? 'A4 प्रीव्यू' : 'Preview A4'}
+            </button>
+          </div>
+        </div>
+
+        {/* Daily Worksheet Controls: Class 1-5 & 4 Operations */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 bg-white/90 border border-emerald-100 rounded-2xl p-4">
+          <div className="lg:col-span-6 space-y-2">
+            <p className="text-xs font-extrabold text-slate-700 uppercase tracking-wide">
+              {isHi ? 'कक्षा चुनें (1 से 5)' : 'Choose Class (1 to 5)'}
+            </p>
+            <div className="grid grid-cols-5 gap-1.5">
+              {CLASS_LEVELS.map((cls) => {
+                const active = cls.number === selectedClass;
+                return (
+                  <button
+                    key={`daily-cls-${cls.number}`}
+                    type="button"
+                    onClick={() => {
+                      soundFx.playClick();
+                      onSelectClass(cls.number);
+                    }}
+                    className={`py-2 px-1.5 rounded-xl border text-center text-xs font-extrabold transition-all cursor-pointer whitespace-nowrap ${
+                      active
+                        ? 'bg-emerald-600 border-emerald-600 border-b-[3px] border-b-emerald-800 text-white shadow-xs'
+                        : 'bg-slate-50 border-slate-200 border-b-2 border-b-slate-300 text-slate-700 hover:bg-emerald-50/70'
+                    }`}
+                  >
+                    {isHi ? `क. ${cls.number}` : `Class ${cls.number}`}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="lg:col-span-6 space-y-2">
+            <p className="text-xs font-extrabold text-slate-700 uppercase tracking-wide">
+              {isHi ? 'गणित विषय चुनें' : 'Choose Operation'}
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+              {OPERATIONS.map((op) => {
+                const active = dailyOp === op.id;
+                return (
+                  <button
+                    key={`daily-op-${op.id}`}
+                    type="button"
+                    onClick={() => {
+                      soundFx.playClick();
+                      setDailyOp(op.id);
+                    }}
+                    className={`py-2 px-2 rounded-xl border text-xs font-extrabold transition-all cursor-pointer whitespace-nowrap inline-flex items-center justify-center gap-1 ${
+                      active
+                        ? 'text-white border-transparent border-b-[3px] border-b-black/25 shadow-xs'
+                        : 'bg-slate-50 border-slate-200 border-b-2 border-b-slate-300 text-slate-700 hover:bg-slate-100'
+                    }`}
+                    style={active ? { backgroundColor: op.bgHex } : undefined}
+                  >
+                    <span className="font-math font-extrabold">{op.symbol}</span>
+                    <span>{isHi ? op.titleHi : op.titleEn}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Live 2-Column Single-Page A4 Preview of Today's 15 Problems (Zero Answers) */}
+        <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-3.5 shadow-xs">
+          <div className="border-b border-slate-200 pb-3 text-center space-y-1">
+            <p className="font-display text-sm sm:text-base font-extrabold text-blue-900">
+              Maths Master Kids (mathsmasterkids.in)
+            </p>
+            <p className="text-xs sm:text-sm font-extrabold text-slate-800">
+              {isHi
+                ? `दैनिक गणित वर्कशीट — दिनांक: ${dailyWorksheet.displayDateHi ?? ''}`
+                : `Daily Maths Worksheet — Date: ${dailyWorksheet.displayDateEn ?? ''}`}
+              {' · '}
+              <span style={{ color: dailyOpMeta.bgHex }}>
+                {isHi
+                  ? `कक्षा ${selectedClass} · ${dailyOpMeta.titleHi} (${dailyOpMeta.symbol})`
+                  : `Class ${selectedClass} · ${dailyOpMeta.titleEn} (${dailyOpMeta.symbol})`}
+              </span>
+            </p>
+            <p className="text-[11px] sm:text-xs font-semibold text-slate-600 pt-0.5">
+              {isHi
+                ? 'विद्यार्थी का नाम: ___________________   कक्षा: _______   अंक: ____ / 15'
+                : 'Student Name: ___________________   Class: _______   Score: ____ / 15'}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-2">
+            <div className="space-y-2">
+              {dailyLeftCol.map((q) => (
+                <p
+                  key={q.number}
+                  className="font-math text-xs sm:text-sm font-bold text-slate-800 bg-slate-50/90 border border-slate-200 rounded-xl px-3 py-2 whitespace-nowrap overflow-x-auto"
+                >
+                  {q.number}) {q.text} = ______
+                </p>
+              ))}
+            </div>
+            <div className="space-y-2">
+              {dailyRightCol.map((q) => (
+                <p
+                  key={q.number}
+                  className="font-math text-xs sm:text-sm font-bold text-slate-800 bg-slate-50/90 border border-slate-200 rounded-xl px-3 py-2 whitespace-nowrap overflow-x-auto"
+                >
+                  {q.number}) {q.text} = ______
+                </p>
+              ))}
+              <div className="border border-dashed border-emerald-300 bg-emerald-50/50 rounded-xl px-3 py-2 text-[11px] sm:text-xs font-semibold text-emerald-800">
+                {isHi
+                  ? '15 नए प्रश्न · कोई उत्तर कुंजी नहीं · 2 कॉलम A4 पेज के लिए तैयार'
+                  : '15 Fresh Questions · No Answer Key · Formatted in 2 Columns for 1 A4 Page'}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Action Buttons: Download PDF / Print Daily Worksheet, Print A4, Generate New Practice Sheet */}
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            disabled={isDailyDownloading}
+            onClick={() => void handleDownloadPdf(dailyWorksheet)}
+            className={`flex-1 min-w-[230px] inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl text-xs sm:text-sm font-extrabold text-white border-b-4 transition-all active:translate-y-[1px] cursor-pointer disabled:opacity-70 whitespace-nowrap ${
+              isDailyDownloaded
+                ? 'bg-emerald-600 border-emerald-800'
+                : 'bg-blue-600 border-blue-800 hover:bg-blue-700'
+            }`}
+          >
+            {isDailyDownloaded ? (
+              <>
+                <CheckCircle2 className="w-4 h-4 shrink-0" />
+                {isHi ? 'दैनिक PDF डाउनलोड हो गई!' : 'Daily PDF Downloaded!'}
+              </>
+            ) : (
+              <>
+                <Download className="w-4 h-4 shrink-0" />
+                {isDailyDownloading
+                  ? isHi
+                    ? 'PDF बन रही है...'
+                    : 'Preparing PDF...'
+                  : isHi
+                    ? 'दैनिक वर्कशीट PDF डाउनलोड / प्रिंट'
+                    : 'Download PDF / Print Daily Worksheet'}
+              </>
+            )}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => handlePrint(dailyWorksheet)}
+            className="inline-flex items-center justify-center gap-1.5 px-4 py-3.5 rounded-2xl border border-slate-300 border-b-4 border-b-slate-400 bg-white hover:bg-slate-50 text-slate-800 text-xs sm:text-sm font-bold transition-all active:translate-y-[1px] cursor-pointer whitespace-nowrap shrink-0"
+          >
+            <Printer className="w-4 h-4 shrink-0" />
+            {isHi ? 'प्रिंट A4' : 'Print A4'}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              soundFx.playClick();
+              setDailyVariant((v) => v + 1);
+            }}
+            className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white border-b-4 border-emerald-800 text-xs sm:text-sm font-extrabold transition-all active:translate-y-[1px] cursor-pointer whitespace-nowrap shrink-0"
+          >
+            <RefreshCw className="w-4 h-4 shrink-0" />
+            {isHi ? 'नई प्रैक्टिस शीट बनाएँ' : 'Generate New Practice Sheet'}
+          </button>
+        </div>
+      </section>
+
+      {/* ===================================================================== */}
+      {/* 40 STATIC CURRICULUM WORKSHEETS LIBRARY                               */}
+      {/* ===================================================================== */}
+      <div className="pt-2 space-y-2">
+        <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900">
+          {isHi
+            ? 'संपूर्ण प्रिंटेबल वर्कशीट लाइब्रेरी (40 वर्कशीट · कक्षा 1 से 5)'
+            : 'Complete Printable Worksheet Library (40 Worksheets · Classes 1 to 5)'}
+        </h2>
+        <p className="text-xs sm:text-sm text-slate-600">
+          {isHi
+            ? 'हर कक्षा और विषय के लिए 2 स्थायी स्कूल-रेडी अभ्यास वर्कशीट नीचे उपलब्ध हैं।'
+            : 'Browse all 40 permanent grade-calibrated practice worksheets — 2 distinct sheets per subject for every class.'}
+        </p>
       </div>
 
       {/* Class 1-5 & Subject Controls */}
@@ -482,7 +800,13 @@ export function PrintableWorksheetsSection({
                   className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 border-b-[3px] border-blue-800 text-white text-xs sm:text-sm font-bold hover:bg-blue-700 cursor-pointer whitespace-nowrap"
                 >
                   <Download className="w-4 h-4" />
-                  {isHi ? 'PDF डाउनलोड / प्रिंट' : 'Download PDF / Print Worksheet'}
+                  {previewWorksheet.isDaily
+                    ? isHi
+                      ? 'दैनिक वर्कशीट PDF डाउनलोड / प्रिंट'
+                      : 'Download PDF / Print Daily Worksheet'
+                    : isHi
+                      ? 'PDF डाउनलोड / प्रिंट'
+                      : 'Download PDF / Print Worksheet'}
                 </button>
                 <button
                   type="button"
