@@ -56,6 +56,18 @@ function BlogCardIllustration({ articleId, accentHex }: { articleId: string; acc
       </svg>
     );
   }
+  if (articleId === 'memorize-tables-2-to-20-easily') {
+    return (
+      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10 shrink-0" aria-hidden="true">
+        <rect x="4" y="4" width="40" height="40" rx="14" fill={accentHex} fillOpacity="0.14" />
+        <rect x="11" y="13" width="26" height="22" rx="6" fill="white" stroke={accentHex} strokeWidth="2.6" />
+        <path d="M11 20 H37 M20 20 V35 M29 20 V35" stroke={accentHex} strokeWidth="2.2" />
+        <circle cx="15.5" cy="16.5" r="1.4" fill={accentHex} />
+        <circle cx="24.5" cy="16.5" r="1.4" fill={accentHex} />
+        <circle cx="33" cy="16.5" r="1.4" fill={accentHex} />
+      </svg>
+    );
+  }
   return (
     <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10 shrink-0" aria-hidden="true">
       <rect x="4" y="4" width="40" height="40" rx="14" fill={accentHex} fillOpacity="0.14" />
