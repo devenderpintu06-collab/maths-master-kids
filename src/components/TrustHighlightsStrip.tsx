@@ -71,7 +71,7 @@ export function TrustHighlightsStrip({
   return (
     <section
       aria-labelledby="trust-highlights-heading"
-      className="bg-white border border-indigo-100 rounded-[2rem] p-6 sm:p-8 shadow-card-soft space-y-5"
+      className="bg-white border border-indigo-100 rounded-3xl sm:rounded-[2rem] p-4 sm:p-8 shadow-card-soft space-y-5"
     >
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
         <div className="space-y-1">
@@ -87,7 +87,7 @@ export function TrustHighlightsStrip({
               : 'Why Parents & Teachers Trust Maths Master Kids'}
           </h2>
         </div>
-        <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
+        <span className="text-xs font-semibold text-slate-500">
           {isHi ? 'सुरक्षित · ऑफ़लाइन-फ्रेंडली · COPPA जागरूक' : 'Safe · Offline-Ready · COPPA-Aware'}
         </span>
       </div>

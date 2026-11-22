@@ -18,37 +18,37 @@ interface HeroShowcaseProps {
  */
 function HeroMascotTrophyIllustration() {
   return (
-    <div className="relative w-full max-w-[330px] mx-auto select-none" aria-hidden="true">
+    <div className="relative w-full max-w-[235px] sm:max-w-[290px] lg:max-w-[330px] mx-auto select-none px-1 sm:px-0" aria-hidden="true">
       {/* Ambient Radial Halo behind Mascot */}
       <div className="absolute inset-4 rounded-full bg-gradient-to-tr from-sky-400/30 via-indigo-400/20 to-amber-300/35 blur-2xl pointer-events-none" />
 
-      {/* Floating Glowing 3D Math Badges */}
-      <div className="absolute -top-2 left-1 sm:left-2 z-20 animate-float-symbol">
-        <div className="w-11 h-11 rounded-2xl bg-gradient-to-b from-emerald-400 to-emerald-600 border-b-4 border-emerald-800 shadow-[0_10px_22px_rgba(16,185,129,0.45)] flex items-center justify-center font-math text-xl font-extrabold text-white">
+      {/* Floating Glowing 3D Math Badges (inset cleanly on narrow screens to prevent clipping) */}
+      <div className="absolute -top-1 left-1 sm:-top-2 sm:left-2 z-20 animate-float-symbol">
+        <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-gradient-to-b from-emerald-400 to-emerald-600 border-b-[3px] sm:border-b-4 border-emerald-800 shadow-[0_10px_22px_rgba(16,185,129,0.45)] flex items-center justify-center font-math text-lg sm:text-xl font-extrabold text-white">
           +
         </div>
       </div>
 
-      <div className="absolute top-3 -right-1 sm:right-0 z-20 animate-float-symbol-alt">
-        <div className="px-3 py-1.5 rounded-2xl bg-gradient-to-b from-amber-300 via-amber-400 to-orange-500 border-b-4 border-orange-700 shadow-[0_10px_24px_rgba(245,158,11,0.5)] font-math text-xs sm:text-sm font-extrabold text-slate-950">
+      <div className="absolute top-2 right-0 sm:top-3 sm:right-0 z-20 animate-float-symbol-alt">
+        <div className="px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl sm:rounded-2xl bg-gradient-to-b from-amber-300 via-amber-400 to-orange-500 border-b-[3px] sm:border-b-4 border-orange-700 shadow-[0_10px_24px_rgba(245,158,11,0.5)] font-math text-[11px] sm:text-sm font-extrabold text-slate-950">
           100%
         </div>
       </div>
 
-      <div className="absolute top-[46%] -left-2 sm:-left-3 z-20 animate-float-symbol-alt">
-        <div className="w-10 h-10 rounded-2xl bg-gradient-to-b from-sky-400 to-blue-600 border-b-4 border-blue-800 shadow-[0_10px_22px_rgba(56,189,248,0.45)] flex items-center justify-center font-math text-xl font-extrabold text-white">
+      <div className="absolute top-[46%] left-0 sm:-left-3 z-20 animate-float-symbol-alt">
+        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-gradient-to-b from-sky-400 to-blue-600 border-b-[3px] sm:border-b-4 border-blue-800 shadow-[0_10px_22px_rgba(56,189,248,0.45)] flex items-center justify-center font-math text-base sm:text-xl font-extrabold text-white">
           −
         </div>
       </div>
 
-      <div className="absolute top-[44%] -right-2 sm:-right-3 z-20 animate-float-symbol">
-        <div className="w-10 h-10 rounded-2xl bg-gradient-to-b from-amber-400 to-orange-600 border-b-4 border-orange-800 shadow-[0_10px_22px_rgba(249,115,22,0.45)] flex items-center justify-center font-math text-xl font-extrabold text-white">
+      <div className="absolute top-[46%] right-0 sm:-right-3 z-20 animate-float-symbol">
+        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-gradient-to-b from-amber-400 to-orange-600 border-b-[3px] sm:border-b-4 border-orange-800 shadow-[0_10px_22px_rgba(249,115,22,0.45)] flex items-center justify-center font-math text-base sm:text-xl font-extrabold text-white">
           ×
         </div>
       </div>
 
-      <div className="absolute bottom-2 left-6 z-20 animate-float-symbol">
-        <div className="w-10 h-10 rounded-2xl bg-gradient-to-b from-fuchsia-400 to-purple-600 border-b-4 border-purple-800 shadow-[0_10px_22px_rgba(168,85,247,0.45)] flex items-center justify-center font-math text-xl font-extrabold text-white">
+      <div className="absolute bottom-1 left-4 sm:bottom-2 sm:left-6 z-20 animate-float-symbol">
+        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-gradient-to-b from-fuchsia-400 to-purple-600 border-b-[3px] sm:border-b-4 border-purple-800 shadow-[0_10px_22px_rgba(168,85,247,0.45)] flex items-center justify-center font-math text-base sm:text-xl font-extrabold text-white">
           ÷
         </div>
       </div>
@@ -186,7 +186,6 @@ function HeroMascotTrophyIllustration() {
 function buildThreeOptions(prompt: QuickArithmeticPrompt): number[] {
   const distractors = prompt.options.filter((o) => o !== prompt.answer).slice(0, 2);
   const combined = [prompt.answer, ...distractors];
-  // Deterministic-feeling shuffle
   for (let i = combined.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [combined[i], combined[j]] = [combined[j], combined[i]];
@@ -238,35 +237,35 @@ export function HeroShowcase({
   const isRight = isAnswered && picked === challenge.answer;
 
   return (
-    <div className="flex flex-col items-center gap-4 w-full">
+    <div className="flex flex-col items-center gap-3.5 sm:gap-4 w-full">
       {/* Mascot + Trophy + Floating 3D Math Badges */}
       <HeroMascotTrophyIllustration />
 
       {/* Live Interactive "Today's Mini Challenge" Preview Card */}
-      <div className="w-full max-w-sm bg-white/12 backdrop-blur-md border border-white/25 rounded-3xl p-4 sm:p-5 shadow-[0_14px_34px_rgba(15,23,42,0.28)] space-y-3.5 text-white">
+      <div className="w-full max-w-sm bg-white/12 backdrop-blur-md border border-white/25 rounded-3xl p-3.5 sm:p-5 shadow-[0_14px_34px_rgba(15,23,42,0.28)] space-y-3 text-white">
         <div className="flex items-center justify-between gap-2">
-          <div className="inline-flex items-center gap-1.5 text-xs font-extrabold text-amber-300">
+          <div className="inline-flex items-center gap-1.5 text-xs font-extrabold text-amber-300 min-w-0">
             <Sparkles className="w-4 h-4 shrink-0" />
-            <span>{isHi ? 'आज की मिनी चुनौती' : "Today's Mini Challenge"}</span>
+            <span className="truncate">{isHi ? 'आज की मिनी चुनौती' : "Today's Mini Challenge"}</span>
           </div>
           <button
             type="button"
             onClick={loadNewChallenge}
             aria-label={isHi ? 'नया सवाल लाएँ' : 'Load new mini challenge'}
-            className="inline-flex items-center gap-1 text-[11px] font-bold text-indigo-100 hover:text-white bg-white/10 hover:bg-white/20 px-2.5 py-1 rounded-xl transition-colors cursor-pointer whitespace-nowrap"
+            className="min-h-[44px] inline-flex items-center gap-1.5 text-xs font-bold text-indigo-100 hover:text-white bg-white/10 hover:bg-white/20 px-3 py-2 rounded-xl transition-colors cursor-pointer whitespace-nowrap shrink-0"
           >
-            <RefreshCw className="w-3 h-3" />
-            {isHi ? `कक्षा ${classNumber}` : `Class ${classNumber}`}
+            <RefreshCw className="w-3.5 h-3.5 shrink-0" />
+            <span>{isHi ? `कक्षा ${classNumber}` : `Class ${classNumber}`}</span>
           </button>
         </div>
 
-        <div className="bg-slate-950/35 border border-white/15 rounded-2xl px-4 py-3 text-center">
-          <p className="font-math text-2xl sm:text-3xl font-extrabold tracking-wide text-white">
+        <div className="bg-slate-950/35 border border-white/15 rounded-2xl px-3 py-2.5 sm:px-4 sm:py-3 text-center">
+          <p className="font-math text-xl sm:text-3xl font-extrabold tracking-wide text-white break-words">
             {challenge.prompt} = <span className="text-amber-300">?</span>
           </p>
         </div>
 
-        <div className="grid grid-cols-3 gap-2.5">
+        <div className="grid grid-cols-3 gap-2 sm:gap-2.5">
           {challenge.options.map((opt) => {
             const isPickedOpt = picked === opt;
             const isCorrectOpt = opt === challenge.answer;
@@ -290,7 +289,7 @@ export function HeroShowcase({
                 type="button"
                 disabled={isAnswered}
                 onClick={() => handlePick(opt)}
-                className={`py-2.5 px-2 rounded-2xl font-math text-lg font-extrabold transition-all cursor-pointer disabled:cursor-default ${btnStyle}`}
+                className={`min-h-[48px] py-2.5 px-1.5 sm:px-2 rounded-2xl font-math text-base sm:text-lg font-extrabold transition-all cursor-pointer disabled:cursor-default ${btnStyle}`}
               >
                 {opt}
               </motion.button>
@@ -299,7 +298,7 @@ export function HeroShowcase({
         </div>
 
         {isAnswered ? (
-          <div className="flex items-center justify-between gap-2 pt-0.5 text-xs font-bold">
+          <div className="flex flex-wrap items-center justify-between gap-2 pt-0.5 text-xs font-bold">
             <span className={`inline-flex items-center gap-1.5 ${isRight ? 'text-emerald-300' : 'text-amber-200'}`}>
               {isRight ? (
                 <>
@@ -316,21 +315,21 @@ export function HeroShowcase({
             <button
               type="button"
               onClick={loadNewChallenge}
-              className="px-2.5 py-1 rounded-xl bg-amber-400 text-slate-950 font-extrabold hover:bg-amber-300 transition-colors cursor-pointer whitespace-nowrap"
+              className="min-h-[44px] px-3.5 py-2 rounded-xl bg-amber-400 text-slate-950 font-extrabold hover:bg-amber-300 transition-colors cursor-pointer whitespace-nowrap"
             >
               {isHi ? 'अगला सवाल' : 'Try Another'}
             </button>
           </div>
         ) : (
-          <div className="flex items-center justify-between gap-2 text-[11px] font-semibold text-indigo-100/90">
+          <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] sm:text-xs font-semibold text-indigo-100/90">
             <span className="inline-flex items-center gap-1">
-              <Star className="w-3.5 h-3.5 text-amber-300 fill-amber-300" />
-              {isHi ? 'सही उत्तर पर +1 सितारा जीतें!' : 'Tap the answer to earn +1 Star!'}
+              <Star className="w-3.5 h-3.5 text-amber-300 fill-amber-300 shrink-0" />
+              <span>{isHi ? 'सही उत्तर पर +1 सितारा!' : 'Tap answer for +1 Star!'}</span>
             </span>
             <button
               type="button"
               onClick={onStartDailyQuiz}
-              className="underline decoration-amber-300/70 underline-offset-2 hover:text-amber-200 cursor-pointer whitespace-nowrap"
+              className="min-h-[44px] px-2 inline-flex items-center underline decoration-amber-300/70 underline-offset-2 hover:text-amber-200 cursor-pointer whitespace-nowrap"
             >
               {isHi ? '10 सवाल खेलें →' : 'Full Quiz →'}
             </button>

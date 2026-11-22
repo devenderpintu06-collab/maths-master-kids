@@ -59,23 +59,23 @@ export function ParentsGuideSection({ lang }: ParentsGuideSectionProps) {
     <section
       id="parents-guide"
       aria-labelledby="parents-guide-heading"
-      className="bg-gradient-to-br from-sky-50/75 via-white to-emerald-50/60 border border-sky-200/80 rounded-[2rem] p-6 sm:p-8 space-y-6 shadow-card-soft"
+      className="bg-gradient-to-br from-sky-50/75 via-white to-emerald-50/60 border border-sky-200/80 rounded-3xl sm:rounded-[2rem] p-4 sm:p-8 space-y-5 sm:space-y-6 shadow-card-soft"
     >
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-sky-100 pb-5">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-sky-100 pb-4 sm:pb-5">
         <div className="space-y-1.5 max-w-2xl">
           <div className="inline-flex items-center gap-1.5 text-xs font-extrabold text-blue-700">
-            <BookOpen className="w-4 h-4" />
+            <BookOpen className="w-4 h-4 shrink-0" />
             <span>{isHi ? 'माता-पिता के लिए मार्गदर्शिका' : "Parent's Guide & Maths Tips"}</span>
           </div>
           <h2
             id="parents-guide-heading"
-            className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 text-balance"
+            className="text-xl sm:text-3xl font-bold tracking-tight text-slate-900 text-balance"
           >
             {isHi
               ? 'कक्षा 1 से 5 तक बच्चों का मानसिक गणित कैसे मज़बूत करें'
               : 'How Kids in Classes 1 to 5 Can Build Strong Mental Math'}
           </h2>
-          <p className="text-sm sm:text-base text-slate-600">
+          <p className="text-xs sm:text-base text-slate-600">
             {isHi
               ? 'रोज़ सिर्फ 10 मिनट के मज़ेदार अभ्यास और सही तरीकों से बच्चे बिना उंगलियों पर गिने तेज़ी से गणना कर सकते हैं।'
               : 'Short 10-minute daily sessions with the right mental strategies help children calculate accurately without rushing or memorizing blindly.'}
@@ -89,11 +89,11 @@ export function ParentsGuideSection({ lang }: ParentsGuideSectionProps) {
       </div>
 
       {/* Class-by-Class Mental Math Tips */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4">
         {CLASS_TIPS.map((item) => (
           <article
             key={item.gradeEn}
-            className="rounded-2xl border border-slate-200/80 bg-slate-50/70 p-5 space-y-2.5"
+            className="rounded-2xl border border-slate-200/80 bg-slate-50/70 p-4 sm:p-5 space-y-2.5"
           >
             <div className="flex items-center justify-between gap-2">
               <span

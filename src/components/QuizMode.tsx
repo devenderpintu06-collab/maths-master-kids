@@ -83,9 +83,9 @@ function VisualPictureHint({ question, lang }: { question: MathsQuestion; lang: 
       )}
 
       {operation === 'MULTIPLICATION' && operandA <= 10 && operandB <= 10 && (
-        <div className="bg-white border border-amber-200/80 rounded-xl p-3 inline-block">
+        <div className="bg-white border border-amber-200/80 rounded-xl p-3 max-w-full overflow-x-auto">
           <div
-            className="grid gap-1"
+            className="grid gap-1 w-fit"
             style={{ gridTemplateColumns: `repeat(${operandB}, minmax(0, 1fr))` }}
           >
             {Array.from({ length: operandA * operandB }).map((_, i) => (
@@ -457,18 +457,18 @@ export function QuizMode({
       )}
 
       {/* Top Quiz HUD */}
-      <div className="bg-white border border-slate-200/80 rounded-2xl px-4 py-3 flex flex-wrap items-center justify-between gap-4 shadow-card-soft">
-        <div className="flex items-center gap-3">
+      <div className="bg-white border border-slate-200/80 rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 flex flex-wrap items-center justify-between gap-3 shadow-card-soft">
+        <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
           <button
             type="button"
             onClick={onExit}
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 cursor-pointer whitespace-nowrap"
+            className="min-h-[44px] inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 cursor-pointer whitespace-nowrap shrink-0"
           >
             <ArrowLeft className="w-4 h-4" />
             {lang === 'hi' ? 'होम' : 'Home'}
           </button>
-          <div>
-            <h1 className="text-base sm:text-lg font-extrabold text-slate-900">{quizTitle}</h1>
+          <div className="min-w-0">
+            <h1 className="text-sm sm:text-lg font-extrabold text-slate-900 truncate">{quizTitle}</h1>
             <p className="text-xs text-slate-500">
               {lang === 'hi' ? `कक्षा ${config.classNumber}` : `Class ${config.classNumber}`} ·{' '}
               {lang === 'hi'
@@ -483,8 +483,8 @@ export function QuizMode({
           </div>
         </div>
 
-        <div className="flex items-center gap-2.5">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-200 font-math text-sm font-extrabold text-amber-800">
+        <div className="flex items-center gap-2">
+          <div className="min-h-[44px] inline-flex items-center gap-1.5 px-3 rounded-xl bg-amber-50 border border-amber-200 font-math text-sm font-extrabold text-amber-800">
             <Star className="w-4 h-4 text-amber-500 fill-amber-400" />
             <span>{correctCount}</span>
           </div>
@@ -493,7 +493,7 @@ export function QuizMode({
             onClick={onToggleSound}
             aria-label={soundEnabled ? 'Mute sound effects' : 'Unmute sound effects'}
             aria-pressed={!soundEnabled}
-            className="p-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 cursor-pointer"
+            className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 cursor-pointer"
           >
             {soundEnabled ? <Volume2 className="w-4 h-4 text-emerald-600" /> : <VolumeX className="w-4 h-4" />}
           </button>
@@ -509,14 +509,14 @@ export function QuizMode({
       </div>
 
       {/* Main Question Card */}
-      <div className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-10 space-y-6 shadow-card-soft">
+      <div className="bg-white border border-slate-200/80 rounded-3xl p-4 sm:p-8 lg:p-10 space-y-5 sm:space-y-6 shadow-card-soft">
         <div className="text-center space-y-3">
-          <p className="text-sm font-semibold text-slate-500">{t.chooseAnswer}</p>
-          <div className="font-math text-4xl sm:text-6xl font-extrabold text-slate-900 tracking-tight py-2">
+          <p className="text-xs sm:text-sm font-semibold text-slate-500">{t.chooseAnswer}</p>
+          <div className="font-math text-3xl min-[380px]:text-4xl sm:text-6xl font-extrabold text-slate-900 tracking-tight py-1 sm:py-2 break-words">
             {currentQuestion.operandA} {currentQuestion.symbol} {currentQuestion.operandB} = ?
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-3">
+          <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3">
             {!isAnswered && (
               <button
                 type="button"
@@ -524,9 +524,9 @@ export function QuizMode({
                   soundFx.playClick();
                   setShowHint((h) => !h);
                 }}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer"
+                className="min-h-[44px] inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer"
               >
-                <Lightbulb className="w-4 h-4 text-amber-500" />
+                <Lightbulb className="w-4 h-4 text-amber-500 shrink-0" />
                 {showHint ? t.hideHint : t.needHint}
               </button>
             )}
@@ -534,9 +534,9 @@ export function QuizMode({
             <button
               type="button"
               onClick={speakQuestion}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer"
+              className="min-h-[44px] inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer"
             >
-              <Volume2 className="w-4 h-4 text-blue-600" />
+              <Volume2 className="w-4 h-4 text-blue-600 shrink-0" />
               {t.listen}
             </button>
           </div>
@@ -545,7 +545,7 @@ export function QuizMode({
         </div>
 
         {/* 4 Large Multiple Choice Answer Buttons */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
           {currentQuestion.options.map((opt, idx) => {
             const isSelected = selectedOption === opt;
             const isThisCorrect = opt === currentQuestion.correctAnswer;
@@ -568,10 +568,10 @@ export function QuizMode({
                 type="button"
                 disabled={isAnswered}
                 onClick={() => handleSelectOption(opt)}
-                className={`min-h-[76px] px-6 py-4 rounded-2xl border-2 flex items-center justify-between gap-3 transition-all cursor-pointer disabled:cursor-default focus-visible:outline-2 focus-visible:outline-blue-600 ${cardStyle}`}
+                className={`min-h-[68px] sm:min-h-[76px] px-4 sm:px-6 py-3.5 sm:py-4 rounded-2xl border-2 flex items-center justify-between gap-3 transition-all cursor-pointer disabled:cursor-default focus-visible:outline-2 focus-visible:outline-blue-600 ${cardStyle}`}
               >
-                <div className="flex items-center gap-3.5">
-                  <span className="w-8 h-8 rounded-lg bg-slate-100 text-slate-600 font-math text-sm font-bold flex items-center justify-center">
+                <div className="flex items-center gap-3">
+                  <span className="w-8 h-8 rounded-lg bg-slate-100 text-slate-600 font-math text-sm font-bold flex items-center justify-center shrink-0">
                     {idx + 1}
                   </span>
                   <span className="font-math text-2xl sm:text-3xl font-extrabold">{opt}</span>
@@ -632,7 +632,7 @@ export function QuizMode({
               <button
                 type="button"
                 onClick={handleNext}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition-colors cursor-pointer shrink-0 whitespace-nowrap"
+                className="w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition-colors cursor-pointer shrink-0 whitespace-nowrap"
               >
                 {currentIndex + 1 < questions.length ? t.nextQuestion : t.seeFinalScore}
                 <ArrowRight className="w-4 h-4" />

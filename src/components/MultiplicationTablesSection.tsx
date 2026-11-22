@@ -392,13 +392,13 @@ export function MultiplicationTablesSection({
         ).length;
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-8 py-8 sm:py-10 space-y-8">
+    <div className="max-w-6xl mx-auto px-3.5 sm:px-8 py-6 sm:py-10 space-y-6 sm:space-y-8">
       {/* Vibrant EdTech Hero Banner */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#312E81] via-[#4F46E5] to-[#7C3AED] rounded-[2rem] p-6 sm:p-8 shadow-hero-soft text-white grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#312E81] via-[#4F46E5] to-[#7C3AED] rounded-3xl sm:rounded-[2rem] p-4 sm:p-8 shadow-hero-soft text-white grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-6 items-center">
         <div className="absolute inset-0 hero-math-grid opacity-55 pointer-events-none" aria-hidden="true" />
         <div className="relative z-10 md:col-span-9 space-y-3">
           <div className="inline-flex items-center gap-2 text-xs font-extrabold text-amber-300">
-            <Sparkles className="w-4 h-4" />
+            <Sparkles className="w-4 h-4 shrink-0" />
             <span>
               {isHi
                 ? 'कक्षा 1 से 5 · बोलकर सुनें, याद करें और A4 चार्ट प्रिंट करें'
@@ -406,7 +406,7 @@ export function MultiplicationTablesSection({
             </span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+          <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-white">
             {isHi ? 'पहाड़े 2 से 20 (Multiplication Tables)' : 'Multiplication Tables 2 to 20'}
           </h1>
 
@@ -452,8 +452,8 @@ export function MultiplicationTablesSection({
       </section>
 
       {/* 1. Interactive Table Selector (2 to 20 + All Tables Chart) */}
-      <section className="bg-gradient-to-br from-indigo-50/85 via-white to-violet-50/75 border border-indigo-200/80 rounded-[2rem] p-5 sm:p-6 shadow-card-soft space-y-4">
-        <div className="flex flex-wrap items-center justify-between gap-3">
+      <section className="bg-gradient-to-br from-indigo-50/85 via-white to-violet-50/75 border border-indigo-200/80 rounded-3xl sm:rounded-[2rem] p-4 sm:p-6 shadow-card-soft space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h2 className="text-lg sm:text-xl font-extrabold text-slate-900">
               {isHi ? 'पहाड़ा चुनें (2 से 20)' : 'Select a Table (2 to 20)'}
@@ -471,7 +471,7 @@ export function MultiplicationTablesSection({
               soundFx.playClick();
               setSelectedView('ALL');
             }}
-            className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold border-b-4 transition-all active:translate-y-[1px] cursor-pointer whitespace-nowrap ${
+            className={`w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold border-b-4 transition-all active:translate-y-[1px] cursor-pointer sm:whitespace-nowrap ${
               selectedView === 'ALL'
                 ? 'bg-slate-900 border-slate-950 text-white shadow-md'
                 : 'bg-white border border-slate-300 border-b-slate-400 text-slate-800 hover:bg-indigo-50 hover:border-indigo-300'
@@ -500,7 +500,7 @@ export function MultiplicationTablesSection({
                     ? { backgroundColor: accent, borderBottomColor: 'rgba(15,23,42,0.35)' }
                     : undefined
                 }
-                className={`py-2.5 px-2 rounded-2xl font-math text-sm sm:text-base font-extrabold border transition-all cursor-pointer active:translate-y-[2px] ${
+                className={`min-h-[44px] py-2 px-1.5 rounded-2xl font-math text-sm sm:text-base font-extrabold border transition-all cursor-pointer active:translate-y-[2px] flex items-center justify-center ${
                   active
                     ? 'text-white border-transparent border-b-4 shadow-md scale-[1.03]'
                     : 'bg-white border-slate-200 border-b-4 border-b-slate-300 text-slate-800 hover:-translate-y-0.5 hover:border-indigo-300 hover:bg-indigo-50/40'
@@ -514,13 +514,13 @@ export function MultiplicationTablesSection({
       </section>
 
       {/* 2. Kid-Friendly Learning Tools Bar */}
-      <section className="bg-white border border-slate-200/90 rounded-3xl p-4 sm:p-5 shadow-card-soft flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-2.5">
+      <section className="bg-white border border-slate-200/90 rounded-3xl p-4 sm:p-5 shadow-card-soft flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+        <div className="grid grid-cols-1 sm:flex sm:flex-wrap items-center gap-2.5">
           {/* Read Aloud / Listen (Web Speech API) */}
           <button
             type="button"
             onClick={handleReadAloud}
-            className={`inline-flex items-center gap-2 px-4 py-3 rounded-2xl text-xs sm:text-sm font-extrabold text-white border-b-4 transition-all active:translate-y-[1px] cursor-pointer whitespace-nowrap ${
+            className={`w-full sm:w-auto min-h-[46px] inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold text-white border-b-4 transition-all active:translate-y-[1px] cursor-pointer sm:whitespace-nowrap ${
               isSpeaking
                 ? 'bg-rose-600 border-rose-800 hover:bg-rose-700'
                 : 'bg-gradient-to-b from-emerald-500 to-teal-600 border-teal-800 hover:brightness-105'
@@ -544,7 +544,7 @@ export function MultiplicationTablesSection({
             type="button"
             onClick={toggleHideAnswers}
             aria-pressed={hideAnswers}
-            className={`inline-flex items-center gap-2 px-4 py-3 rounded-2xl text-xs sm:text-sm font-extrabold border-b-4 transition-all active:translate-y-[1px] cursor-pointer whitespace-nowrap ${
+            className={`w-full sm:w-auto min-h-[46px] inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold border-b-4 transition-all active:translate-y-[1px] cursor-pointer sm:whitespace-nowrap ${
               hideAnswers
                 ? 'bg-gradient-to-b from-amber-400 to-orange-500 border-orange-700 text-slate-950 shadow-sm'
                 : 'bg-indigo-50 border border-indigo-200 border-b-indigo-300 text-indigo-900 hover:bg-indigo-100'
@@ -570,21 +570,21 @@ export function MultiplicationTablesSection({
                 soundFx.playClick();
                 setRevealedKeys({});
               }}
-              className="inline-flex items-center gap-1.5 px-3.5 py-3 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-xs font-bold text-slate-700 cursor-pointer whitespace-nowrap"
+              className="w-full sm:w-auto min-h-[46px] inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-xs font-bold text-slate-700 cursor-pointer sm:whitespace-nowrap"
             >
-              <RotateCcw className="w-3.5 h-3.5" />
+              <RotateCcw className="w-3.5 h-3.5 shrink-0" />
               <span>{isHi ? 'फिर से छिपाएँ' : 'Hide Again'}</span>
             </button>
           )}
         </div>
 
         {/* Print / Save PDF Controls */}
-        <div className="flex flex-wrap items-center gap-2.5">
+        <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2.5">
           <button
             type="button"
             disabled={isDownloadingPdf}
             onClick={() => void handleSavePdf()}
-            className={`inline-flex items-center gap-2 px-4 py-3 rounded-2xl text-xs sm:text-sm font-extrabold text-white border-b-4 transition-all active:translate-y-[1px] cursor-pointer disabled:opacity-70 whitespace-nowrap ${
+            className={`min-h-[46px] inline-flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold text-white border-b-4 transition-all active:translate-y-[1px] cursor-pointer disabled:opacity-70 sm:whitespace-nowrap ${
               pdfDownloaded
                 ? 'bg-emerald-600 border-emerald-800'
                 : 'bg-blue-600 border-blue-800 hover:bg-blue-700'
@@ -614,7 +614,7 @@ export function MultiplicationTablesSection({
           <button
             type="button"
             onClick={handlePrintChart}
-            className="inline-flex items-center gap-1.5 px-4 py-3 rounded-2xl border border-slate-300 border-b-4 border-b-slate-400 bg-white hover:bg-slate-50 text-slate-800 text-xs sm:text-sm font-bold transition-all active:translate-y-[1px] cursor-pointer whitespace-nowrap"
+            className="min-h-[46px] inline-flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-2xl border border-slate-300 border-b-4 border-b-slate-400 bg-white hover:bg-slate-50 text-slate-800 text-xs sm:text-sm font-bold transition-all active:translate-y-[1px] cursor-pointer sm:whitespace-nowrap"
           >
             <Printer className="w-4 h-4 shrink-0" />
             <span>{isHi ? 'प्रिंट A4' : 'Print A4'}</span>
@@ -665,7 +665,7 @@ export function MultiplicationTablesSection({
                       setSelectedView(n);
                     }}
                     style={{ backgroundColor: accent }}
-                    className="w-full px-4 py-3 text-white flex items-center justify-between font-display font-bold text-base hover:brightness-105 transition cursor-pointer"
+                    className="w-full min-h-[48px] px-4 py-3 text-white flex items-center justify-between font-display font-bold text-base hover:brightness-105 transition cursor-pointer"
                   >
                     <span>{isHi ? `${n} का पहाड़ा` : `Table of ${n}`}</span>
                     <span className="text-xs font-sans font-bold bg-white/20 px-2.5 py-0.5 rounded-full">
@@ -689,7 +689,7 @@ export function MultiplicationTablesSection({
                               speakSingleLine(n, m);
                             }
                           }}
-                          className={`w-full flex items-center justify-between px-3 py-1.5 rounded-xl font-math text-sm font-bold transition-colors cursor-pointer ${
+                          className={`w-full min-h-[44px] flex items-center justify-between px-3 py-2 rounded-xl font-math text-sm font-bold transition-colors cursor-pointer ${
                             isHidden
                               ? 'bg-amber-50 hover:bg-amber-100 text-slate-800 border border-amber-200'
                               : 'bg-slate-50/80 hover:bg-indigo-50 text-slate-800'
@@ -717,18 +717,18 @@ export function MultiplicationTablesSection({
           </div>
         </section>
       ) : (
-        <section className="bg-white border border-slate-200/90 rounded-[2rem] p-5 sm:p-7 shadow-card-soft space-y-6">
+        <section className="bg-white border border-slate-200/90 rounded-3xl sm:rounded-[2rem] p-4 sm:p-7 shadow-card-soft space-y-5 sm:space-y-6">
           {/* Selected Table Header & Prev/Next Controls */}
           <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 pb-4">
-            <div className="flex items-center gap-3.5">
+            <div className="flex items-center gap-3 sm:gap-3.5 min-w-0">
               <div
                 style={{ backgroundColor: activeAccent }}
-                className="w-14 h-14 rounded-2xl text-white font-math text-2xl font-extrabold flex items-center justify-center shadow-md border-b-4 border-black/20 shrink-0"
+                className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl text-white font-math text-xl sm:text-2xl font-extrabold flex items-center justify-center shadow-md border-b-4 border-black/20 shrink-0"
               >
                 {selectedView}×
               </div>
-              <div>
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
+              <div className="min-w-0">
+                <h2 className="text-xl sm:text-3xl font-extrabold text-slate-900">
                   {isHi
                     ? `${selectedView} का पहाड़ा (${selectedView} × 1 से ${selectedView} × 10)`
                     : `Table of ${selectedView} (${selectedView} × 1 to ${selectedView} × 10)`}
@@ -745,7 +745,7 @@ export function MultiplicationTablesSection({
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 w-full sm:w-auto">
               <button
                 type="button"
                 disabled={selectedView <= 2}
@@ -753,7 +753,7 @@ export function MultiplicationTablesSection({
                   soundFx.playClick();
                   setSelectedView((prev) => (typeof prev === 'number' && prev > 2 ? prev - 1 : 2));
                 }}
-                className="inline-flex items-center gap-1 px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-xs font-bold text-slate-700 disabled:opacity-40 cursor-pointer disabled:cursor-not-allowed"
+                className="flex-1 sm:flex-initial min-h-[44px] inline-flex items-center justify-center gap-1 px-3.5 py-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-xs sm:text-sm font-bold text-slate-700 disabled:opacity-40 cursor-pointer disabled:cursor-not-allowed"
               >
                 <ChevronLeft className="w-4 h-4" />
                 <span>{isHi ? 'पिछला' : 'Prev'}</span>
@@ -767,7 +767,7 @@ export function MultiplicationTablesSection({
                     typeof prev === 'number' && prev < 20 ? prev + 1 : 20
                   );
                 }}
-                className="inline-flex items-center gap-1 px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-xs font-bold text-slate-700 disabled:opacity-40 cursor-pointer disabled:cursor-not-allowed"
+                className="flex-1 sm:flex-initial min-h-[44px] inline-flex items-center justify-center gap-1 px-3.5 py-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-xs sm:text-sm font-bold text-slate-700 disabled:opacity-40 cursor-pointer disabled:cursor-not-allowed"
               >
                 <span>{isHi ? 'अगला' : 'Next'}</span>
                 <ChevronRight className="w-4 h-4" />
@@ -776,7 +776,7 @@ export function MultiplicationTablesSection({
           </div>
 
           {/* 10 Bold, Easy-to-Read Cards (2 Columns x 5 Rows) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
             {Array.from({ length: 10 }, (_, idx) => {
               const m = idx + 1;
               const product = selectedView * m;
@@ -796,7 +796,7 @@ export function MultiplicationTablesSection({
                       speakSingleLine(selectedView, m);
                     }
                   }}
-                  className={`group relative rounded-3xl px-5 py-4 border-2 border-b-[5px] text-left flex items-center justify-between gap-4 transition-all cursor-pointer ${
+                  className={`group relative min-h-[68px] rounded-2xl sm:rounded-3xl px-3.5 sm:px-5 py-3.5 sm:py-4 border-2 border-b-[5px] text-left flex items-center justify-between gap-2.5 sm:gap-4 transition-all cursor-pointer ${
                     isCurrentlySpoken
                       ? 'bg-emerald-50 border-emerald-500 border-b-emerald-700 shadow-md scale-[1.01]'
                       : isHidden
@@ -804,21 +804,21 @@ export function MultiplicationTablesSection({
                         : 'bg-slate-50/80 border-slate-200 border-b-slate-300 hover:bg-white hover:border-indigo-300 hover:-translate-y-0.5'
                   }`}
                 >
-                  <div className="flex items-center gap-4 min-w-0">
+                  <div className="flex items-center gap-3 sm:gap-4 min-w-0">
                     <span
                       style={{ backgroundColor: isCurrentlySpoken ? '#059669' : activeAccent }}
-                      className="w-9 h-9 rounded-xl text-white font-math text-sm font-extrabold flex items-center justify-center shrink-0 shadow-xs"
+                      className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl text-white font-math text-xs sm:text-sm font-extrabold flex items-center justify-center shrink-0 shadow-xs"
                     >
                       {m}
                     </span>
 
                     <div className="min-w-0">
-                      <p className="font-math text-2xl sm:text-[1.75rem] font-extrabold text-slate-900 tracking-tight whitespace-nowrap flex items-center gap-2.5">
+                      <p className="font-math text-xl min-[375px]:text-2xl sm:text-[1.75rem] font-extrabold text-slate-900 tracking-tight flex flex-wrap items-center gap-1.5 sm:gap-2.5">
                         <span>
                           {selectedView} × {m} =
                         </span>
                         {isHidden ? (
-                          <span className="inline-flex items-center justify-center min-w-[54px] px-3 py-0.5 rounded-xl bg-gradient-to-b from-amber-400 to-orange-500 text-slate-950 border-b-[3px] border-orange-700 text-xl font-extrabold shadow-xs">
+                          <span className="inline-flex items-center justify-center min-w-[44px] sm:min-w-[54px] px-2.5 sm:px-3 py-0.5 rounded-xl bg-gradient-to-b from-amber-400 to-orange-500 text-slate-950 border-b-[3px] border-orange-700 text-lg sm:text-xl font-extrabold shadow-xs">
                             ?
                           </span>
                         ) : (
@@ -833,7 +833,7 @@ export function MultiplicationTablesSection({
                           </motion.span>
                         )}
                       </p>
-                      <p className="text-xs font-semibold text-slate-500 mt-0.5">
+                      <p className="text-xs font-semibold text-slate-500 mt-0.5 break-words">
                         {isHidden
                           ? isHi
                             ? 'उत्तर देखने के लिए टैप करें'
@@ -844,7 +844,7 @@ export function MultiplicationTablesSection({
                   </div>
 
                   <span
-                    className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                    className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
                       isCurrentlySpoken
                         ? 'bg-emerald-600 text-white'
                         : 'bg-white border border-slate-200 text-slate-500 group-hover:text-indigo-600 group-hover:border-indigo-200'

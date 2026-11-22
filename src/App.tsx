@@ -10,7 +10,11 @@ import {
   ChevronDown,
   FileText,
   Flame,
+  Gamepad2,
   Grid2x2,
+  Home,
+  Layers,
+  Menu,
   Play,
   RotateCcw,
   Smartphone,
@@ -19,6 +23,7 @@ import {
   Trophy,
   Volume2,
   VolumeX,
+  X,
   Zap,
 } from 'lucide-react';
 import {
@@ -147,6 +152,7 @@ export default function App() {
   const [activeFooterDoc, setActiveFooterDoc] = useState<FooterDocType | null>(null);
   const [activeBlogArticleId, setActiveBlogArticleId] = useState<string | null>(null);
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const moreMenuRef = useRef<HTMLDivElement | null>(null);
   const [initialTableSelection, setInitialTableSelection] = useState<TableChartSelection>(2);
   const [printTarget, setPrintTarget] = useState<PrintTarget>(() => ({
@@ -172,6 +178,15 @@ export default function App() {
     };
   }, [moreMenuOpen]);
 
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileMenuOpen(false);
+    };
+    document.addEventListener('keydown', handleEsc);
+    return () => document.removeEventListener('keydown', handleEsc);
+  }, [mobileMenuOpen]);
+
   const openFooterDoc = (doc: FooterDocType) => {
     soundFx.playClick();
     setActiveFooterDoc(doc);
@@ -194,6 +209,7 @@ export default function App() {
   const openTablesTab = (selection: TableChartSelection = 2) => {
     soundFx.playClick();
     setMoreMenuOpen(false);
+    setMobileMenuOpen(false);
     setActiveQuiz(null);
     setActiveMiniGame(null);
     setInitialTableSelection(selection);
@@ -267,6 +283,8 @@ export default function App() {
 
   const startDailyPractice = () => {
     soundFx.playClick();
+    setMoreMenuOpen(false);
+    setMobileMenuOpen(false);
     setActiveMiniGame(null);
     setActiveQuiz({
       classNumber: selectedClass,
@@ -279,6 +297,8 @@ export default function App() {
 
   const launchMiniGame = (gameId: MiniGameId) => {
     soundFx.playClick();
+    setMoreMenuOpen(false);
+    setMobileMenuOpen(false);
     setActiveQuiz(null);
     setActiveMiniGame(gameId);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -296,6 +316,7 @@ export default function App() {
   const navigateToTab = (tab: AppTab) => {
     soundFx.playClick();
     setMoreMenuOpen(false);
+    setMobileMenuOpen(false);
     setActiveQuiz(null);
     setActiveMiniGame(null);
     setActiveTab(tab);
@@ -305,6 +326,7 @@ export default function App() {
   const navigateToDailySection = () => {
     soundFx.playClick();
     setMoreMenuOpen(false);
+    setMobileMenuOpen(false);
     setActiveQuiz(null);
     setActiveMiniGame(null);
     setActiveTab('home');
@@ -316,6 +338,7 @@ export default function App() {
   const navigateToBlogSection = () => {
     soundFx.playClick();
     setMoreMenuOpen(false);
+    setMobileMenuOpen(false);
     setActiveQuiz(null);
     setActiveMiniGame(null);
     setActiveTab('home');
@@ -327,6 +350,7 @@ export default function App() {
   const navigateToParentsGuide = () => {
     soundFx.playClick();
     setMoreMenuOpen(false);
+    setMobileMenuOpen(false);
     setActiveQuiz(null);
     setActiveMiniGame(null);
     setActiveTab('home');
@@ -450,25 +474,25 @@ export default function App() {
   return (
     <>
     <div className="min-h-screen flex flex-col bg-[#F4F7FE] text-slate-900 print:hidden">
-      {/* Clean Modern 3-Zone Top Bar */}
-      <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-indigo-100/90 shadow-[0_4px_18px_-6px_rgba(30,27,75,0.08)]">
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 h-16 flex items-center justify-between gap-2 sm:gap-6">
+      {/* Clean Modern Mobile-First Top Bar with Responsive Hamburger Drawer */}
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-indigo-100/90 shadow-[0_4px_18px_-6px_rgba(30,27,75,0.08)]">
+        <div className="max-w-7xl mx-auto px-2.5 sm:px-6 h-14 sm:h-16 landscape-compact-header flex items-center justify-between gap-1.5 sm:gap-4">
           {/* Zone 1: Mascot Logo + Brand Title */}
           <button
             type="button"
             onClick={() => navigateToTab('home')}
-            className="inline-flex items-center gap-2.5 font-display text-[16px] sm:text-xl font-bold tracking-tight text-slate-900 whitespace-nowrap shrink-0 cursor-pointer group"
+            className="min-h-[44px] min-w-0 inline-flex items-center gap-1.5 sm:gap-2.5 font-display text-[14px] min-[375px]:text-[16px] sm:text-xl font-bold tracking-tight text-slate-900 cursor-pointer group"
           >
-            <MascotLogo className="w-8 h-8 sm:w-9 sm:h-9 shrink-0 transition-transform duration-200 group-hover:scale-105 group-hover:-rotate-3" />
-            <span>Maths Master Kids</span>
+            <MascotLogo className="w-7 h-7 sm:w-9 sm:h-9 shrink-0 transition-transform duration-200 group-hover:scale-105 group-hover:-rotate-3" />
+            <span className="truncate">Maths Master Kids</span>
           </button>
 
-          {/* Zone 2: Cleanly Grouped Navigation */}
-          <nav className="hidden lg:flex items-center gap-4 xl:gap-5 text-sm font-bold text-slate-600">
+          {/* Zone 2: Desktop Navigation */}
+          <nav aria-label="Primary navigation" className="hidden lg:flex items-center gap-3.5 xl:gap-5 text-sm font-bold text-slate-600">
             <button
               type="button"
               onClick={() => navigateToTab('home')}
-              className={`py-1.5 border-b-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+              className={`min-h-[44px] px-1 inline-flex items-center border-b-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                 activeTab === 'home' && !activeQuiz && !activeMiniGame
                   ? 'border-indigo-600 text-indigo-700'
                   : 'border-transparent hover:text-slate-900'
@@ -479,7 +503,7 @@ export default function App() {
             <button
               type="button"
               onClick={() => navigateToTab('games')}
-              className={`py-1.5 border-b-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+              className={`min-h-[44px] px-1 inline-flex items-center border-b-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                 (activeTab === 'games' && !activeQuiz) || activeMiniGame
                   ? 'border-fuchsia-600 text-fuchsia-700'
                   : 'border-transparent hover:text-slate-900'
@@ -490,7 +514,7 @@ export default function App() {
             <button
               type="button"
               onClick={() => navigateToTab('tables')}
-              className={`py-1.5 border-b-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+              className={`min-h-[44px] px-1 inline-flex items-center border-b-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                 activeTab === 'tables' && !activeQuiz && !activeMiniGame
                   ? 'border-violet-600 text-violet-700'
                   : 'border-transparent hover:text-slate-900'
@@ -501,7 +525,7 @@ export default function App() {
             <button
               type="button"
               onClick={() => navigateToTab('worksheets')}
-              className={`py-1.5 border-b-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+              className={`min-h-[44px] px-1 inline-flex items-center border-b-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                 activeTab === 'worksheets' && !activeQuiz && !activeMiniGame
                   ? 'border-sky-600 text-sky-700'
                   : 'border-transparent hover:text-slate-900'
@@ -512,7 +536,7 @@ export default function App() {
             <button
               type="button"
               onClick={() => navigateToTab('lab')}
-              className={`py-1.5 border-b-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+              className={`min-h-[44px] px-1 inline-flex items-center border-b-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                 activeTab === 'lab' && !activeQuiz && !activeMiniGame
                   ? 'border-emerald-600 text-emerald-700'
                   : 'border-transparent hover:text-slate-900'
@@ -531,7 +555,7 @@ export default function App() {
                 }}
                 aria-expanded={moreMenuOpen}
                 aria-haspopup="menu"
-                className={`py-1.5 inline-flex items-center gap-1 border-b-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+                className={`min-h-[44px] px-1 inline-flex items-center gap-1 border-b-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                   activeTab === 'progress' || moreMenuOpen
                     ? 'border-indigo-600 text-indigo-700'
                     : 'border-transparent hover:text-slate-900'
@@ -546,13 +570,13 @@ export default function App() {
               {moreMenuOpen && (
                 <div
                   role="menu"
-                  className="absolute right-0 mt-2 w-56 bg-white border border-slate-200 rounded-2xl shadow-xl p-1.5 z-50 space-y-0.5"
+                  className="absolute right-0 mt-2 w-60 bg-white border border-slate-200 rounded-2xl shadow-xl p-1.5 z-50 space-y-0.5"
                 >
                   <button
                     type="button"
                     role="menuitem"
                     onClick={navigateToBlogSection}
-                    className="w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-amber-50 hover:text-amber-800 flex items-center gap-2.5 cursor-pointer"
+                    className="w-full min-h-[44px] text-left px-3 py-2.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-amber-50 hover:text-amber-800 flex items-center gap-2.5 cursor-pointer"
                   >
                     <BookOpen className="w-4 h-4 text-amber-600 shrink-0" />
                     <span>{isHi ? 'ब्लॉग और गणित टिप्स' : 'Blog & Maths Tips'}</span>
@@ -561,7 +585,7 @@ export default function App() {
                     type="button"
                     role="menuitem"
                     onClick={() => navigateToTab('progress')}
-                    className="w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-indigo-50 hover:text-indigo-800 flex items-center gap-2.5 cursor-pointer"
+                    className="w-full min-h-[44px] text-left px-3 py-2.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-indigo-50 hover:text-indigo-800 flex items-center gap-2.5 cursor-pointer"
                   >
                     <Trophy className="w-4 h-4 text-indigo-600 shrink-0" />
                     <span>{isHi ? 'मेरी प्रगति और सितारे' : 'My Progress & Stars'}</span>
@@ -570,7 +594,7 @@ export default function App() {
                     type="button"
                     role="menuitem"
                     onClick={navigateToDailySection}
-                    className="w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-blue-50 hover:text-blue-800 flex items-center gap-2.5 cursor-pointer"
+                    className="w-full min-h-[44px] text-left px-3 py-2.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-blue-50 hover:text-blue-800 flex items-center gap-2.5 cursor-pointer"
                   >
                     <Calendar className="w-4 h-4 text-blue-600 shrink-0" />
                     <span>{isHi ? 'दैनिक अभ्यास' : 'Daily Practice'}</span>
@@ -579,7 +603,7 @@ export default function App() {
                     type="button"
                     role="menuitem"
                     onClick={navigateToParentsGuide}
-                    className="w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 flex items-center gap-2.5 cursor-pointer"
+                    className="w-full min-h-[44px] text-left px-3 py-2.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 flex items-center gap-2.5 cursor-pointer"
                   >
                     <Sparkles className="w-4 h-4 text-emerald-600 shrink-0" />
                     <span>{isHi ? 'अभिभावक गाइड' : "Parent's Guide"}</span>
@@ -589,9 +613,23 @@ export default function App() {
             </div>
           </nav>
 
-          {/* Zone 3: Language Switcher + Star Count + Sound Toggle + Glowing Daily Quiz Pill CTA */}
-          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
-            <div className="flex items-center p-0.5 bg-slate-100 border border-slate-200 rounded-xl shrink-0" role="group" aria-label="Language selector">
+          {/* Zone 3: Language Switcher + Star Count + Sound Toggle + Daily Quiz CTA + Mobile Hamburger */}
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+            {/* Compact 1-tap Language Switcher on narrow phones (< 420px) so 320px never overflows */}
+            <button
+              type="button"
+              onClick={() => {
+                soundFx.playClick();
+                setLang((prev) => (prev === 'en' ? 'hi' : 'en'));
+              }}
+              aria-label={lang === 'en' ? 'Switch language to Hindi' : 'Switch language to English'}
+              className="min-[420px]:hidden min-h-[44px] min-w-[44px] px-2 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-800 text-xs font-extrabold inline-flex items-center justify-center hover:bg-indigo-100 transition-colors cursor-pointer shrink-0"
+            >
+              {lang === 'en' ? 'हिं' : 'EN'}
+            </button>
+
+            {/* Full EN / हिं Segmented Switcher on >= 420px */}
+            <div className="hidden min-[420px]:flex items-center p-0.5 bg-slate-100 border border-slate-200 rounded-xl shrink-0" role="group" aria-label="Language selector">
               <button
                 type="button"
                 onClick={() => {
@@ -599,7 +637,7 @@ export default function App() {
                   setLang('en');
                 }}
                 aria-pressed={lang === 'en'}
-                className={`px-2 sm:px-2.5 py-1.5 text-xs font-extrabold rounded-lg transition-colors cursor-pointer whitespace-nowrap ${
+                className={`min-h-[40px] px-2.5 text-xs font-extrabold rounded-lg transition-colors cursor-pointer whitespace-nowrap ${
                   lang === 'en' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
@@ -612,7 +650,7 @@ export default function App() {
                   setLang('hi');
                 }}
                 aria-pressed={lang === 'hi'}
-                className={`px-2 sm:px-2.5 py-1.5 text-xs font-extrabold rounded-lg transition-colors cursor-pointer whitespace-nowrap ${
+                className={`min-h-[40px] px-2.5 text-xs font-extrabold rounded-lg transition-colors cursor-pointer whitespace-nowrap ${
                   lang === 'hi' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
@@ -624,21 +662,22 @@ export default function App() {
               type="button"
               onClick={() => navigateToTab('progress')}
               aria-label={`Total stars earned: ${progress.totalStars}. View progress`}
-              className="min-h-[36px] sm:min-h-[40px] px-2.5 sm:px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-200 hover:border-amber-400 inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-indigo-600"
+              className="min-h-[44px] px-2.5 sm:px-3 rounded-xl bg-amber-50 border border-amber-200 hover:border-amber-400 inline-flex items-center gap-1 sm:gap-1.5 transition-colors cursor-pointer whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-indigo-600"
             >
               <Star className="w-4 h-4 text-amber-500 fill-amber-400 shrink-0" aria-hidden="true" />
-              <span className="font-math text-sm font-extrabold text-amber-950">
+              <span className="font-math text-xs sm:text-sm font-extrabold text-amber-950">
                 {progress.totalStars}
               </span>
             </button>
 
+            {/* Sound Toggle in top bar on >= 640px (also always accessible in mobile drawer) */}
             <button
               type="button"
               onClick={toggleSound}
               aria-label={soundEnabled ? 'Mute sound effects' : 'Unmute sound effects'}
               aria-pressed={!soundEnabled}
               title={soundEnabled ? 'Sound On (Click to mute)' : 'Sound Muted (Click to unmute)'}
-              className={`min-h-[36px] sm:min-h-[40px] px-2.5 py-1.5 rounded-xl border inline-flex items-center justify-center transition-colors cursor-pointer whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-indigo-600 ${
+              className={`hidden sm:inline-flex min-h-[44px] min-w-[44px] rounded-xl border items-center justify-center transition-colors cursor-pointer whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-indigo-600 ${
                 soundEnabled
                   ? 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
                   : 'bg-slate-100 border-slate-300 text-slate-600 hover:bg-slate-200'
@@ -651,81 +690,194 @@ export default function App() {
               )}
             </button>
 
+            {/* Daily Quiz Pill CTA on tablet & desktop (>= 768px) */}
             <button
               type="button"
               onClick={startDailyPractice}
-              className="hidden sm:inline-flex items-center gap-1.5 min-h-[40px] px-4 py-2 text-xs sm:text-sm font-extrabold text-white bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 border-b-[3px] border-rose-700 rounded-full shadow-[0_4px_16px_rgba(249,115,22,0.42)] hover:brightness-105 hover:shadow-[0_6px_22px_rgba(249,115,22,0.55)] active:translate-y-[1px] transition-all whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
+              className="hidden md:inline-flex items-center gap-1.5 min-h-[44px] px-4 py-2 text-xs sm:text-sm font-extrabold text-white bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 border-b-[3px] border-rose-700 rounded-full shadow-[0_4px_16px_rgba(249,115,22,0.42)] hover:brightness-105 hover:shadow-[0_6px_22px_rgba(249,115,22,0.55)] active:translate-y-[1px] transition-all whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
             >
               <Zap className="w-3.5 h-3.5 fill-current shrink-0" />
               <span>{isHi ? 'दैनिक क्विज़' : 'Daily Quiz'}</span>
             </button>
+
+            {/* Responsive Hamburger Menu Trigger (< 1024px) */}
+            <button
+              type="button"
+              onClick={() => {
+                soundFx.playClick();
+                setMobileMenuOpen((prev) => !prev);
+              }}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-nav-drawer"
+              aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              className="lg:hidden min-h-[44px] min-w-[44px] rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-800 inline-flex items-center justify-center transition-colors cursor-pointer shrink-0 focus-visible:outline-2 focus-visible:outline-indigo-600"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
           </div>
         </div>
 
-        {/* Mobile / Tablet Nav Row */}
-        {!activeQuiz && !activeMiniGame && (
-          <div className="lg:hidden border-t border-slate-200/80 px-2 py-1.5 flex items-center justify-start sm:justify-around gap-1 overflow-x-auto text-[11px] sm:text-xs font-bold text-slate-600 bg-white">
-            <button
-              type="button"
-              onClick={() => navigateToTab('home')}
-              className={`px-2.5 py-1.5 rounded-lg whitespace-nowrap shrink-0 cursor-pointer ${
-                activeTab === 'home' ? 'text-indigo-700 bg-indigo-50' : ''
-              }`}
-            >
-              {isHi ? 'होम' : 'Home'}
-            </button>
-            <button
-              type="button"
-              onClick={() => navigateToTab('games')}
-              className={`px-2.5 py-1.5 rounded-lg whitespace-nowrap shrink-0 cursor-pointer ${
-                activeTab === 'games' ? 'text-fuchsia-700 bg-fuchsia-50' : ''
-              }`}
-            >
-              {isHi ? 'गणित खेल' : 'Games'}
-            </button>
-            <button
-              type="button"
-              onClick={() => navigateToTab('tables')}
-              className={`px-2.5 py-1.5 rounded-lg whitespace-nowrap shrink-0 cursor-pointer ${
-                activeTab === 'tables' ? 'text-violet-700 bg-violet-50' : ''
-              }`}
-            >
-              {isHi ? 'पहाड़े 2–20' : 'Tables 2–20'}
-            </button>
-            <button
-              type="button"
-              onClick={() => navigateToTab('worksheets')}
-              className={`px-2.5 py-1.5 rounded-lg whitespace-nowrap shrink-0 cursor-pointer ${
-                activeTab === 'worksheets' ? 'text-sky-700 bg-sky-50' : ''
-              }`}
-            >
-              {isHi ? 'वर्कशीट PDF' : 'Worksheets PDF'}
-            </button>
-            <button
-              type="button"
-              onClick={() => navigateToTab('lab')}
-              className={`px-2.5 py-1.5 rounded-lg whitespace-nowrap shrink-0 cursor-pointer ${
-                activeTab === 'lab' ? 'text-emerald-700 bg-emerald-50' : ''
-              }`}
-            >
-              {isHi ? 'विज़ुअल लैब' : 'Visual Lab'}
-            </button>
-            <button
-              type="button"
-              onClick={() => navigateToTab('progress')}
-              className={`px-2.5 py-1.5 rounded-lg whitespace-nowrap shrink-0 cursor-pointer ${
-                activeTab === 'progress' ? 'text-indigo-700 bg-indigo-50' : ''
-              }`}
-            >
-              {isHi ? 'प्रगति' : 'Progress'}
-            </button>
-            <button
-              type="button"
-              onClick={navigateToBlogSection}
-              className="px-2.5 py-1.5 rounded-lg whitespace-nowrap shrink-0 cursor-pointer"
-            >
-              {isHi ? 'ब्लॉग' : 'Blog'}
-            </button>
+        {/* Responsive Mobile & Tablet Hamburger Navigation Drawer */}
+        {mobileMenuOpen && (
+          <div
+            id="mobile-nav-drawer"
+            className="lg:hidden border-t border-indigo-100 bg-white shadow-2xl max-h-[calc(100vh-3.5rem)] overflow-y-auto"
+          >
+            <div className="max-w-3xl mx-auto px-4 py-4 space-y-4">
+              {/* Prominent Daily Quiz CTA inside Mobile Drawer */}
+              <button
+                type="button"
+                onClick={startDailyPractice}
+                className="w-full min-h-[48px] px-4 py-3 rounded-2xl text-sm font-extrabold text-white bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 border-b-[4px] border-rose-700 shadow-md inline-flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <Zap className="w-4 h-4 fill-current shrink-0" />
+                <span>{isHi ? 'आज का दैनिक क्विज़ शुरू करें (10 सवाल)' : 'Start Daily Quiz (10 Questions)'}</span>
+              </button>
+
+              {/* Touch-Friendly 48px Navigation Grid */}
+              <nav aria-label="Mobile navigation" className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => navigateToTab('home')}
+                  className={`min-h-[48px] px-3.5 py-2.5 rounded-2xl text-sm font-bold flex items-center gap-3 transition-colors cursor-pointer ${
+                    activeTab === 'home' && !activeQuiz && !activeMiniGame
+                      ? 'bg-indigo-50 text-indigo-800 border border-indigo-200'
+                      : 'bg-slate-50/70 text-slate-700 hover:bg-slate-100'
+                  }`}
+                >
+                  <Home className="w-4 h-4 text-indigo-600 shrink-0" />
+                  <span>{isHi ? 'होम' : 'Home'}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => navigateToTab('games')}
+                  className={`min-h-[48px] px-3.5 py-2.5 rounded-2xl text-sm font-bold flex items-center gap-3 transition-colors cursor-pointer ${
+                    (activeTab === 'games' && !activeQuiz) || activeMiniGame
+                      ? 'bg-fuchsia-50 text-fuchsia-800 border border-fuchsia-200'
+                      : 'bg-slate-50/70 text-slate-700 hover:bg-slate-100'
+                  }`}
+                >
+                  <Gamepad2 className="w-4 h-4 text-fuchsia-600 shrink-0" />
+                  <span>{isHi ? 'मज़ेदार गणित खेल (6)' : 'Math Games (6)'}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => navigateToTab('tables')}
+                  className={`min-h-[48px] px-3.5 py-2.5 rounded-2xl text-sm font-bold flex items-center gap-3 transition-colors cursor-pointer ${
+                    activeTab === 'tables' && !activeQuiz && !activeMiniGame
+                      ? 'bg-violet-50 text-violet-800 border border-violet-200'
+                      : 'bg-slate-50/70 text-slate-700 hover:bg-slate-100'
+                  }`}
+                >
+                  <Grid2x2 className="w-4 h-4 text-violet-600 shrink-0" />
+                  <span>{isHi ? 'पहाड़े 2 से 20' : 'Tables 2 to 20'}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => navigateToTab('worksheets')}
+                  className={`min-h-[48px] px-3.5 py-2.5 rounded-2xl text-sm font-bold flex items-center gap-3 transition-colors cursor-pointer ${
+                    activeTab === 'worksheets' && !activeQuiz && !activeMiniGame
+                      ? 'bg-sky-50 text-sky-800 border border-sky-200'
+                      : 'bg-slate-50/70 text-slate-700 hover:bg-slate-100'
+                  }`}
+                >
+                  <FileText className="w-4 h-4 text-sky-600 shrink-0" />
+                  <span>{isHi ? 'प्रिंटेबल वर्कशीट (PDF)' : 'Worksheets PDF'}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => navigateToTab('lab')}
+                  className={`min-h-[48px] px-3.5 py-2.5 rounded-2xl text-sm font-bold flex items-center gap-3 transition-colors cursor-pointer ${
+                    activeTab === 'lab' && !activeQuiz && !activeMiniGame
+                      ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                      : 'bg-slate-50/70 text-slate-700 hover:bg-slate-100'
+                  }`}
+                >
+                  <Layers className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>{isHi ? 'विज़ुअल लैब' : 'Visual Lab'}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => navigateToTab('progress')}
+                  className={`min-h-[48px] px-3.5 py-2.5 rounded-2xl text-sm font-bold flex items-center gap-3 transition-colors cursor-pointer ${
+                    activeTab === 'progress' && !activeQuiz && !activeMiniGame
+                      ? 'bg-amber-50 text-amber-900 border border-amber-200'
+                      : 'bg-slate-50/70 text-slate-700 hover:bg-slate-100'
+                  }`}
+                >
+                  <Trophy className="w-4 h-4 text-amber-600 shrink-0" />
+                  <span>{isHi ? 'मेरी प्रगति और सितारे' : 'My Progress & Stars'}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={navigateToBlogSection}
+                  className="min-h-[48px] px-3.5 py-2.5 rounded-2xl text-sm font-bold bg-slate-50/70 text-slate-700 hover:bg-amber-50 hover:text-amber-900 flex items-center gap-3 transition-colors cursor-pointer"
+                >
+                  <BookOpen className="w-4 h-4 text-amber-600 shrink-0" />
+                  <span>{isHi ? 'ब्लॉग और गणित टिप्स' : 'Blog & Maths Tips'}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={navigateToParentsGuide}
+                  className="min-h-[48px] px-3.5 py-2.5 rounded-2xl text-sm font-bold bg-slate-50/70 text-slate-700 hover:bg-emerald-50 hover:text-emerald-900 flex items-center gap-3 transition-colors cursor-pointer"
+                >
+                  <Sparkles className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>{isHi ? 'अभिभावक गाइड' : "Parent's Guide"}</span>
+                </button>
+              </nav>
+
+              {/* Mobile Language & Sound Quick Controls */}
+              <div className="pt-3 border-t border-slate-100 grid grid-cols-1 min-[360px]:grid-cols-2 gap-2.5">
+                <div className="flex items-center p-1 bg-slate-100 border border-slate-200 rounded-xl" role="group" aria-label="Drawer language selector">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      soundFx.playClick();
+                      setLang('en');
+                    }}
+                    className={`flex-1 min-h-[44px] rounded-lg text-xs font-extrabold transition-colors cursor-pointer ${
+                      lang === 'en' ? 'bg-indigo-600 text-white shadow-xs' : 'text-slate-600'
+                    }`}
+                  >
+                    English
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      soundFx.playClick();
+                      setLang('hi');
+                    }}
+                    className={`flex-1 min-h-[44px] rounded-lg text-xs font-extrabold transition-colors cursor-pointer ${
+                      lang === 'hi' ? 'bg-indigo-600 text-white shadow-xs' : 'text-slate-600'
+                    }`}
+                  >
+                    हिंदी
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={toggleSound}
+                  className={`min-h-[48px] px-3.5 rounded-xl border text-xs font-extrabold inline-flex items-center justify-center gap-2 transition-colors cursor-pointer ${
+                    soundEnabled
+                      ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
+                      : 'bg-slate-100 border-slate-300 text-slate-700'
+                  }`}
+                >
+                  {soundEnabled ? (
+                    <>
+                      <Volume2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                      <span>{isHi ? 'ध्वनि चालू है' : 'Sound: On'}</span>
+                    </>
+                  ) : (
+                    <>
+                      <VolumeX className="w-4 h-4 text-slate-500 shrink-0" />
+                      <span>{isHi ? 'ध्वनि बंद है' : 'Sound: Muted'}</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </header>
@@ -875,7 +1027,7 @@ export default function App() {
                       <button
                         type="button"
                         onClick={() => startOperationQuiz(op.id)}
-                        className="px-4 py-2 rounded-xl text-xs font-bold text-white cursor-pointer whitespace-nowrap"
+                        className="min-h-[44px] px-4 py-2.5 rounded-xl text-xs font-bold text-white cursor-pointer whitespace-nowrap shrink-0"
                         style={{ backgroundColor: op.bgHex }}
                       >
                         {isHi ? 'अभ्यास करें' : 'Practice'}
@@ -1040,7 +1192,7 @@ export default function App() {
               </div>
             </div>
 
-            <div className="pt-4 border-t border-slate-200 flex items-center justify-between">
+            <div className="pt-4 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3">
               <p className="text-xs text-slate-500">
                 {isHi ? 'सभी स्कोर आपके डिवाइस पर ऑफ़लाइन सुरक्षित रहते हैं।' : 'All scores stay offline on this device.'}
               </p>
@@ -1048,27 +1200,27 @@ export default function App() {
                 <button
                   type="button"
                   onClick={() => setConfirmReset(true)}
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-rose-600 cursor-pointer"
+                  className="min-h-[44px] px-3 inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-rose-600 cursor-pointer"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
                   {isHi ? 'प्रगति रीसेट करें' : 'Reset Progress'}
                 </button>
               ) : (
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <span className="text-xs font-semibold text-rose-700">
                     {isHi ? 'क्या सभी सितारे हटाएँ?' : 'Clear all stars?'}
                   </span>
                   <button
                     type="button"
                     onClick={handleResetProgress}
-                    className="px-3 py-1.5 rounded-lg bg-rose-600 text-white text-xs font-bold cursor-pointer"
+                    className="min-h-[44px] px-3.5 py-2 rounded-xl bg-rose-600 text-white text-xs font-bold cursor-pointer"
                   >
                     {isHi ? 'हाँ, रीसेट करें' : 'Yes, Reset'}
                   </button>
                   <button
                     type="button"
                     onClick={() => setConfirmReset(false)}
-                    className="px-3 py-1.5 rounded-lg border border-slate-300 text-xs font-semibold cursor-pointer"
+                    className="min-h-[44px] px-3.5 py-2 rounded-xl border border-slate-300 text-xs font-semibold cursor-pointer"
                   >
                     {isHi ? 'रद्द करें' : 'Cancel'}
                   </button>
@@ -1077,9 +1229,9 @@ export default function App() {
             </div>
           </div>
         ) : (
-          <div className="max-w-6xl mx-auto px-4 sm:px-8 py-6 sm:py-9 space-y-9 sm:space-y-11">
-            {/* 1. Rich Illustrated Deep-Indigo-to-Royal-Blue Hero Section */}
-            <section className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#1E1B4B] via-[#272D8F] to-[#1D4ED8] text-white p-6 sm:p-10 shadow-hero-soft border border-indigo-400/30">
+          <div className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 py-5 sm:py-8 space-y-7 sm:space-y-10">
+            {/* 1. Compact, Balanced Deep-Indigo-to-Royal-Blue Hero Section */}
+            <section className="relative overflow-hidden rounded-3xl sm:rounded-[2rem] bg-gradient-to-br from-[#1E1B4B] via-[#272D8F] to-[#1D4ED8] text-white p-4 sm:p-8 lg:p-10 shadow-hero-soft border border-indigo-400/30">
               {/* Subtle Geometric Math Pattern Backdrop */}
               <div className="absolute inset-0 hero-math-grid opacity-70 pointer-events-none" aria-hidden="true" />
               <div
@@ -1091,22 +1243,22 @@ export default function App() {
                 aria-hidden="true"
               />
 
-              <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+              <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
                 {/* Left Column: Inspiring EdTech Copy & Tactile 3D CTAs */}
-                <div className="lg:col-span-6 space-y-5">
-                  <div className="inline-flex items-center gap-3">
-                    <MascotLogo className="w-12 h-12 sm:w-14 sm:h-14 shrink-0 drop-shadow-md" />
-                    <div>
+                <div className="lg:col-span-6 space-y-4 sm:space-y-5">
+                  <div className="inline-flex items-center gap-2.5 sm:gap-3">
+                    <MascotLogo className="w-11 h-11 sm:w-14 sm:h-14 shrink-0 drop-shadow-md" />
+                    <div className="min-w-0">
                       <p className="text-xs font-extrabold text-amber-300 tracking-wide">
                         {isHi ? 'कक्षा 1 से 5 तक · हमेशा 100% निःशुल्क' : 'Designed for Classes 1 to 5 · 100% Free'}
                       </p>
-                      <p className="text-base sm:text-lg font-bold text-sky-200">
+                      <p className="text-sm sm:text-lg font-bold text-sky-200 leading-snug">
                         {t.subtitle}
                       </p>
                     </div>
                   </div>
 
-                  <h1 className="text-4xl sm:text-5xl lg:text-[3.35rem] font-bold tracking-tight text-white text-balance leading-[1.08]">
+                  <h1 className="text-3xl sm:text-5xl lg:text-[3.35rem] font-bold tracking-tight text-white text-balance leading-[1.08]">
                     {isHi ? 'मैथ्स मास्टर किड्स' : 'Maths Master Kids'}
                   </h1>
 
@@ -1114,28 +1266,28 @@ export default function App() {
                     {t.heroDesc}
                   </p>
 
-                  <div className="flex flex-wrap items-center gap-3 pt-1">
+                  <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 pt-1">
                     <button
                       type="button"
                       onClick={startDailyPractice}
-                      className="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-2xl bg-gradient-to-b from-amber-400 via-amber-500 to-orange-500 border-b-[5px] border-orange-700 text-slate-950 text-sm sm:text-base font-extrabold shadow-[0_10px_28px_rgba(245,158,11,0.45)] hover:brightness-105 active:translate-y-[2px] transition-all cursor-pointer whitespace-nowrap"
+                      className="w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center gap-2.5 px-6 sm:px-7 py-3.5 rounded-2xl bg-gradient-to-b from-amber-400 via-amber-500 to-orange-500 border-b-[5px] border-orange-700 text-slate-950 text-sm sm:text-base font-extrabold shadow-[0_10px_28px_rgba(245,158,11,0.45)] hover:brightness-105 active:translate-y-[2px] transition-all cursor-pointer"
                     >
-                      <Play className="w-5 h-5 fill-current" />
-                      {t.heroCta}
+                      <Play className="w-5 h-5 fill-current shrink-0" />
+                      <span>{t.heroCta}</span>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => navigateToTab('games')}
-                      className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl bg-white/15 hover:bg-white/22 backdrop-blur-sm border border-white/30 border-b-[5px] border-b-indigo-950/60 text-white text-sm sm:text-base font-bold active:translate-y-[2px] transition-all cursor-pointer whitespace-nowrap"
+                      className="w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl bg-white/15 hover:bg-white/22 backdrop-blur-sm border border-white/30 border-b-[5px] border-b-indigo-950/60 text-white text-sm sm:text-base font-bold active:translate-y-[2px] transition-all cursor-pointer"
                     >
-                      <Sparkles className="w-4 h-4 text-amber-300" />
-                      {isHi ? '6 मज़ेदार खेल खेलें' : 'Play 6 Fun Games'}
+                      <Sparkles className="w-4 h-4 text-amber-300 shrink-0" />
+                      <span>{isHi ? '6 मज़ेदार खेल खेलें' : 'Play 6 Fun Games'}</span>
                     </button>
                   </div>
 
                   {/* Clean Unboxed Proof Highlights */}
-                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 pt-2 text-xs font-semibold text-indigo-100/90">
+                  <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5 pt-1 text-xs font-semibold text-indigo-100/90">
                     <span>{isHi ? '6 इंटरैक्टिव गेम्स' : '6 Interactive Games'}</span>
                     <span aria-hidden="true" className="text-indigo-300">·</span>
                     <span>{isHi ? '40 प्रिंटेबल A4 PDFs' : '40 Printable A4 PDFs'}</span>
@@ -1144,7 +1296,7 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Right Column: Large Owl/Robot Math Mascot with Trophy + Floating 3D Badges + Live Mini Challenge */}
+                {/* Right Column: Scaled Owl/Robot Math Mascot with Trophy + Floating 3D Badges + Live Mini Challenge */}
                 <div className="lg:col-span-6">
                   <HeroShowcase
                     classNumber={selectedClass}
@@ -1156,12 +1308,12 @@ export default function App() {
               </div>
             </section>
 
-            {/* 2. Duolingo-Style Gamification & Visual XP Progress Bar Strip */}
+            {/* 2. Unified Real-Data Learning Dashboard & Visual XP Progress Bar */}
             <section
-              aria-label={isHi ? 'प्रगति और एक्सपी बार' : 'Gamification and XP Progress Bar'}
-              className="bg-white border border-indigo-100 rounded-[2rem] p-5 sm:p-6 shadow-card-soft space-y-5"
+              aria-label={isHi ? 'लर्निंग डैशबोर्ड और एक्सपी प्रगति' : 'Learning Dashboard and XP Progress'}
+              className="bg-white border border-indigo-100 rounded-3xl sm:rounded-[2rem] p-4 sm:p-6 shadow-card-soft space-y-4 sm:space-y-5"
             >
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-3.5">
                 {/* Stars Earned */}
                 <motion.button
                   key={`stars-${progress.totalStars}`}
@@ -1170,71 +1322,101 @@ export default function App() {
                   transition={{ type: 'spring', stiffness: 320, damping: 20 }}
                   type="button"
                   onClick={() => navigateToTab('progress')}
-                  className="bg-gradient-to-br from-amber-50 to-orange-50/70 border border-amber-200/90 border-b-4 border-b-amber-300 rounded-2xl px-4 py-3.5 flex items-center gap-3.5 text-left hover:-translate-y-0.5 transition-all cursor-pointer"
+                  className="min-h-[72px] bg-gradient-to-br from-amber-50 to-orange-50/70 border border-amber-200/90 border-b-4 border-b-amber-300 rounded-2xl px-3 sm:px-4 py-3 flex items-center gap-2.5 sm:gap-3.5 text-left hover:-translate-y-0.5 transition-all cursor-pointer"
                 >
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 border-b-[3px] border-orange-700 flex items-center justify-center shrink-0 shadow-sm">
-                    <Star className="w-6 h-6 text-white fill-white" aria-hidden="true" />
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 border-b-[3px] border-orange-700 flex items-center justify-center shrink-0 shadow-sm">
+                    <Star className="w-5 h-5 sm:w-6 sm:h-6 text-white fill-white" aria-hidden="true" />
                   </div>
                   <div className="min-w-0">
-                    <span className="block text-xs font-bold text-amber-800/80">
+                    <span className="block text-[11px] sm:text-xs font-bold text-amber-800/80 truncate">
                       {isHi ? 'कुल सितारे' : 'Stars Earned'}
                     </span>
-                    <span className="font-math text-2xl font-extrabold text-slate-900">
+                    <span className="font-math text-xl sm:text-2xl font-extrabold text-slate-900">
                       {progress.totalStars}
                     </span>
                   </div>
                 </motion.button>
 
-                {/* Daily Streak */}
+                {/* Learning Streak */}
                 <button
                   type="button"
                   onClick={() => navigateToTab('progress')}
-                  className="bg-gradient-to-br from-rose-50 to-orange-50/70 border border-orange-200/90 border-b-4 border-b-orange-300 rounded-2xl px-4 py-3.5 flex items-center gap-3.5 text-left hover:-translate-y-0.5 transition-all cursor-pointer"
+                  className="min-h-[72px] bg-gradient-to-br from-rose-50 to-orange-50/70 border border-orange-200/90 border-b-4 border-b-orange-300 rounded-2xl px-3 sm:px-4 py-3 flex items-center gap-2.5 sm:gap-3.5 text-left hover:-translate-y-0.5 transition-all cursor-pointer"
                 >
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-400 to-rose-500 border-b-[3px] border-rose-700 flex items-center justify-center shrink-0 shadow-sm">
-                    <Flame className="w-6 h-6 text-white fill-amber-200" aria-hidden="true" />
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-br from-orange-400 to-rose-500 border-b-[3px] border-rose-700 flex items-center justify-center shrink-0 shadow-sm">
+                    <Flame className="w-5 h-5 sm:w-6 sm:h-6 text-white fill-amber-200" aria-hidden="true" />
                   </div>
                   <div className="min-w-0">
-                    <span className="block text-xs font-bold text-orange-800/80">
-                      {isHi ? 'दैनिक स्ट्रीक' : 'Daily Streak'}
+                    <span className="block text-[11px] sm:text-xs font-bold text-orange-800/80 truncate">
+                      {isHi ? 'दैनिक स्ट्रीक' : 'Learning Streak'}
                     </span>
-                    <span className="font-math text-2xl font-extrabold text-slate-900">
+                    <span className="font-math text-xl sm:text-2xl font-extrabold text-slate-900">
                       {progress.dailyStreak}{' '}
-                      <span className="text-sm font-bold text-slate-600">
+                      <span className="text-xs sm:text-sm font-bold text-slate-600">
                         {isHi ? 'दिन' : progress.dailyStreak === 1 ? 'day' : 'days'}
                       </span>
                     </span>
                   </div>
                 </button>
 
-                {/* Current Rank Badge */}
+                {/* Completed Quizzes & Real Accuracy */}
                 <button
                   type="button"
                   onClick={() => navigateToTab('progress')}
-                  className="bg-gradient-to-br from-indigo-50 to-purple-50/70 border border-indigo-200/90 border-b-4 border-b-indigo-300 rounded-2xl px-4 py-3.5 flex items-center gap-3.5 text-left hover:-translate-y-0.5 transition-all cursor-pointer"
+                  className="min-h-[72px] bg-gradient-to-br from-emerald-50 to-teal-50/70 border border-emerald-200/90 border-b-4 border-b-emerald-300 rounded-2xl px-3 sm:px-4 py-3 flex items-center gap-2.5 sm:gap-3.5 text-left hover:-translate-y-0.5 transition-all cursor-pointer"
                 >
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 border-b-[3px] border-purple-800 flex items-center justify-center shrink-0 shadow-sm">
-                    <Trophy className="w-6 h-6 text-amber-300" aria-hidden="true" />
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 border-b-[3px] border-teal-800 flex items-center justify-center shrink-0 shadow-sm">
+                    <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-white" aria-hidden="true" />
+                  </div>
+                  <div className="min-w-0">
+                    <span className="block text-[11px] sm:text-xs font-bold text-emerald-800/80 truncate">
+                      {isHi ? 'पूर्ण क्विज़' : 'Quizzes Done'}
+                    </span>
+                    <span className="font-math text-xl sm:text-2xl font-extrabold text-slate-900">
+                      {progress.totalQuizzesCompleted}
+                      {progress.totalAttemptedQuestions > 0 && (
+                        <span className="ml-1.5 text-xs font-bold text-emerald-700">
+                          ({overallAccuracy}%)
+                        </span>
+                      )}
+                    </span>
+                  </div>
+                </button>
+
+                {/* Daily Challenge Status / Current Rank */}
+                <button
+                  type="button"
+                  onClick={dailyCompletedToday ? () => navigateToTab('progress') : startDailyPractice}
+                  className="min-h-[72px] bg-gradient-to-br from-indigo-50 to-purple-50/70 border border-indigo-200/90 border-b-4 border-b-indigo-300 rounded-2xl px-3 sm:px-4 py-3 flex items-center gap-2.5 sm:gap-3.5 text-left hover:-translate-y-0.5 transition-all cursor-pointer"
+                >
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 border-b-[3px] border-purple-800 flex items-center justify-center shrink-0 shadow-sm">
+                    <Trophy className="w-5 h-5 sm:w-6 sm:h-6 text-amber-300" aria-hidden="true" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <span className="block text-xs font-bold text-indigo-800/80">
-                      {isHi ? 'वर्तमान रैंक' : 'Current Rank'}
+                    <span className="block text-[11px] sm:text-xs font-bold text-indigo-800/80 truncate">
+                      {isHi ? 'दैनिक चुनौती' : 'Daily Challenge'}
                     </span>
-                    <p className={`text-lg font-bold truncate ${rank.colorClass}`}>
-                      {isHi ? rank.titleHi : rank.titleEn}
+                    <p className={`text-sm sm:text-base font-extrabold truncate ${dailyCompletedToday ? 'text-emerald-700' : 'text-indigo-700'}`}>
+                      {dailyCompletedToday
+                        ? isHi
+                          ? 'आज पूरा ✓'
+                          : 'Done Today ✓'
+                        : isHi
+                          ? 'अभी खेलें →'
+                          : 'Ready to Play →'}
                     </p>
                   </div>
                 </button>
               </div>
 
               {/* Duolingo-Style Visual XP Level Progress Bar */}
-              <div className="bg-slate-50/90 border border-slate-200/80 rounded-2xl px-4 py-3.5 space-y-2">
+              <div className="bg-slate-50/90 border border-slate-200/80 rounded-2xl px-3.5 sm:px-4 py-3 sm:py-3.5 space-y-2">
                 <div className="flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm font-bold">
                   <span className="inline-flex items-center gap-1.5 text-slate-800">
                     <Zap className="w-4 h-4 text-emerald-500 fill-emerald-400 shrink-0" />
                     <span className="font-math text-emerald-700">{currentXp} XP</span>
                     <span className="text-slate-400">·</span>
-                    <span>{isHi ? rank.titleHi : rank.titleEn}</span>
+                    <span className={rank.colorClass}>{isHi ? rank.titleHi : rank.titleEn}</span>
                   </span>
                   <span className="font-math text-xs sm:text-sm font-extrabold text-indigo-700">
                     {nextRankXp !== null && nextRankTitle
@@ -1263,35 +1445,48 @@ export default function App() {
               </div>
             </section>
 
-            {/* 3. Soft-Tinted Class Selection & Difficulty Controls */}
-            <section className="bg-gradient-to-br from-sky-50/90 via-white to-indigo-50/75 border border-sky-200/80 rounded-[2rem] p-5 sm:p-7 space-y-6 shadow-card-soft">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            {/* 3. Responsive Class 1–5 Selection & Difficulty Controls */}
+            <section className="bg-gradient-to-br from-sky-50/90 via-white to-indigo-50/75 border border-sky-200/80 rounded-3xl sm:rounded-[2rem] p-4 sm:p-7 space-y-5 sm:space-y-6 shadow-card-soft">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
                 {/* Class 1-5 */}
                 <div className="lg:col-span-7 space-y-3">
                   <label className="block text-base font-bold text-slate-900 font-display">{t.selectClass}</label>
-                  <div className="grid grid-cols-3 sm:grid-cols-5 gap-2.5">
-                    {CLASS_LEVELS.map((cls) => {
+                  <div className="grid grid-cols-2 min-[420px]:grid-cols-3 sm:grid-cols-5 gap-2.5">
+                    {CLASS_LEVELS.map((cls, idx) => {
                       const active = cls.number === selectedClass;
+                      const levelHint = isHi
+                        ? ['बुनियादी', 'दहाई', 'पहाड़े', 'बड़े अंक', 'मास्टर'][idx]
+                        : ['Basics', 'Tens', 'Tables', 'Multi-Digit', 'Master'][idx];
                       return (
                         <button
                           key={cls.number}
                           type="button"
                           onClick={() => setSelectedClass(cls.number)}
-                          className={`py-3 px-2 rounded-2xl border text-center transition-all cursor-pointer active:translate-y-[2px] ${
+                          aria-pressed={active}
+                          className={`min-h-[64px] py-2.5 px-2 rounded-2xl border text-center transition-all cursor-pointer active:translate-y-[2px] flex flex-col items-center justify-center ${
+                            idx === 4 ? 'col-span-2 min-[420px]:col-span-1' : ''
+                          } ${
                             active
                               ? 'bg-gradient-to-b from-blue-500 to-indigo-600 border-indigo-600 border-b-[5px] border-b-indigo-900 text-white shadow-md'
                               : 'bg-white border-slate-200 border-b-4 border-b-slate-300 text-slate-800 hover:border-blue-300 hover:bg-blue-50/40'
                           }`}
                         >
-                          <span className="block text-xs sm:text-sm font-extrabold whitespace-nowrap">
+                          <span className="block text-xs sm:text-sm font-extrabold">
                             {isHi ? cls.labelHi : cls.label}
                           </span>
                           <span
-                            className={`block text-[11px] mt-0.5 ${
+                            className={`block text-[11px] font-semibold mt-0.5 ${
                               active ? 'text-blue-100' : 'text-slate-500'
                             }`}
                           >
                             {isHi ? cls.agesHi : cls.agesEn}
+                          </span>
+                          <span
+                            className={`block text-[10px] font-bold mt-0.5 ${
+                              active ? 'text-amber-200' : 'text-indigo-600/80'
+                            }`}
+                          >
+                            {levelHint}
                           </span>
                         </button>
                       );
@@ -1302,7 +1497,7 @@ export default function App() {
                 {/* Difficulty Easy / Medium / Hard */}
                 <div className="lg:col-span-5 space-y-3">
                   <label className="block text-base font-bold text-slate-900 font-display">{t.selectDiff}</label>
-                  <div className="grid grid-cols-3 gap-2.5">
+                  <div className="grid grid-cols-1 min-[360px]:grid-cols-3 gap-2.5">
                     {DIFFICULTIES.map((diff) => {
                       const active = diff.id === selectedDifficulty;
                       return (
@@ -1310,17 +1505,18 @@ export default function App() {
                           key={diff.id}
                           type="button"
                           onClick={() => setSelectedDifficulty(diff.id)}
-                          className={`py-3 px-2.5 rounded-2xl border text-center transition-all cursor-pointer whitespace-nowrap active:translate-y-[2px] ${
+                          aria-pressed={active}
+                          className={`min-h-[60px] py-2.5 px-2.5 rounded-2xl border text-center transition-all cursor-pointer active:translate-y-[2px] flex flex-col items-center justify-center ${
                             active
                               ? 'bg-gradient-to-b from-emerald-500 to-teal-600 border-teal-600 border-b-[5px] border-b-teal-900 text-white shadow-md'
                               : 'bg-white border-slate-200 border-b-4 border-b-slate-300 text-slate-800 hover:border-emerald-300 hover:bg-emerald-50/40'
                           }`}
                         >
-                          <span className="block text-xs sm:text-sm font-extrabold">
+                          <span className="block text-xs sm:text-sm font-extrabold leading-tight">
                             {isHi ? diff.labelHi : diff.labelEn}
                           </span>
                           <span
-                            className={`block text-[11px] font-medium ${
+                            className={`block text-[11px] font-medium leading-tight mt-0.5 ${
                               active ? 'text-emerald-100' : 'text-slate-500'
                             }`}
                           >
@@ -1399,19 +1595,19 @@ export default function App() {
             />
 
             {/* 5b. Multiplication Tables 2 to 20 Interactive Quick-Access Showcase */}
-            <section className="bg-gradient-to-br from-violet-50/90 via-white to-indigo-50/85 border border-violet-200/85 rounded-[2rem] p-6 sm:p-8 shadow-card-soft space-y-5">
+            <section className="bg-gradient-to-br from-violet-50/90 via-white to-indigo-50/85 border border-violet-200/85 rounded-3xl sm:rounded-[2rem] p-5 sm:p-8 shadow-card-soft space-y-5">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
-                <div className="flex items-start gap-4 max-w-2xl">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-indigo-700 border-b-4 border-indigo-900 text-white flex items-center justify-center shrink-0 shadow-md">
-                    <Grid2x2 className="w-7 h-7" aria-hidden="true" />
+                <div className="flex items-start gap-3.5 sm:gap-4 max-w-2xl">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-indigo-700 border-b-4 border-indigo-900 text-white flex items-center justify-center shrink-0 shadow-md">
+                    <Grid2x2 className="w-6 h-6 sm:w-7 sm:h-7" aria-hidden="true" />
                   </div>
-                  <div className="space-y-1">
+                  <div className="space-y-1 min-w-0">
                     <p className="text-xs font-extrabold text-violet-700">
                       {isHi
                         ? 'बोलकर सुनें · उत्तर छिपाकर अभ्यास · A4 PDF चार्ट'
                         : 'Read Aloud Voice · Hide Answers Practice · Printable A4 PDF'}
                     </p>
-                    <h2 className="text-2xl font-bold text-slate-900">
+                    <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
                       {isHi ? 'पहाड़े 2 से 20 (Tables 2 to 20)' : 'Multiplication Tables 2 to 20'}
                     </h2>
                     <p className="text-sm text-slate-600 leading-relaxed">
@@ -1425,10 +1621,10 @@ export default function App() {
                 <button
                   type="button"
                   onClick={() => openTablesTab(2)}
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-b from-violet-500 to-indigo-600 border-b-[5px] border-indigo-900 text-white text-sm sm:text-base font-extrabold shadow-md hover:brightness-105 active:translate-y-[2px] transition-all cursor-pointer shrink-0 whitespace-nowrap"
+                  className="w-full md:w-auto min-h-[48px] inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-b from-violet-500 to-indigo-600 border-b-[5px] border-indigo-900 text-white text-sm sm:text-base font-extrabold shadow-md hover:brightness-105 active:translate-y-[2px] transition-all cursor-pointer shrink-0"
                 >
                   <span>{isHi ? 'पहाड़े 2 से 20 खोलें' : 'Explore Tables 2 to 20'}</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4 shrink-0" />
                 </button>
               </div>
 
@@ -1441,7 +1637,7 @@ export default function App() {
                     key={`home-tbl-${num}`}
                     type="button"
                     onClick={() => openTablesTab(num)}
-                    className="px-3 py-1.5 rounded-xl bg-white border border-violet-200 border-b-[3px] border-b-violet-300 font-math text-xs sm:text-sm font-extrabold text-violet-900 hover:bg-violet-600 hover:text-white hover:border-violet-700 transition-colors cursor-pointer"
+                    className="min-h-[44px] min-w-[44px] px-3 py-2 rounded-xl bg-white border border-violet-200 border-b-[3px] border-b-violet-300 font-math text-xs sm:text-sm font-extrabold text-violet-900 hover:bg-violet-600 hover:text-white hover:border-violet-700 transition-colors cursor-pointer"
                   >
                     {num}×
                   </button>
@@ -1449,7 +1645,7 @@ export default function App() {
                 <button
                   type="button"
                   onClick={() => openTablesTab('ALL')}
-                  className="px-3.5 py-1.5 rounded-xl bg-slate-900 text-white text-xs sm:text-sm font-bold hover:bg-slate-800 transition-colors cursor-pointer whitespace-nowrap"
+                  className="min-h-[44px] px-4 py-2 rounded-xl bg-slate-900 text-white text-xs sm:text-sm font-bold hover:bg-slate-800 transition-colors cursor-pointer whitespace-nowrap"
                 >
                   {isHi ? 'सभी पहाड़े चार्ट' : 'All Tables Chart'}
                 </button>
@@ -1457,16 +1653,16 @@ export default function App() {
             </section>
 
             {/* 6. Printable A4 PDF Worksheets Showcase Banner */}
-            <section className="bg-gradient-to-br from-cyan-50/85 via-white to-sky-50/80 border border-sky-200/85 rounded-[2rem] p-6 sm:p-8 shadow-card-soft flex flex-col md:flex-row md:items-center justify-between gap-6">
-              <div className="flex items-start gap-4 max-w-2xl">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-500 to-blue-700 border-b-4 border-blue-900 text-white flex items-center justify-center shrink-0 shadow-md">
-                  <FileText className="w-7 h-7" aria-hidden="true" />
+            <section className="bg-gradient-to-br from-cyan-50/85 via-white to-sky-50/80 border border-sky-200/85 rounded-3xl sm:rounded-[2rem] p-5 sm:p-8 shadow-card-soft flex flex-col md:flex-row md:items-center justify-between gap-5 sm:gap-6">
+              <div className="flex items-start gap-3.5 sm:gap-4 max-w-2xl">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-sky-500 to-blue-700 border-b-4 border-blue-900 text-white flex items-center justify-center shrink-0 shadow-md">
+                  <FileText className="w-6 h-6 sm:w-7 sm:h-7" aria-hidden="true" />
                 </div>
-                <div className="space-y-1">
+                <div className="space-y-1 min-w-0">
                   <p className="text-xs font-extrabold text-sky-700">
                     {isHi ? 'स्कूल और होमवर्क के लिए 40 निःशुल्क A4 PDF' : '40 Free School-Ready A4 PDF Sheets'}
                   </p>
-                  <h2 className="text-2xl font-bold text-slate-900">
+                  <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
                     {isHi ? 'प्रिंटेबल गणित वर्कशीट (PDF)' : 'Printable Maths Worksheets (PDF)'}
                   </h2>
                   <p className="text-sm text-slate-600 leading-relaxed">
@@ -1480,27 +1676,27 @@ export default function App() {
               <button
                 type="button"
                 onClick={() => navigateToTab('worksheets')}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-b from-sky-500 to-blue-600 border-b-[5px] border-blue-800 text-white text-sm sm:text-base font-extrabold shadow-md hover:brightness-105 active:translate-y-[2px] transition-all cursor-pointer shrink-0 whitespace-nowrap"
+                className="w-full md:w-auto min-h-[48px] inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-b from-sky-500 to-blue-600 border-b-[5px] border-blue-800 text-white text-sm sm:text-base font-extrabold shadow-md hover:brightness-105 active:translate-y-[2px] transition-all cursor-pointer shrink-0"
               >
                 <span>{isHi ? 'सभी 40 PDF वर्कशीट देखें' : 'Browse 40 PDF Worksheets'}</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 shrink-0" />
               </button>
             </section>
 
             {/* 7. Daily Practice Section */}
             <section
               id="daily-practice"
-              className="bg-gradient-to-r from-indigo-50/85 via-white to-blue-50/85 border border-indigo-200/80 rounded-[2rem] p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-card-soft"
+              className="bg-gradient-to-r from-indigo-50/85 via-white to-blue-50/85 border border-indigo-200/80 rounded-3xl sm:rounded-[2rem] p-5 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-5 sm:gap-6 shadow-card-soft"
             >
               <div className="space-y-2 max-w-xl">
-                <div className="flex flex-wrap items-center gap-3 text-xs font-bold">
+                <div className="flex flex-wrap items-center gap-2.5 text-xs font-bold">
                   <span className="inline-flex items-center gap-1.5 text-indigo-700">
-                    <Calendar className="w-4 h-4" />
+                    <Calendar className="w-4 h-4 shrink-0" />
                     {t.dailyBadge}
                   </span>
                   <span aria-hidden="true" className="text-slate-300">·</span>
                   <span className="inline-flex items-center gap-1 text-amber-700">
-                    <Flame className="w-4 h-4" />
+                    <Flame className="w-4 h-4 shrink-0" />
                     {isHi
                       ? `${progress.dailyStreak} दिन की स्ट्रीक`
                       : `${progress.dailyStreak} day streak`}
@@ -1509,28 +1705,28 @@ export default function App() {
                     <>
                       <span aria-hidden="true" className="text-slate-300">·</span>
                       <span className="inline-flex items-center gap-1 text-emerald-700">
-                        <CheckCircle2 className="w-4 h-4" />
+                        <CheckCircle2 className="w-4 h-4 shrink-0" />
                         {isHi ? 'आज पूरा हुआ' : 'Completed Today'}
                       </span>
                     </>
                   )}
                 </div>
 
-                <h2 className="text-2xl font-bold text-slate-900">{t.dailyTitle}</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-slate-900">{t.dailyTitle}</h2>
                 <p className="text-sm sm:text-base text-slate-600">{t.dailyDesc}</p>
               </div>
 
               <button
                 type="button"
                 onClick={startDailyPractice}
-                className={`inline-flex items-center justify-center gap-2 px-7 py-4 rounded-2xl text-base font-extrabold text-white border-b-[5px] transition-all active:translate-y-[2px] cursor-pointer shrink-0 whitespace-nowrap shadow-md ${
+                className={`w-full md:w-auto min-h-[48px] inline-flex items-center justify-center gap-2 px-7 py-4 rounded-2xl text-sm sm:text-base font-extrabold text-white border-b-[5px] transition-all active:translate-y-[2px] cursor-pointer shrink-0 shadow-md ${
                   dailyCompletedToday
                     ? 'bg-emerald-600 border-emerald-800 hover:bg-emerald-700'
                     : 'bg-gradient-to-b from-blue-500 to-indigo-600 border-indigo-900 hover:brightness-105'
                 }`}
               >
-                <Play className="w-5 h-5 fill-current" />
-                {dailyCompletedToday ? t.replayDaily : t.startDaily}
+                <Play className="w-5 h-5 fill-current shrink-0" />
+                <span>{dailyCompletedToday ? t.replayDaily : t.startDaily}</span>
               </button>
             </section>
 
@@ -1637,114 +1833,107 @@ export default function App() {
               </p>
             </div>
 
-            <div className="md:col-span-3 space-y-2.5">
-              <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
+            <div className="md:col-span-3 space-y-1.5">
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-500 pb-1">
                 {isHi ? 'एक्सप्लोर करें' : 'Explore'}
               </p>
-              <div className="flex flex-col items-start gap-2 text-xs font-medium text-slate-600">
+              <div className="flex flex-col items-start text-xs font-medium text-slate-600">
                 <button
                   type="button"
                   onClick={() => navigateToTab('home')}
-                  className="hover:text-slate-900 cursor-pointer"
+                  className="min-h-[40px] py-1.5 inline-flex items-center hover:text-slate-900 cursor-pointer"
                 >
                   {isHi ? 'होम' : 'Home'}
                 </button>
                 <button
                   type="button"
                   onClick={() => navigateToTab('games')}
-                  className="hover:text-slate-900 cursor-pointer"
+                  className="min-h-[40px] py-1.5 inline-flex items-center hover:text-slate-900 cursor-pointer"
                 >
                   {isHi ? 'मज़ेदार गणित खेल' : 'Fun Math Games'}
                 </button>
                 <button
                   type="button"
                   onClick={() => openTablesTab(2)}
-                  className="hover:text-slate-900 cursor-pointer"
+                  className="min-h-[40px] py-1.5 inline-flex items-center hover:text-slate-900 cursor-pointer"
                 >
                   {isHi ? 'पहाड़े 2 से 20' : 'Tables 2 to 20'}
                 </button>
                 <button
                   type="button"
                   onClick={() => navigateToTab('worksheets')}
-                  className="hover:text-slate-900 cursor-pointer"
+                  className="min-h-[40px] py-1.5 inline-flex items-center hover:text-slate-900 cursor-pointer"
                 >
                   {isHi ? 'प्रिंटेबल वर्कशीट (PDF)' : 'Printable Worksheets (PDF)'}
                 </button>
                 <button
                   type="button"
                   onClick={navigateToDailySection}
-                  className="hover:text-slate-900 cursor-pointer"
+                  className="min-h-[40px] py-1.5 inline-flex items-center hover:text-slate-900 cursor-pointer"
                 >
                   {isHi ? 'दैनिक अभ्यास' : 'Daily Practice'}
                 </button>
                 <button
                   type="button"
                   onClick={() => navigateToTab('progress')}
-                  className="hover:text-slate-900 cursor-pointer"
+                  className="min-h-[40px] py-1.5 inline-flex items-center hover:text-slate-900 cursor-pointer"
                 >
                   {isHi ? 'मेरी प्रगति' : 'My Progress'}
                 </button>
                 <button
                   type="button"
                   onClick={() => navigateToTab('lab')}
-                  className="hover:text-slate-900 cursor-pointer"
+                  className="min-h-[40px] py-1.5 inline-flex items-center hover:text-slate-900 cursor-pointer"
                 >
                   {isHi ? 'विज़ुअल लैब' : 'Visual Lab'}
                 </button>
                 <button
                   type="button"
-                  onClick={() => {
-                    soundFx.playClick();
-                    setActiveQuiz(null);
-                    setActiveTab('home');
-                    setTimeout(() => {
-                      document.getElementById('parents-guide')?.scrollIntoView({ behavior: 'smooth' });
-                    }, 40);
-                  }}
-                  className="hover:text-slate-900 cursor-pointer"
+                  onClick={navigateToParentsGuide}
+                  className="min-h-[40px] py-1.5 inline-flex items-center hover:text-slate-900 cursor-pointer"
                 >
                   {isHi ? 'अभिभावक गाइड और टिप्स' : "Parent's Guide & Tips"}
                 </button>
                 <button
                   type="button"
                   onClick={navigateToBlogSection}
-                  className="hover:text-slate-900 cursor-pointer"
+                  className="min-h-[40px] py-1.5 inline-flex items-center hover:text-slate-900 cursor-pointer"
                 >
                   {isHi ? 'ब्लॉग और गणित टिप्स' : 'Blog & Maths Tips'}
                 </button>
               </div>
             </div>
 
-            <div className="md:col-span-4 space-y-2.5">
-              <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
+            <div className="md:col-span-4 space-y-1.5">
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-500 pb-1">
                 Information &amp; Policies
               </p>
-              <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs font-medium text-slate-600">
+              <div className="grid grid-cols-2 gap-x-4 text-xs font-medium text-slate-600">
                 <button
                   type="button"
                   onClick={() => openFooterDoc('about')}
-                  className="text-left hover:text-blue-600 cursor-pointer"
+                  className="min-h-[40px] py-1.5 text-left inline-flex items-center hover:text-blue-600 cursor-pointer"
                 >
                   About Us
                 </button>
                 <button
                   type="button"
                   onClick={() => openFooterDoc('privacy')}
-                  className="text-left hover:text-blue-600 cursor-pointer"
+                  className="min-h-[40px] py-1.5 text-left inline-flex items-center hover:text-blue-600 cursor-pointer"
                 >
                   Privacy Policy
                 </button>
                 <button
                   type="button"
                   onClick={() => openFooterDoc('terms')}
-                  className="text-left hover:text-blue-600 cursor-pointer"
+                  className="min-h-[40px] py-1.5 text-left inline-flex items-center hover:text-blue-600 cursor-pointer"
                 >
                   Terms &amp; Conditions
                 </button>
                 <button
                   type="button"
                   onClick={() => openFooterDoc('contact')}
-                  className="text-left hover:text-blue-600 cursor-pointer"
+                  className="min-h-[40px] py-1.5 text-left inline-flex items-center hover:text-blue-600 cursor-pointer"
                 >
                   Contact Us
                 </button>
@@ -1752,7 +1941,7 @@ export default function App() {
             </div>
           </div>
 
-          <div className="pt-5 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500">
+          <div className="pt-5 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500 text-center sm:text-left">
             <span>© {new Date().getFullYear()} Maths Master Kids · Classes 1 to 5</span>
             <span>COPPA-Aware · Local Device Progress · Educational Use</span>
           </div>

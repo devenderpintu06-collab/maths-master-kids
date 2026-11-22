@@ -84,7 +84,7 @@ export function LegalFooterModals({ activeDoc, onSelectDoc }: LegalFooterModalsP
         className="bg-white border border-slate-200 rounded-3xl w-full max-w-3xl max-h-[88vh] flex flex-col overflow-hidden shadow-xl"
       >
         {/* Modal Header */}
-        <div className="px-5 sm:px-7 py-4 border-b border-slate-200 flex items-center justify-between gap-3 bg-[#FAF9F6]">
+        <div className="px-4 sm:px-7 py-3.5 sm:py-4 border-b border-slate-200 flex items-start sm:items-center justify-between gap-2.5 sm:gap-3 bg-[#FAF9F6]">
           <div className="flex flex-wrap items-center gap-1.5">
             {DOC_TABS.map((tab) => {
               const active = activeDoc === tab.id;
@@ -98,7 +98,7 @@ export function LegalFooterModals({ activeDoc, onSelectDoc }: LegalFooterModalsP
                     setFormError('');
                     onSelectDoc(tab.id);
                   }}
-                  className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-colors cursor-pointer whitespace-nowrap ${
+                  className={`min-h-[40px] px-2.5 sm:px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-colors cursor-pointer whitespace-nowrap ${
                     active
                       ? 'bg-blue-600 text-white'
                       : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
@@ -114,14 +114,14 @@ export function LegalFooterModals({ activeDoc, onSelectDoc }: LegalFooterModalsP
             type="button"
             onClick={handleClose}
             aria-label="Close dialog"
-            className="p-2 rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:text-slate-900 cursor-pointer shrink-0"
+            className="min-w-[44px] min-h-[44px] rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:text-slate-900 flex items-center justify-center cursor-pointer shrink-0"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Modal Body */}
-        <div className="px-5 sm:px-7 py-6 overflow-y-auto space-y-5 text-sm text-slate-700 leading-relaxed">
+        <div className="px-4 sm:px-7 py-5 sm:py-6 overflow-y-auto space-y-5 text-sm text-slate-700 leading-relaxed">
           {activeDoc === 'about' && (
             <div className="space-y-4">
               <h2 id="footer-modal-title" className="text-2xl font-extrabold text-slate-900">
@@ -312,7 +312,7 @@ export function LegalFooterModals({ activeDoc, onSelectDoc }: LegalFooterModalsP
                   <div className="flex flex-wrap items-center gap-3 pt-1">
                     <a
                       href={mailtoHref}
-                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-700 transition-colors"
+                      className="min-h-[44px] inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-700 transition-colors"
                     >
                       <Mail className="w-4 h-4" />
                       Open in Email App
@@ -325,7 +325,7 @@ export function LegalFooterModals({ activeDoc, onSelectDoc }: LegalFooterModalsP
                         setEmail('');
                         setMessage('');
                       }}
-                      className="px-4 py-2.5 rounded-xl border border-emerald-300 bg-white text-emerald-900 text-xs font-bold hover:bg-emerald-100/50 cursor-pointer"
+                      className="min-h-[44px] px-4 py-2.5 rounded-xl border border-emerald-300 bg-white text-emerald-900 text-xs font-bold hover:bg-emerald-100/50 cursor-pointer"
                     >
                       Send Another Message
                     </button>
@@ -341,7 +341,7 @@ export function LegalFooterModals({ activeDoc, onSelectDoc }: LegalFooterModalsP
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         placeholder="e.g., Priya Sharma"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:border-blue-600"
+                        className="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:border-blue-600"
                       />
                     </label>
                     <label className="block space-y-1.5">
@@ -351,7 +351,7 @@ export function LegalFooterModals({ activeDoc, onSelectDoc }: LegalFooterModalsP
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="you@example.com"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:border-blue-600"
+                        className="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:border-blue-600"
                       />
                     </label>
                   </div>
@@ -361,7 +361,7 @@ export function LegalFooterModals({ activeDoc, onSelectDoc }: LegalFooterModalsP
                     <select
                       value={topic}
                       onChange={(e) => setTopic(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 bg-white focus:outline-none focus:border-blue-600"
+                      className="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 bg-white focus:outline-none focus:border-blue-600"
                     >
                       <option value="General Feedback">General Feedback</option>
                       <option value="Class 1-5 Question Suggestion">Class 1–5 Question Suggestion</option>
@@ -390,7 +390,7 @@ export function LegalFooterModals({ activeDoc, onSelectDoc }: LegalFooterModalsP
                   <div className="flex flex-wrap items-center justify-between gap-3">
                     <button
                       type="submit"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-bold hover:bg-blue-700 transition-colors cursor-pointer"
+                      className="w-full sm:w-auto min-h-[46px] inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-bold hover:bg-blue-700 transition-colors cursor-pointer"
                     >
                       <Send className="w-4 h-4" />
                       Send Message

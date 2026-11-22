@@ -7,11 +7,26 @@
     --font-mono: 'JetBrains Mono', ui-monospace, monospace;
   }
 
+  html,
+  body {
+    overflow-x: clip;
+    max-width: 100%;
+  }
+
   body {
     font-family: var(--font-sans);
     background-color: #F4F7FE;
     color: #0F172A;
     -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    touch-action: manipulation;
   }
 
   h1, h2, h3, h4, .font-display {
@@ -21,6 +36,11 @@
   .font-math {
     font-family: var(--font-mono);
     font-variant-numeric: tabular-nums;
+  }
+
+  /* Touch-friendly range sliders for Visual Math Lab */
+  input[type="range"] {
+    min-height: 36px;
   }
 }
 
@@ -92,6 +112,16 @@
   box-shadow: 0 24px 54px -14px rgba(30, 27, 75, 0.36), 0 8px 20px -6px rgba(37, 99, 235, 0.2);
 }
 
+/* Compact chrome & comfortable playfields on short mobile landscape screens */
+@media (max-height: 500px) and (orientation: landscape) {
+  .landscape-compact-header {
+    height: 3.25rem;
+  }
+  .landscape-sky-arena {
+    height: 235px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-gentle-bounce,
   .animate-float-symbol,
@@ -113,9 +143,9 @@
 @media print {
   html,
   body {
+    overflow: visible !important;
     background: #ffffff !important;
     margin: 0 !important;
     padding: 0 !important;
   }
 }
-

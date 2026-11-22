@@ -121,20 +121,20 @@ export function TableHeroGame({
   const isRight = isAnswered && picked === prompt.answer;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 space-y-5">
+    <div className="max-w-4xl mx-auto px-3 sm:px-6 py-4 sm:py-6 space-y-4 sm:space-y-5">
       {/* HUD */}
-      <div className="bg-white border border-slate-200/80 rounded-2xl px-4 py-3 flex flex-wrap items-center justify-between gap-3 shadow-card-soft">
-        <div className="flex items-center gap-3">
+      <div className="bg-white border border-slate-200/80 rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 flex flex-wrap items-center justify-between gap-3 shadow-card-soft">
+        <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
           <button
             type="button"
             onClick={onExit}
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 cursor-pointer whitespace-nowrap"
+            className="min-h-[44px] inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 cursor-pointer whitespace-nowrap shrink-0"
           >
             <ArrowLeft className="w-4 h-4" />
             {isHi ? 'वापस' : 'Back'}
           </button>
-          <div>
-            <h1 className="text-base sm:text-lg font-extrabold text-slate-900">
+          <div className="min-w-0">
+            <h1 className="text-sm sm:text-lg font-extrabold text-slate-900 truncate">
               {isHi ? 'पहाड़ा हीरो (Tables 2–20)' : 'Multiplication Table Hero'}
             </h1>
             <p className="text-xs text-slate-500">
@@ -146,7 +146,7 @@ export function TableHeroGame({
 
         <div className="flex items-center gap-2">
           <div
-            className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border font-math text-xs sm:text-sm font-extrabold ${
+            className={`min-h-[44px] inline-flex items-center gap-1 px-3 rounded-xl border font-math text-xs sm:text-sm font-extrabold ${
               combo >= 2
                 ? 'bg-orange-50 border-orange-300 text-orange-700'
                 : 'bg-slate-50 border-slate-200 text-slate-600'
@@ -158,14 +158,14 @@ export function TableHeroGame({
             </span>
           </div>
 
-          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-200 font-math text-sm font-extrabold text-amber-800">
+          <div className="min-h-[44px] inline-flex items-center gap-1.5 px-3 rounded-xl bg-amber-50 border border-amber-200 font-math text-sm font-extrabold text-amber-800">
             <Star className="w-4 h-4 text-amber-500 fill-amber-400" />
             <span>+{correctCount}</span>
           </div>
         </div>
       </div>
 
-      {/* Table Selector Bar (Mixed Tables + 2 to 20) */}
+      {/* Table Selector Bar (Mixed Tables + 2 to 20 with 44px+ touch targets) */}
       <div className="bg-white border border-slate-200/80 rounded-3xl p-4 sm:p-5 space-y-3 shadow-card-soft">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <span className="text-xs font-extrabold text-slate-700">
@@ -182,41 +182,43 @@ export function TableHeroGame({
           </span>
         </div>
 
-        <div className="flex flex-wrap gap-1.5">
+        <div className="space-y-2">
           <button
             type="button"
             onClick={() => handleSelectTableMode('MIXED')}
-            className={`px-3 py-1.5 rounded-xl border text-xs font-extrabold transition-all cursor-pointer whitespace-nowrap ${
+            className={`w-full sm:w-auto min-h-[44px] px-4 py-2 rounded-xl border text-xs font-extrabold transition-all cursor-pointer whitespace-nowrap ${
               selectedTable === 'MIXED'
-                ? 'bg-emerald-600 border-emerald-600 border-b-2 border-b-emerald-800 text-white'
+                ? 'bg-emerald-600 border-emerald-600 border-b-[3px] border-b-emerald-800 text-white'
                 : 'bg-slate-50 border-slate-200 text-slate-700 hover:border-emerald-300'
             }`}
           >
-            {isHi ? `मिश्रित (${minClassT}–${maxClassT})` : `Mixed (${minClassT}–${maxClassT})`}
+            {isHi ? `मिश्रित (${minClassT}–${maxClassT})` : `Mixed Tables (${minClassT}–${maxClassT})`}
           </button>
 
-          {TABLES_2_TO_20.map((tNum) => {
-            const active = selectedTable === tNum;
-            return (
-              <button
-                key={tNum}
-                type="button"
-                onClick={() => handleSelectTableMode(tNum)}
-                className={`min-w-[36px] px-2.5 py-1.5 rounded-xl border font-math text-xs font-extrabold transition-all cursor-pointer ${
-                  active
-                    ? 'bg-emerald-600 border-emerald-600 border-b-2 border-b-emerald-800 text-white'
-                    : 'bg-slate-50 border-slate-200 text-slate-700 hover:border-emerald-300'
-                }`}
-              >
-                {tNum}
-              </button>
-            );
-          })}
+          <div className="grid grid-cols-5 sm:grid-cols-10 gap-1.5">
+            {TABLES_2_TO_20.map((tNum) => {
+              const active = selectedTable === tNum;
+              return (
+                <button
+                  key={tNum}
+                  type="button"
+                  onClick={() => handleSelectTableMode(tNum)}
+                  className={`min-h-[44px] px-2 py-2 rounded-xl border font-math text-xs sm:text-sm font-extrabold transition-all cursor-pointer ${
+                    active
+                      ? 'bg-emerald-600 border-emerald-600 border-b-[3px] border-b-emerald-800 text-white'
+                      : 'bg-slate-50 border-slate-200 text-slate-700 hover:border-emerald-300'
+                  }`}
+                >
+                  {tNum}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
       {/* Question Card */}
-      <div className="bg-white border border-emerald-200/80 rounded-3xl p-6 sm:p-10 space-y-7 shadow-card-soft text-center">
+      <div className="bg-white border border-emerald-200/80 rounded-3xl p-4 sm:p-10 space-y-6 sm:space-y-7 shadow-card-soft text-center">
         <div className="flex flex-wrap items-center justify-center gap-3">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-extrabold">
             <Zap className="w-3.5 h-3.5" />
@@ -230,11 +232,11 @@ export function TableHeroGame({
           )}
         </div>
 
-        <p className="font-math text-4xl sm:text-6xl font-extrabold text-slate-900 py-1">
+        <p className="font-math text-3xl sm:text-6xl font-extrabold text-slate-900 py-1 break-words">
           {prompt.prompt}
         </p>
 
-        <div className="grid grid-cols-2 gap-3.5 sm:gap-4 max-w-xl mx-auto">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 max-w-xl mx-auto">
           {prompt.options.map((opt, idx) => {
             const isPicked = picked === opt;
             const isCorrectOpt = opt === prompt.answer;
@@ -259,19 +261,19 @@ export function TableHeroGame({
                 type="button"
                 disabled={isAnswered}
                 onClick={() => handleAnswer(opt)}
-                className={`min-h-[76px] px-5 py-4 rounded-2xl border-2 flex items-center justify-between gap-2 transition-all cursor-pointer disabled:cursor-default ${btnStyle}`}
+                className={`min-h-[68px] sm:min-h-[76px] px-3 sm:px-5 py-3.5 sm:py-4 rounded-2xl border-2 flex items-center justify-between gap-2 transition-all cursor-pointer disabled:cursor-default ${btnStyle}`}
               >
-                <div className="flex items-center gap-3">
-                  <span className="w-7 h-7 rounded-lg bg-white border border-slate-200 text-slate-600 font-math text-xs font-bold flex items-center justify-center">
+                <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                  <span className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-white border border-slate-200 text-slate-600 font-math text-xs font-bold flex items-center justify-center shrink-0">
                     {idx + 1}
                   </span>
-                  <span className="font-math text-2xl sm:text-3xl font-extrabold">{opt}</span>
+                  <span className="font-math text-xl sm:text-3xl font-extrabold truncate">{opt}</span>
                 </div>
                 {isAnswered && isCorrectOpt && (
-                  <CheckCircle2 className="w-6 h-6 text-emerald-600 shrink-0" />
+                  <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-600 shrink-0" />
                 )}
                 {isAnswered && isPicked && !isCorrectOpt && (
-                  <XCircle className="w-6 h-6 text-rose-600 shrink-0" />
+                  <XCircle className="w-5 h-5 sm:w-6 sm:h-6 text-rose-600 shrink-0" />
                 )}
               </motion.button>
             );

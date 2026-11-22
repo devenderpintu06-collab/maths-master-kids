@@ -31,9 +31,9 @@ interface BalloonSlot {
 }
 
 function createSlots(prompt: QuickArithmeticPrompt): BalloonSlot[] {
-  const xSpots = [14, 38, 62, 86];
+  const xSpots = [13, 37.5, 62.5, 87];
   const speeds = [0.85, 1.0, 0.92, 1.08];
-  const offsets = [0, 5, 2, 7];
+  const offsets = [0, 12, 4, 16];
   return prompt.options.map((value, idx) => ({
     value,
     xPercent: xSpots[idx],
@@ -142,20 +142,20 @@ export function BalloonPopGame({
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 space-y-5">
+    <div className="max-w-4xl mx-auto px-3 sm:px-6 py-4 sm:py-6 space-y-4 sm:space-y-5">
       {/* HUD */}
-      <div className="bg-white border border-slate-200/80 rounded-2xl px-4 py-3 flex flex-wrap items-center justify-between gap-3 shadow-card-soft">
-        <div className="flex items-center gap-3">
+      <div className="bg-white border border-slate-200/80 rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 flex flex-wrap items-center justify-between gap-3 shadow-card-soft">
+        <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
           <button
             type="button"
             onClick={onExit}
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 cursor-pointer whitespace-nowrap"
+            className="min-h-[44px] inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 cursor-pointer whitespace-nowrap shrink-0"
           >
             <ArrowLeft className="w-4 h-4" />
             {isHi ? 'वापस' : 'Back'}
           </button>
-          <div>
-            <h1 className="text-base sm:text-lg font-extrabold text-slate-900">
+          <div className="min-w-0">
+            <h1 className="text-sm sm:text-lg font-extrabold text-slate-900 truncate">
               {isHi ? 'गुब्बारा फोड़ गणित' : 'Balloon Pop Maths'}
             </h1>
             <p className="text-xs text-slate-500">
@@ -165,34 +165,33 @@ export function BalloonPopGame({
           </div>
         </div>
 
-        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-200 font-math text-sm font-extrabold text-amber-800">
+        <div className="min-h-[44px] inline-flex items-center gap-1.5 px-3 rounded-xl bg-amber-50 border border-amber-200 font-math text-sm font-extrabold text-amber-800">
           <Star className="w-4 h-4 text-amber-500 fill-amber-400" />
           <span>+{correctCount}</span>
         </div>
       </div>
 
       {/* Question Banner */}
-      <div className="bg-white border border-rose-200 rounded-3xl p-5 text-center shadow-card-soft space-y-1">
+      <div className="bg-white border border-rose-200 rounded-3xl p-4 sm:p-5 text-center shadow-card-soft space-y-1">
         <p className="text-xs font-bold text-rose-600 uppercase tracking-wide">
           {isHi ? 'सही उत्तर वाला गुब्बारा फोड़ें!' : 'Tap the balloon with the correct answer!'}
         </p>
-        <p className="font-math text-4xl sm:text-5xl font-extrabold text-slate-900">
+        <p className="font-math text-3xl sm:text-5xl font-extrabold text-slate-900 break-words">
           {prompt.prompt}
         </p>
       </div>
 
       {/* Sky Arena */}
-      <div className="relative h-[380px] sm:h-[420px] rounded-3xl border border-sky-200 bg-gradient-to-b from-sky-200/75 via-sky-100/70 to-white overflow-hidden shadow-card-soft select-none">
+      <div className="relative h-[320px] sm:h-[420px] landscape-sky-arena rounded-3xl border border-sky-200 bg-gradient-to-b from-sky-200/75 via-sky-100/70 to-white overflow-hidden shadow-card-soft select-none">
         {/* Soft Decorative Clouds */}
         <div className="pointer-events-none absolute top-6 left-8 w-24 h-8 rounded-full bg-white/70" aria-hidden="true" />
         <div className="pointer-events-none absolute top-14 right-10 w-32 h-9 rounded-full bg-white/60" aria-hidden="true" />
         <div className="pointer-events-none absolute top-28 left-1/3 w-20 h-6 rounded-full bg-white/50" aria-hidden="true" />
 
-        {/* Floating Balloons */}
+        {/* Floating Balloons (responsively sized so 4 balloons never collide on 320px-375px screens) */}
         {slots.map((slot) => {
           const palette = BALLOON_PALETTES[slot.paletteIndex];
           const yProgress = Math.min(104, riseProgress * slot.speedMultiplier + slot.startOffset);
-          // Map 0 -> bottom (82%), 100 -> top (-18%)
           const topPct = 78 - yProgress * 0.88;
           const isThisPopped = poppedValue === slot.value;
           const isRightOption = slot.value === prompt.answer;
@@ -219,7 +218,7 @@ export function BalloonPopGame({
               aria-label={`Balloon ${slot.value}`}
               className="absolute -translate-x-1/2 flex flex-col items-center cursor-pointer focus-visible:outline-2 focus-visible:outline-blue-600 group"
             >
-              <div className="relative w-20 h-24 sm:w-24 sm:h-28 transition-transform group-hover:scale-105 active:scale-95">
+              <div className="relative w-[60px] h-[76px] min-[375px]:w-[70px] min-[375px]:h-[88px] sm:w-24 sm:h-28 transition-transform group-hover:scale-105 active:scale-95">
                 <svg viewBox="0 0 90 112" className="w-full h-full drop-shadow-md" aria-hidden="true">
                   {/* String */}
                   <path
@@ -236,7 +235,7 @@ export function BalloonPopGame({
                   {/* Knot */}
                   <path d="M40 85 L50 85 L45 91 Z" fill={palette.shade} />
                 </svg>
-                <span className="absolute inset-0 pb-4 flex items-center justify-center font-math text-2xl sm:text-3xl font-extrabold text-white drop-shadow-sm">
+                <span className="absolute inset-0 pb-3 sm:pb-4 flex items-center justify-center font-math text-lg min-[375px]:text-xl sm:text-3xl font-extrabold text-white drop-shadow-sm">
                   {slot.value}
                 </span>
               </div>

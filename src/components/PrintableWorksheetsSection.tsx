@@ -43,10 +43,10 @@ export function PrintableA4Sheet({ worksheet, lang }: PrintableA4SheetProps) {
   const rightQuestions = worksheet.questions.slice(8, 15);
 
   return (
-    <div className="bg-white text-slate-900 border border-slate-300 rounded-xl p-6 sm:p-8 print:border print:border-slate-300 print:rounded-lg print:p-5 print:w-full">
+    <div className="bg-white text-slate-900 border border-slate-300 rounded-xl p-3.5 sm:p-8 print:border print:border-slate-300 print:rounded-lg print:p-5 print:w-full">
       {/* School-Ready Header */}
       <div className="text-center border-b-2 border-slate-300 pb-3 mb-3.5">
-        <h2 className="font-display text-xl sm:text-2xl font-extrabold text-blue-900 tracking-tight">
+        <h2 className="font-display text-lg sm:text-2xl font-extrabold text-blue-900 tracking-tight">
           Maths Master Kids (mathsmasterkids.in)
         </h2>
         {worksheet.isDaily ? (
@@ -85,10 +85,10 @@ export function PrintableA4Sheet({ worksheet, lang }: PrintableA4SheetProps) {
       </div>
 
       {/* Student Details Strip */}
-      <div className="bg-slate-50 border border-slate-300 rounded-lg px-3.5 py-2.5 mb-3 text-xs sm:text-[13px] font-bold text-slate-800 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 print:flex-nowrap print:text-[11.5px]">
+      <div className="bg-slate-50 border border-slate-300 rounded-lg px-3 sm:px-3.5 py-2.5 mb-3 text-[11px] sm:text-[13px] font-bold text-slate-800 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 overflow-x-auto print:overflow-visible print:flex-nowrap print:text-[11.5px]">
         {worksheet.isDaily ? (
           <>
-            <span>
+            <span className="max-w-full truncate sm:overflow-visible">
               {isHi
                 ? 'विद्यार्थी का नाम: _________________________'
                 : 'Student Name: _________________________'}
@@ -98,7 +98,7 @@ export function PrintableA4Sheet({ worksheet, lang }: PrintableA4SheetProps) {
           </>
         ) : (
           <>
-            <span>
+            <span className="max-w-full truncate sm:overflow-visible">
               {isHi ? 'विद्यार्थी का नाम: ___________________' : 'Student Name: ___________________'}
             </span>
             <span>{isHi ? 'कक्षा: _______' : 'Class: _______'}</span>
@@ -114,15 +114,15 @@ export function PrintableA4Sheet({ worksheet, lang }: PrintableA4SheetProps) {
           : 'Instructions: Solve all 15 questions carefully and write your answer on the blank line.'}
       </p>
 
-      {/* 2-Column Layout for all 15 questions (Questions 1-8 left, Questions 9-15 right) */}
-      <div className="grid grid-cols-2 gap-3 print:gap-2.5">
+      {/* Responsive 1-col mobile preview, 2-col on >=640px & A4 Print (Questions 1-8 left, 9-15 right) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 print:grid-cols-2 gap-2.5 sm:gap-3 print:gap-2.5">
         <div className="space-y-2.5 print:space-y-2">
           {leftQuestions.map((q) => (
             <div
               key={q.number}
-              className="border border-slate-300 rounded-lg px-3.5 pt-3 pb-7 print:pt-2.5 print:pb-6 bg-white"
+              className="border border-slate-300 rounded-lg px-3 sm:px-3.5 pt-2.5 sm:pt-3 pb-5 sm:pb-7 print:pt-2.5 print:pb-6 bg-white"
             >
-              <p className="font-math text-sm sm:text-base print:text-[14px] font-bold text-slate-900 whitespace-nowrap">
+              <p className="font-math text-xs min-[375px]:text-sm sm:text-base print:text-[14px] font-bold text-slate-900 whitespace-nowrap overflow-x-auto print:overflow-visible">
                 {q.number}) {q.text} = _______
               </p>
             </div>
@@ -133,16 +133,16 @@ export function PrintableA4Sheet({ worksheet, lang }: PrintableA4SheetProps) {
           {rightQuestions.map((q) => (
             <div
               key={q.number}
-              className="border border-slate-300 rounded-lg px-3.5 pt-3 pb-7 print:pt-2.5 print:pb-6 bg-white"
+              className="border border-slate-300 rounded-lg px-3 sm:px-3.5 pt-2.5 sm:pt-3 pb-5 sm:pb-7 print:pt-2.5 print:pb-6 bg-white"
             >
-              <p className="font-math text-sm sm:text-base print:text-[14px] font-bold text-slate-900 whitespace-nowrap">
+              <p className="font-math text-xs min-[375px]:text-sm sm:text-base print:text-[14px] font-bold text-slate-900 whitespace-nowrap overflow-x-auto print:overflow-visible">
                 {q.number}) {q.text} = _______
               </p>
             </div>
           ))}
 
           {/* Slot 16: Parent / Teacher Remarks for symmetrical 2x8 A4 page */}
-          <div className="border border-slate-300 rounded-lg px-3.5 py-2.5 bg-slate-50 min-h-[76px] print:min-h-[68px] flex flex-col justify-between">
+          <div className="border border-slate-300 rounded-lg px-3 sm:px-3.5 py-2.5 bg-slate-50 min-h-[76px] print:min-h-[68px] flex flex-col justify-between">
             <p className="text-[11px] font-bold text-slate-700">
               {isHi ? 'अभिभावक / शिक्षक टिप्पणी व हस्ताक्षर:' : 'Parent / Teacher Remarks & Signature:'}
             </p>
@@ -188,6 +188,15 @@ export function PrintableWorksheetsSection({
     setDailyVariant(0);
   }, [selectedClass, dailyOp]);
 
+  useEffect(() => {
+    if (!previewWorksheet) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setPreviewWorksheet(null);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [previewWorksheet]);
+
   const dailyWorksheet = useMemo(
     () => generateDailyWorksheet(selectedClass, dailyOp, dailyVariant),
     [selectedClass, dailyOp, dailyVariant]
@@ -225,9 +234,9 @@ export function PrintableWorksheetsSection({
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-8 py-8 sm:py-10 space-y-8">
+    <div className="max-w-5xl mx-auto px-3.5 sm:px-8 py-6 sm:py-10 space-y-6 sm:space-y-8">
       {/* Section Header with Custom A4 Worksheet SVG Illustration */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-[#1E1B4B] via-[#1E40AF] to-[#0284C7] rounded-[2rem] p-6 sm:p-8 shadow-hero-soft text-white grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+      <div className="relative overflow-hidden bg-gradient-to-br from-[#1E1B4B] via-[#1E40AF] to-[#0284C7] rounded-3xl sm:rounded-[2rem] p-4 sm:p-8 shadow-hero-soft text-white grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-6 items-center">
         <div className="md:col-span-9 space-y-3">
           <div className="inline-flex items-center gap-2 text-xs font-extrabold text-amber-300">
             <FileText className="w-4 h-4" />
@@ -285,7 +294,7 @@ export function PrintableWorksheetsSection({
       {/* ===================================================================== */}
       <section
         aria-labelledby="daily-worksheet-heading"
-        className="bg-gradient-to-br from-emerald-50/90 via-white to-sky-50/85 border-2 border-emerald-200/90 rounded-[2rem] p-5 sm:p-7 shadow-card-soft space-y-5"
+        className="bg-gradient-to-br from-emerald-50/90 via-white to-sky-50/85 border-2 border-emerald-200/90 rounded-3xl sm:rounded-[2rem] p-4 sm:p-7 shadow-card-soft space-y-5"
       >
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="space-y-1.5">
@@ -320,7 +329,7 @@ export function PrintableWorksheetsSection({
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
             {dailyVariant > 0 && (
               <button
                 type="button"
@@ -328,9 +337,9 @@ export function PrintableWorksheetsSection({
                   soundFx.playClick();
                   setDailyVariant(0);
                 }}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-amber-300 bg-amber-50 hover:bg-amber-100 text-xs font-bold text-amber-900 cursor-pointer whitespace-nowrap"
+                className="min-h-[44px] inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl border border-amber-300 bg-amber-50 hover:bg-amber-100 text-xs font-bold text-amber-900 cursor-pointer whitespace-nowrap"
               >
-                <RotateCcw className="w-3.5 h-3.5" />
+                <RotateCcw className="w-3.5 h-3.5 shrink-0" />
                 {isHi ? 'आज की मूल शीट' : "Today's Default Sheet"}
               </button>
             )}
@@ -340,21 +349,21 @@ export function PrintableWorksheetsSection({
                 soundFx.playClick();
                 setPreviewWorksheet(dailyWorksheet);
               }}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-emerald-200 bg-white hover:bg-emerald-50 text-xs font-bold text-emerald-900 cursor-pointer whitespace-nowrap shadow-xs"
+              className="min-h-[44px] inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl border border-emerald-200 bg-white hover:bg-emerald-50 text-xs font-bold text-emerald-900 cursor-pointer whitespace-nowrap shadow-xs"
             >
-              <Eye className="w-3.5 h-3.5" />
+              <Eye className="w-3.5 h-3.5 shrink-0" />
               {isHi ? 'A4 प्रीव्यू' : 'Preview A4'}
             </button>
           </div>
         </div>
 
         {/* Daily Worksheet Controls: Class 1-5 & 4 Operations */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 bg-white/90 border border-emerald-100 rounded-2xl p-4">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 bg-white/90 border border-emerald-100 rounded-2xl p-3.5 sm:p-4">
           <div className="lg:col-span-6 space-y-2">
             <p className="text-xs font-extrabold text-slate-700 uppercase tracking-wide">
               {isHi ? 'कक्षा चुनें (1 से 5)' : 'Choose Class (1 to 5)'}
             </p>
-            <div className="grid grid-cols-5 gap-1.5">
+            <div className="grid grid-cols-3 sm:grid-cols-5 gap-1.5">
               {CLASS_LEVELS.map((cls) => {
                 const active = cls.number === selectedClass;
                 return (
@@ -365,13 +374,13 @@ export function PrintableWorksheetsSection({
                       soundFx.playClick();
                       onSelectClass(cls.number);
                     }}
-                    className={`py-2 px-1.5 rounded-xl border text-center text-xs font-extrabold transition-all cursor-pointer whitespace-nowrap ${
+                    className={`min-h-[44px] py-2 px-1.5 rounded-xl border text-center text-xs font-extrabold transition-all cursor-pointer whitespace-nowrap flex items-center justify-center ${
                       active
                         ? 'bg-emerald-600 border-emerald-600 border-b-[3px] border-b-emerald-800 text-white shadow-xs'
                         : 'bg-slate-50 border-slate-200 border-b-2 border-b-slate-300 text-slate-700 hover:bg-emerald-50/70'
                     }`}
                   >
-                    {isHi ? `क. ${cls.number}` : `Class ${cls.number}`}
+                    {isHi ? `कक्षा ${cls.number}` : `Class ${cls.number}`}
                   </button>
                 );
               })}
@@ -393,7 +402,7 @@ export function PrintableWorksheetsSection({
                       soundFx.playClick();
                       setDailyOp(op.id);
                     }}
-                    className={`py-2 px-2 rounded-xl border text-xs font-extrabold transition-all cursor-pointer whitespace-nowrap inline-flex items-center justify-center gap-1 ${
+                    className={`min-h-[44px] py-2 px-2 rounded-xl border text-xs font-extrabold transition-all cursor-pointer inline-flex items-center justify-center gap-1 ${
                       active
                         ? 'text-white border-transparent border-b-[3px] border-b-black/25 shadow-xs'
                         : 'bg-slate-50 border-slate-200 border-b-2 border-b-slate-300 text-slate-700 hover:bg-slate-100'
@@ -463,12 +472,12 @@ export function PrintableWorksheetsSection({
         </div>
 
         {/* Action Buttons: Download PDF / Print Daily Worksheet, Print A4, Generate New Practice Sheet */}
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-2.5 sm:gap-3">
           <button
             type="button"
             disabled={isDailyDownloading}
             onClick={() => void handleDownloadPdf(dailyWorksheet)}
-            className={`flex-1 min-w-[230px] inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl text-xs sm:text-sm font-extrabold text-white border-b-4 transition-all active:translate-y-[1px] cursor-pointer disabled:opacity-70 whitespace-nowrap ${
+            className={`w-full sm:w-auto sm:flex-1 min-h-[48px] inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-3 rounded-2xl text-xs sm:text-sm font-extrabold text-white border-b-4 transition-all active:translate-y-[1px] cursor-pointer disabled:opacity-70 text-center ${
               isDailyDownloaded
                 ? 'bg-emerald-600 border-emerald-800'
                 : 'bg-blue-600 border-blue-800 hover:bg-blue-700'
@@ -477,18 +486,20 @@ export function PrintableWorksheetsSection({
             {isDailyDownloaded ? (
               <>
                 <CheckCircle2 className="w-4 h-4 shrink-0" />
-                {isHi ? 'दैनिक PDF डाउनलोड हो गई!' : 'Daily PDF Downloaded!'}
+                <span>{isHi ? 'दैनिक PDF डाउनलोड हो गई!' : 'Daily PDF Downloaded!'}</span>
               </>
             ) : (
               <>
                 <Download className="w-4 h-4 shrink-0" />
-                {isDailyDownloading
-                  ? isHi
-                    ? 'PDF बन रही है...'
-                    : 'Preparing PDF...'
-                  : isHi
-                    ? 'दैनिक वर्कशीट PDF डाउनलोड / प्रिंट'
-                    : 'Download PDF / Print Daily Worksheet'}
+                <span>
+                  {isDailyDownloading
+                    ? isHi
+                      ? 'PDF बन रही है...'
+                      : 'Preparing PDF...'
+                    : isHi
+                      ? 'दैनिक वर्कशीट PDF डाउनलोड / प्रिंट'
+                      : 'Download PDF / Print Daily Worksheet'}
+                </span>
               </>
             )}
           </button>
@@ -496,10 +507,10 @@ export function PrintableWorksheetsSection({
           <button
             type="button"
             onClick={() => handlePrint(dailyWorksheet)}
-            className="inline-flex items-center justify-center gap-1.5 px-4 py-3.5 rounded-2xl border border-slate-300 border-b-4 border-b-slate-400 bg-white hover:bg-slate-50 text-slate-800 text-xs sm:text-sm font-bold transition-all active:translate-y-[1px] cursor-pointer whitespace-nowrap shrink-0"
+            className="w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-2xl border border-slate-300 border-b-4 border-b-slate-400 bg-white hover:bg-slate-50 text-slate-800 text-xs sm:text-sm font-bold transition-all active:translate-y-[1px] cursor-pointer shrink-0"
           >
             <Printer className="w-4 h-4 shrink-0" />
-            {isHi ? 'प्रिंट A4' : 'Print A4'}
+            <span>{isHi ? 'प्रिंट A4' : 'Print A4'}</span>
           </button>
 
           <button
@@ -508,10 +519,10 @@ export function PrintableWorksheetsSection({
               soundFx.playClick();
               setDailyVariant((v) => v + 1);
             }}
-            className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white border-b-4 border-emerald-800 text-xs sm:text-sm font-extrabold transition-all active:translate-y-[1px] cursor-pointer whitespace-nowrap shrink-0"
+            className="w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white border-b-4 border-emerald-800 text-xs sm:text-sm font-extrabold transition-all active:translate-y-[1px] cursor-pointer shrink-0"
           >
             <RefreshCw className="w-4 h-4 shrink-0" />
-            {isHi ? 'नई प्रैक्टिस शीट बनाएँ' : 'Generate New Practice Sheet'}
+            <span>{isHi ? 'नई प्रैक्टिस शीट बनाएँ' : 'Generate New Practice Sheet'}</span>
           </button>
         </div>
       </section>
@@ -533,12 +544,12 @@ export function PrintableWorksheetsSection({
       </div>
 
       {/* Class 1-5 & Subject Controls */}
-      <div className="bg-gradient-to-br from-sky-50/85 via-white to-indigo-50/70 border border-sky-200/80 rounded-[2rem] p-5 sm:p-6 shadow-card-soft space-y-5">
+      <div className="bg-gradient-to-br from-sky-50/85 via-white to-indigo-50/70 border border-sky-200/80 rounded-3xl sm:rounded-[2rem] p-4 sm:p-6 shadow-card-soft space-y-5">
         <div className="space-y-2.5">
           <p className="text-sm font-extrabold text-slate-800">
             {isHi ? '1. कक्षा चुनें (कक्षा 1 से 5):' : '1. Select Class (Class 1 to Class 5):'}
           </p>
-          <div className="grid grid-cols-3 sm:grid-cols-5 gap-2.5">
+          <div className="grid grid-cols-2 min-[380px]:grid-cols-3 sm:grid-cols-5 gap-2 sm:gap-2.5">
             {CLASS_LEVELS.map((cls) => {
               const active = cls.number === selectedClass;
               return (
@@ -549,7 +560,9 @@ export function PrintableWorksheetsSection({
                     soundFx.playClick();
                     onSelectClass(cls.number);
                   }}
-                  className={`py-2.5 px-2 rounded-2xl border text-center transition-all cursor-pointer ${
+                  className={`min-h-[52px] py-2.5 px-2 rounded-2xl border text-center transition-all cursor-pointer ${
+                    cls.number === 5 ? 'col-span-2 min-[380px]:col-span-1' : ''
+                  } ${
                     active
                       ? 'bg-blue-600 border-blue-600 border-b-4 border-b-blue-800 text-white shadow-sm'
                       : 'bg-slate-50 border-slate-200 border-b-[3px] border-b-slate-300 text-slate-800 hover:border-blue-300 hover:bg-blue-50/40'
@@ -578,7 +591,7 @@ export function PrintableWorksheetsSection({
                 soundFx.playClick();
                 setSelectedSubject('ALL');
               }}
-              className={`px-4 py-2 rounded-xl border text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 ${
+              className={`min-h-[44px] px-4 py-2 rounded-xl border text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                 selectedSubject === 'ALL'
                   ? 'bg-slate-900 border-slate-900 text-white'
                   : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
@@ -596,7 +609,7 @@ export function PrintableWorksheetsSection({
                     soundFx.playClick();
                     setSelectedSubject(op.id);
                   }}
-                  className={`px-4 py-2 rounded-xl border text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 inline-flex items-center gap-1.5 ${
+                  className={`min-h-[44px] px-4 py-2 rounded-xl border text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 inline-flex items-center gap-1.5 ${
                     active
                       ? 'text-white border-transparent shadow-sm'
                       : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
@@ -650,12 +663,12 @@ export function PrintableWorksheetsSection({
                   return (
                     <article
                       key={ws.id}
-                      className="bg-white border border-slate-200/90 rounded-3xl p-5 sm:p-6 shadow-card-soft flex flex-col justify-between gap-5"
+                      className="bg-white border border-slate-200/90 rounded-3xl p-4 sm:p-6 shadow-card-soft flex flex-col justify-between gap-4 sm:gap-5"
                     >
                       <div className="space-y-4">
                         {/* Card Title */}
-                        <div className="flex items-start justify-between gap-3">
-                          <div>
+                        <div className="flex flex-wrap items-start justify-between gap-3">
+                          <div className="min-w-0">
                             <p className="text-xs font-bold text-slate-500">
                               {isHi ? `वर्कशीट ${ws.worksheetNumber}` : `Worksheet ${ws.worksheetNumber}`} ·{' '}
                               {isHi ? '15 प्रश्न · A4 प्रिंट रेडी' : '15 Questions · A4 Ready'}
@@ -674,9 +687,9 @@ export function PrintableWorksheetsSection({
                               soundFx.playClick();
                               setPreviewWorksheet(ws);
                             }}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-xs font-bold text-slate-700 cursor-pointer whitespace-nowrap shrink-0"
+                            className="min-h-[44px] inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-xs font-bold text-slate-700 cursor-pointer whitespace-nowrap shrink-0"
                           >
-                            <Eye className="w-3.5 h-3.5" />
+                            <Eye className="w-3.5 h-3.5 shrink-0" />
                             {isHi ? 'A4 प्रीव्यू' : 'Preview A4'}
                           </button>
                         </div>
@@ -724,12 +737,12 @@ export function PrintableWorksheetsSection({
                       </div>
 
                       {/* Prominent Direct 1-Click PDF Download & Print Action Bar */}
-                      <div className="flex flex-wrap items-center gap-2.5 pt-1">
+                      <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-2.5 pt-1">
                         <button
                           type="button"
                           disabled={isDownloading}
                           onClick={() => void handleDownloadPdf(ws)}
-                          className={`flex-1 min-w-[200px] inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl text-xs sm:text-sm font-extrabold text-white border-b-4 transition-all active:translate-y-[1px] cursor-pointer disabled:opacity-70 whitespace-nowrap ${
+                          className={`w-full sm:w-auto sm:flex-1 min-h-[48px] inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl text-xs sm:text-sm font-extrabold text-white border-b-4 transition-all active:translate-y-[1px] cursor-pointer disabled:opacity-70 text-center ${
                             isDownloaded
                               ? 'bg-emerald-600 border-emerald-800'
                               : 'bg-blue-600 border-blue-800 hover:bg-blue-700'
@@ -738,18 +751,20 @@ export function PrintableWorksheetsSection({
                           {isDownloaded ? (
                             <>
                               <CheckCircle2 className="w-4 h-4 shrink-0" />
-                              {isHi ? 'PDF डाउनलोड हो गई!' : 'PDF Downloaded!'}
+                              <span>{isHi ? 'PDF डाउनलोड हो गई!' : 'PDF Downloaded!'}</span>
                             </>
                           ) : (
                             <>
                               <Download className="w-4 h-4 shrink-0" />
-                              {isDownloading
-                                ? isHi
-                                  ? 'PDF बन रही है...'
-                                  : 'Preparing PDF...'
-                                : isHi
-                                  ? 'PDF डाउनलोड / प्रिंट वर्कशीट'
-                                  : 'Download PDF / Print Worksheet'}
+                              <span>
+                                {isDownloading
+                                  ? isHi
+                                    ? 'PDF बन रही है...'
+                                    : 'Preparing PDF...'
+                                  : isHi
+                                    ? 'PDF डाउनलोड / प्रिंट वर्कशीट'
+                                    : 'Download PDF / Print Worksheet'}
+                              </span>
                             </>
                           )}
                         </button>
@@ -757,10 +772,10 @@ export function PrintableWorksheetsSection({
                         <button
                           type="button"
                           onClick={() => handlePrint(ws)}
-                          className="inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-2xl border border-slate-300 border-b-4 border-b-slate-400 bg-white hover:bg-slate-50 text-slate-800 text-xs sm:text-sm font-bold transition-all active:translate-y-[1px] cursor-pointer whitespace-nowrap shrink-0"
+                          className="w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-2xl border border-slate-300 border-b-4 border-b-slate-400 bg-white hover:bg-slate-50 text-slate-800 text-xs sm:text-sm font-bold transition-all active:translate-y-[1px] cursor-pointer shrink-0"
                         >
                           <Printer className="w-4 h-4 shrink-0" />
-                          {isHi ? 'प्रिंट A4' : 'Print A4'}
+                          <span>{isHi ? 'प्रिंट A4' : 'Print A4'}</span>
                         </button>
                       </div>
                     </article>
@@ -775,46 +790,70 @@ export function PrintableWorksheetsSection({
       {/* Full A4 Sheet Preview Modal */}
       {previewWorksheet && (
         <div
-          className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 overflow-y-auto"
-          role="dialog"
-          aria-modal="true"
-          aria-label={isHi ? 'A4 वर्कशीट प्रीव्यू' : 'A4 Worksheet Preview'}
+          className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-2.5 sm:p-6 overflow-y-auto"
+          role="presentation"
+          onClick={() => {
+            soundFx.playClick();
+            setPreviewWorksheet(null);
+          }}
         >
-          <div className="bg-slate-100 border border-slate-200 rounded-3xl w-full max-w-4xl max-h-[92vh] overflow-y-auto shadow-2xl p-4 sm:p-6 space-y-4">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <h2 className="text-lg font-extrabold text-slate-900">
-                  {isHi ? previewWorksheet.titleHi : previewWorksheet.titleEn}
-                </h2>
-                <p className="text-xs text-slate-600">
-                  {isHi
-                    ? 'A4 सिंगल-पेज लेआउट · 15 प्रश्न · कोई उत्तर कुंजी नहीं'
-                    : 'Single-Page A4 Format · 15 Questions · No Answer Key'}
-                </p>
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label={isHi ? 'A4 वर्कशीट प्रीव्यू' : 'A4 Worksheet Preview'}
+            onClick={(e) => e.stopPropagation()}
+            className="bg-slate-100 border border-slate-200 rounded-3xl w-full max-w-4xl max-h-[92vh] overflow-y-auto shadow-2xl p-3.5 sm:p-6 space-y-4"
+          >
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-start justify-between gap-2">
+                <div className="min-w-0">
+                  <h2 className="text-base sm:text-lg font-extrabold text-slate-900">
+                    {isHi ? previewWorksheet.titleHi : previewWorksheet.titleEn}
+                  </h2>
+                  <p className="text-xs text-slate-600">
+                    {isHi
+                      ? 'A4 सिंगल-पेज लेआउट · 15 प्रश्न · कोई उत्तर कुंजी नहीं'
+                      : 'Single-Page A4 Format · 15 Questions · No Answer Key'}
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    soundFx.playClick();
+                    setPreviewWorksheet(null);
+                  }}
+                  aria-label="Close preview"
+                  className="sm:hidden min-w-[44px] min-h-[44px] rounded-xl border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 flex items-center justify-center cursor-pointer shrink-0"
+                >
+                  <X className="w-5 h-5" />
+                </button>
               </div>
 
               <div className="flex flex-wrap items-center gap-2">
                 <button
                   type="button"
                   onClick={() => void handleDownloadPdf(previewWorksheet)}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 border-b-[3px] border-blue-800 text-white text-xs sm:text-sm font-bold hover:bg-blue-700 cursor-pointer whitespace-nowrap"
+                  className="flex-1 sm:flex-initial min-h-[44px] inline-flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-xl bg-blue-600 border-b-[3px] border-blue-800 text-white text-xs sm:text-sm font-bold hover:bg-blue-700 cursor-pointer"
                 >
-                  <Download className="w-4 h-4" />
-                  {previewWorksheet.isDaily
-                    ? isHi
-                      ? 'दैनिक वर्कशीट PDF डाउनलोड / प्रिंट'
-                      : 'Download PDF / Print Daily Worksheet'
-                    : isHi
-                      ? 'PDF डाउनलोड / प्रिंट'
-                      : 'Download PDF / Print Worksheet'}
+                  <Download className="w-4 h-4 shrink-0" />
+                  <span>
+                    {previewWorksheet.isDaily
+                      ? isHi
+                        ? 'दैनिक PDF डाउनलोड'
+                        : 'Download Daily PDF'
+                      : isHi
+                        ? 'PDF डाउनलोड'
+                        : 'Download PDF'}
+                  </span>
                 </button>
                 <button
                   type="button"
                   onClick={() => handlePrint(previewWorksheet)}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-800 text-xs sm:text-sm font-bold hover:bg-slate-50 cursor-pointer whitespace-nowrap"
+                  className="min-h-[44px] inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-800 text-xs sm:text-sm font-bold hover:bg-slate-50 cursor-pointer whitespace-nowrap"
                 >
-                  <Printer className="w-4 h-4" />
-                  {isHi ? 'प्रिंट A4' : 'Print A4'}
+                  <Printer className="w-4 h-4 shrink-0" />
+                  <span>{isHi ? 'प्रिंट A4' : 'Print A4'}</span>
                 </button>
                 <button
                   type="button"
@@ -823,7 +862,7 @@ export function PrintableWorksheetsSection({
                     setPreviewWorksheet(null);
                   }}
                   aria-label="Close preview"
-                  className="w-9 h-9 rounded-xl border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 flex items-center justify-center cursor-pointer"
+                  className="hidden sm:flex min-w-[44px] min-h-[44px] rounded-xl border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 items-center justify-center cursor-pointer shrink-0"
                 >
                   <X className="w-4 h-4" />
                 </button>

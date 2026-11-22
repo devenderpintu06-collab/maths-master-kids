@@ -92,20 +92,20 @@ export function DetectiveGame({
   const isRight = isAnswered && selected === puzzle.missingValue;
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+    <div className="max-w-3xl mx-auto px-3 sm:px-6 py-4 sm:py-6 space-y-4 sm:space-y-6">
       {/* HUD */}
-      <div className="bg-white border border-slate-200/80 rounded-2xl px-4 py-3 flex flex-wrap items-center justify-between gap-3 shadow-card-soft">
-        <div className="flex items-center gap-3">
+      <div className="bg-white border border-slate-200/80 rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 flex flex-wrap items-center justify-between gap-3 shadow-card-soft">
+        <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
           <button
             type="button"
             onClick={onExit}
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 cursor-pointer whitespace-nowrap"
+            className="min-h-[44px] inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 cursor-pointer whitespace-nowrap shrink-0"
           >
             <ArrowLeft className="w-4 h-4" />
             {isHi ? 'वापस' : 'Back'}
           </button>
-          <div>
-            <h1 className="text-base sm:text-lg font-extrabold text-slate-900">
+          <div className="min-w-0">
+            <h1 className="text-sm sm:text-lg font-extrabold text-slate-900 truncate">
               {isHi ? 'लापता संख्या जासूस' : 'Missing Number Detective'}
             </h1>
             <p className="text-xs text-slate-500">
@@ -115,24 +115,24 @@ export function DetectiveGame({
           </div>
         </div>
 
-        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-200 font-math text-sm font-extrabold text-amber-800">
+        <div className="min-h-[44px] inline-flex items-center gap-1.5 px-3 rounded-xl bg-amber-50 border border-amber-200 font-math text-sm font-extrabold text-amber-800">
           <Star className="w-4 h-4 text-amber-500 fill-amber-400" />
           <span>+{correctCount}</span>
         </div>
       </div>
 
       {/* Detective Case Card */}
-      <div className="bg-white border border-indigo-200/80 rounded-3xl p-6 sm:p-10 space-y-8 shadow-card-soft text-center">
+      <div className="bg-white border border-indigo-200/80 rounded-3xl p-4 sm:p-10 space-y-6 sm:space-y-8 shadow-card-soft text-center">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-700 text-xs font-extrabold">
-          <Search className="w-4 h-4" />
+          <Search className="w-4 h-4 shrink-0" />
           <span>{isHi ? 'लापता संख्या खोजें' : 'Find the missing number'}</span>
         </div>
 
         {/* Equation with highlighted blank box */}
-        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 font-math text-3xl sm:text-5xl font-extrabold text-slate-900 py-2">
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 font-math text-2xl min-[375px]:text-3xl sm:text-5xl font-extrabold text-slate-900 py-1 sm:py-2">
           {puzzle.missingPosition === 'left' ? (
             <span
-              className={`min-w-[82px] px-4 py-2 rounded-2xl border-2 transition-colors ${
+              className={`min-w-[60px] sm:min-w-[82px] px-3 sm:px-4 py-1.5 sm:py-2 rounded-2xl border-2 transition-colors ${
                 isAnswered
                   ? 'bg-emerald-50 border-emerald-500 text-emerald-700'
                   : 'bg-amber-50 border-dashed border-amber-400 text-amber-700'
@@ -148,7 +148,7 @@ export function DetectiveGame({
 
           {puzzle.missingPosition === 'middle' ? (
             <span
-              className={`min-w-[82px] px-4 py-2 rounded-2xl border-2 transition-colors ${
+              className={`min-w-[60px] sm:min-w-[82px] px-3 sm:px-4 py-1.5 sm:py-2 rounded-2xl border-2 transition-colors ${
                 isAnswered
                   ? 'bg-emerald-50 border-emerald-500 text-emerald-700'
                   : 'bg-amber-50 border-dashed border-amber-400 text-amber-700'
@@ -165,7 +165,7 @@ export function DetectiveGame({
         </div>
 
         {/* 4 Clue Option Buttons */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4">
           {puzzle.options.map((opt, idx) => {
             const isPicked = selected === opt;
             const isCorrectOpt = opt === puzzle.missingValue;
@@ -190,19 +190,19 @@ export function DetectiveGame({
                 type="button"
                 disabled={isAnswered}
                 onClick={() => handleSelectOption(opt)}
-                className={`min-h-[76px] px-5 py-4 rounded-2xl border-2 flex items-center justify-between gap-3 transition-all cursor-pointer disabled:cursor-default ${btnStyle}`}
+                className={`min-h-[68px] sm:min-h-[76px] px-3 sm:px-5 py-3.5 sm:py-4 rounded-2xl border-2 flex items-center justify-between gap-2 transition-all cursor-pointer disabled:cursor-default ${btnStyle}`}
               >
-                <div className="flex items-center gap-3">
-                  <span className="w-7 h-7 rounded-lg bg-white border border-slate-200 text-slate-600 font-math text-xs font-bold flex items-center justify-center">
+                <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                  <span className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-white border border-slate-200 text-slate-600 font-math text-xs font-bold flex items-center justify-center shrink-0">
                     {idx + 1}
                   </span>
-                  <span className="font-math text-2xl sm:text-3xl font-extrabold">{opt}</span>
+                  <span className="font-math text-xl sm:text-3xl font-extrabold truncate">{opt}</span>
                 </div>
                 {isAnswered && isCorrectOpt && (
-                  <CheckCircle2 className="w-6 h-6 text-emerald-600 shrink-0" />
+                  <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-600 shrink-0" />
                 )}
                 {isAnswered && isPicked && !isCorrectOpt && (
-                  <XCircle className="w-6 h-6 text-rose-600 shrink-0" />
+                  <XCircle className="w-5 h-5 sm:w-6 sm:h-6 text-rose-600 shrink-0" />
                 )}
               </motion.button>
             );

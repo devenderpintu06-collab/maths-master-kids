@@ -90,20 +90,20 @@ export function CompareGame({
   ];
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+    <div className="max-w-3xl mx-auto px-3 sm:px-6 py-4 sm:py-6 space-y-4 sm:space-y-6">
       {/* HUD */}
-      <div className="bg-white border border-slate-200/80 rounded-2xl px-4 py-3 flex flex-wrap items-center justify-between gap-3 shadow-card-soft">
-        <div className="flex items-center gap-3">
+      <div className="bg-white border border-slate-200/80 rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 flex flex-wrap items-center justify-between gap-3 shadow-card-soft">
+        <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
           <button
             type="button"
             onClick={onExit}
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 cursor-pointer whitespace-nowrap"
+            className="min-h-[44px] inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 cursor-pointer whitespace-nowrap shrink-0"
           >
             <ArrowLeft className="w-4 h-4" />
             {isHi ? 'वापस' : 'Back'}
           </button>
-          <div>
-            <h1 className="text-base sm:text-lg font-extrabold text-slate-900">
+          <div className="min-w-0">
+            <h1 className="text-sm sm:text-lg font-extrabold text-slate-900 truncate">
               {isHi ? 'तुलना करें और जीतें (<, >, =)' : 'Compare & Win (<, >, =)'}
             </h1>
             <p className="text-xs text-slate-500">
@@ -113,23 +113,23 @@ export function CompareGame({
           </div>
         </div>
 
-        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-200 font-math text-sm font-extrabold text-amber-800">
+        <div className="min-h-[44px] inline-flex items-center gap-1.5 px-3 rounded-xl bg-amber-50 border border-amber-200 font-math text-sm font-extrabold text-amber-800">
           <Star className="w-4 h-4 text-amber-500 fill-amber-400" />
           <span>+{correctCount}</span>
         </div>
       </div>
 
       {/* Side-by-Side Comparison Stage */}
-      <div className="bg-white border border-cyan-200/80 rounded-3xl p-6 sm:p-10 space-y-8 shadow-card-soft text-center">
+      <div className="bg-white border border-cyan-200/80 rounded-3xl p-4 sm:p-10 space-y-6 sm:space-y-8 shadow-card-soft text-center">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-extrabold">
-          <Scale className="w-4 h-4" />
+          <Scale className="w-4 h-4 shrink-0" />
           <span>{isHi ? 'दोनों मानों की तुलना करें' : 'Compare both sides and tap <, =, or >'}</span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-11 items-center gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-11 items-center gap-3 sm:gap-4">
           {/* Left Expression Card */}
-          <div className="sm:col-span-4 rounded-2xl border-2 border-slate-200 bg-slate-50/70 p-5 space-y-1">
-            <p className="font-math text-2xl sm:text-3xl font-extrabold text-slate-900">
+          <div className="sm:col-span-4 rounded-2xl border-2 border-slate-200 bg-slate-50/70 p-4 sm:p-5 space-y-1">
+            <p className="font-math text-xl sm:text-3xl font-extrabold text-slate-900 break-words">
               {challenge.leftExpr}
             </p>
             {isAnswered && (
@@ -140,7 +140,7 @@ export function CompareGame({
           {/* Center Sign Circle */}
           <div className="sm:col-span-3 flex justify-center">
             <div
-              className={`w-16 h-16 rounded-2xl border-2 font-math text-4xl font-extrabold flex items-center justify-center transition-colors ${
+              className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl border-2 font-math text-3xl sm:text-4xl font-extrabold flex items-center justify-center transition-colors ${
                 isAnswered
                   ? isRight
                     ? 'bg-emerald-50 border-emerald-500 text-emerald-700'
@@ -153,8 +153,8 @@ export function CompareGame({
           </div>
 
           {/* Right Expression Card */}
-          <div className="sm:col-span-4 rounded-2xl border-2 border-slate-200 bg-slate-50/70 p-5 space-y-1">
-            <p className="font-math text-2xl sm:text-3xl font-extrabold text-slate-900">
+          <div className="sm:col-span-4 rounded-2xl border-2 border-slate-200 bg-slate-50/70 p-4 sm:p-5 space-y-1">
+            <p className="font-math text-xl sm:text-3xl font-extrabold text-slate-900 break-words">
               {challenge.rightExpr}
             </p>
             {isAnswered && (
@@ -164,7 +164,7 @@ export function CompareGame({
         </div>
 
         {/* 3 Comparison Buttons (<, =, >) */}
-        <div className="grid grid-cols-3 gap-3 sm:gap-4">
+        <div className="grid grid-cols-3 gap-2.5 sm:gap-4">
           {signButtons.map((item) => {
             const isPicked = picked === item.sign;
             const isCorrectSign = item.sign === challenge.answer;
@@ -189,10 +189,10 @@ export function CompareGame({
                 type="button"
                 disabled={isAnswered}
                 onClick={() => handleChooseSign(item.sign)}
-                className={`py-4 px-3 rounded-2xl border-2 flex flex-col items-center justify-center gap-1 transition-all cursor-pointer disabled:cursor-default ${btnClass}`}
+                className={`min-h-[76px] py-3.5 px-2 sm:px-3 rounded-2xl border-2 flex flex-col items-center justify-center gap-1 transition-all cursor-pointer disabled:cursor-default ${btnClass}`}
               >
-                <span className="font-math text-4xl font-extrabold leading-none">{item.sign}</span>
-                <span className="text-[11px] sm:text-xs font-bold text-slate-600">
+                <span className="font-math text-3xl sm:text-4xl font-extrabold leading-none">{item.sign}</span>
+                <span className="text-[11px] sm:text-xs font-bold text-slate-600 leading-tight">
                   {isHi ? item.labelHi : item.labelEn}
                 </span>
               </motion.button>
